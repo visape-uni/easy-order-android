@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/img_plat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/plato_comida"/>
+    <TextView
+        android:id="@+id/txt_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Título del plato"
+        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/img_plat"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"/>
+    <TextView
+        android:id="@+id/txt_descripcio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Descripción del plato"
+        android:textSize="22sp"
+        android:layout_below="@id/txt_titulo"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"/>
+    <TextView
+        android:id="@+id/txt_calorias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="150 Kcal"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/txt_descripcio"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"/>
+    <TextView
+        android:id="@+id/txt_preu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="8,50€"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:layout_below="@id/txt_descripcio"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+</RelativeLayout>

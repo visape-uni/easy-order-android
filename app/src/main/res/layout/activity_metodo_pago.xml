@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btn_pagar_tarjeta"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:text="@string/tarjeta"/>
+    <Button
+        android:id="@+id/btn_pagar_efectivo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:text="@string/efectivo"
+        android:layout_below="@id/btn_pagar_tarjeta"/>
+    <Button
+        android:id="@+id/btn_pagar_bizum"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:text="@string/bizum"
+        android:layout_below="@id/btn_pagar_efectivo"/>
+    <Button
+        android:id="@+id/btn_pagar_paypal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:text="@string/paypal"
+        android:layout_below="@id/btn_pagar_bizum"/>
+
+</RelativeLayout>

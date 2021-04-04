@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_cocinando"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/cocinando"
+        android:layout_above="@id/btn_editar_pedido"/>
+    <Button
+        android:id="@+id/btn_editar_pedido"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/editar_pedido"
+        android:layout_above="@id/btn_pagar"/>
+    <Button
+        android:id="@+id/btn_pagar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/pagar"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

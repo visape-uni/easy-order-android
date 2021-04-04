@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <EditText
+        android:id="@+id/txt_nombre_plato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/nombre_del_plato"
+        android:inputType="text"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/txt_descripcio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/descripci_n"
+        android:inputType="textMultiLine"
+        android:layout_below="@id/txt_nombre_plato"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/lbl_imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/imagen"
+        android:layout_below="@id/txt_descripcio"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <ImageButton
+        android:id="@+id/btn_add_imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lbl_imagen"
+        android:src="@drawable/ic_add_picture"
+        android:layout_marginStart="10dp"/>
+
+    <EditText
+        android:id="@+id/txt_calorias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/calorias"
+        android:inputType="number"
+        android:layout_below="@id/btn_add_imagen"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/txt_preu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/precio"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/txt_calorias"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/lbl_categoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/categoria"
+        android:layout_below="@id/txt_preu"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <Spinner
+        android:id="@+id/spinner_categoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lbl_categoria"
+        android:layout_margin="10dp" />
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar"
+        android:layout_below="@id/spinner_categoria"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btn_guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guardar"
+        android:layout_below="@id/spinner_categoria"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"/>
+
+</RelativeLayout>

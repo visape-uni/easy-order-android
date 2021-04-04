@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "863836951812",
+    "project_id": "easy-order-ab33a",
+    "storage_bucket": "easy-order-ab33a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863836951812:android:42feafc403ce398f4a6c51",
+        "android_client_info": {
+          "package_name": "edu.uoc.easyorderfront"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863836951812-h4t245tv2goojtkvfa8u85rb0gej55uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSFXwToRTqOxKLBLWYPxwpiK69tpbG1TY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863836951812-h4t245tv2goojtkvfa8u85rb0gej55uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
