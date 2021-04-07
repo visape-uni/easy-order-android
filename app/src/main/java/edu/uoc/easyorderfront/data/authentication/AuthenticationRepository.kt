@@ -6,9 +6,12 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 
 interface AuthenticationRepository {
 
-    // Devuelve true si esta logeado, false si no
+    // Devuelve el usuario de firebase o una excepcion
     suspend fun login(email: String, password: String): MutableLiveData<DataWrapper<FirebaseUser?>>
 
-    // Devuelve true si se registra correctamente, false si no
-    suspend fun register(username: String, email: String, password: String): User?
+    // Devuelve el usuario registrado o una excepcion
+    suspend fun register(username: String, email: String, password: String, isClient:Boolean): User?
+
+    // Devuelve el token del usuario actual
+    suspend fun getIdToken(): MutableLiveData<DataWrapper<String>>
 }

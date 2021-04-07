@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.data.di
 
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.data.authentication.AuthenticationBackendDataSource
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepositoryImpl
@@ -10,6 +11,8 @@ import org.koin.dsl.module
 
 val dataModule = module {
     factory { Network.createHttpClient(androidContext()) }
+
+    single { SessionManager(get()) }
 
     single { AuthenticationBackendDataSource(get()) }
     single { FirebaseDataSource() }

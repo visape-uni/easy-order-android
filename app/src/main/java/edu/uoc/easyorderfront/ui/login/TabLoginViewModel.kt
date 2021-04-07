@@ -12,6 +12,7 @@ import java.lang.Exception
 
 class TabLoginViewModel (private val repository: AuthenticationRepository) : ViewModel() {
     lateinit var isLogged  : MutableLiveData<DataWrapper<FirebaseUser?>>
+    lateinit var token : MutableLiveData<DataWrapper<String>>
 
     private val TAG = "TabLoginViewModel"
 
@@ -23,6 +24,17 @@ class TabLoginViewModel (private val repository: AuthenticationRepository) : Vie
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
                 isLogged = repository.login(email, password)
+            }
+        }
+    }
+
+    fun getTokenId() {
+        viewModelScope.launch {
+            try {
+                token = repository.getIdToken()
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                token = repository.getIdToken()
             }
         }
     }

@@ -16,11 +16,11 @@ import java.nio.charset.Charset
 class AuthenticationBackendDataSource(private val httpClient: HttpClient) {
     private val TAG = "AuthenticationBackendDataSource"
 
-    suspend fun register(username: String, email: String, password: String): User? {
+    suspend fun register(username: String, email: String, password: String, isClient:Boolean): User? {
         try {
             return httpClient
                     .post<User>(Endpoints.registerUrl) {
-                        body = User(null, username, email, password, true);
+                        body = User(null, username, email, password, isClient);
                     }
         } catch (t: Throwable) {
 

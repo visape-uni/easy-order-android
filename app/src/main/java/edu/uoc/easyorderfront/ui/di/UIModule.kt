@@ -6,6 +6,6 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    viewModel { TabRegisterViewModel(repository = get()) }
+    viewModel { TabRegisterViewModel(get()) }
     viewModel { TabLoginViewModel(get()) }
 }

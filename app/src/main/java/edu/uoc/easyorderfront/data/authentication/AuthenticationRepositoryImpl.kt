@@ -19,10 +19,17 @@ class AuthenticationRepositoryImpl(
         return userMutableLiveData
     }
 
-    override suspend fun register(username: String, email: String, password: String): User? {
-        val registerResponse = authenticationBackendDataSource.register(username, email, password)
+    override suspend fun register(username: String, email: String, password: String, isClient: Boolean): User? {
+        val registerResponse = authenticationBackendDataSource.register(username, email, password, isClient)
 
         Log.d(TAG, "Register response $registerResponse")
         return registerResponse
+    }
+
+    override suspend fun getIdToken(): MutableLiveData<DataWrapper<String>> {
+        val tokenMutableLiveData = firebaseDataSource.getIdToken()
+        Log.d(TAG, "getIdToken response $tokenMutableLiveData")
+
+        return tokenMutableLiveData
     }
 }

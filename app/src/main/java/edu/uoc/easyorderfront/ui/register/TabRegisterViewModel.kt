@@ -19,16 +19,17 @@ class TabRegisterViewModel(
 ) : ViewModel() {
     val registered = MutableLiveData<DataWrapper<User>>()
     lateinit var login : MutableLiveData<DataWrapper<FirebaseUser?>>
+    lateinit var token : MutableLiveData<DataWrapper<String>>
 
     private val TAG = "TabRegisterViewModel"
 
-    fun register(username: String, email:String, password: String) {
+    fun register(username: String, email:String, password: String, isClient : Boolean) {
         viewModelScope.launch {
             try {
                 // Loding
                 registered.postValue(DataWrapper.loading(User(null, null, null)))
 
-                repository.register(username, email, password).let { response ->
+                repository.register(username, email, password, isClient).let { response ->
                     Log.d(TAG, "Register: $response")
                     registered.postValue(DataWrapper.success(response))
                 }
@@ -61,6 +62,17 @@ class TabRegisterViewModel(
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
                 login = repository.login(email, password)
+            }
+        }
+    }
+
+    fun getTokenId() {
+        viewModelScope.launch {
+            try {
+                token = repository.getIdToken()
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                token = repository.getIdToken()
             }
         }
     }

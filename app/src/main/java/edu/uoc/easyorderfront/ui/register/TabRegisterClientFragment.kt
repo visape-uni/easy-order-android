@@ -8,14 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.fragment_tab_register.*
+import kotlinx.android.synthetic.main.fragment_tab_login_client.*
+import kotlinx.android.synthetic.main.fragment_tab_register_client.*
+import kotlinx.android.synthetic.main.fragment_tab_register_client.email_txt
+import kotlinx.android.synthetic.main.fragment_tab_register_client.logo
+import kotlinx.android.synthetic.main.fragment_tab_register_client.progress_bar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class TabRegisterFragment : Fragment() {
+class TabRegisterClientFragment : Fragment() {
     private val viewModel: TabRegisterViewModel by viewModel()
-    private val TAG = "TabRegisterFragment"
+    private val TAG = "TabRegisterClientFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,7 @@ class TabRegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab_register, container, false)
+        return inflater.inflate(R.layout.fragment_tab_register_client, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +86,7 @@ class TabRegisterFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.contrase_na_almenos_8_caracteres), Toast.LENGTH_LONG).show()
             } else {
                 // No errores, hacer register
-                viewModel.register(username, email, clave)
+                viewModel.register(username, email, clave, true)
             }
         })
 
@@ -101,10 +106,11 @@ class TabRegisterFragment : Fragment() {
                     progress_bar.visibility = View.GONE
                     logo.visibility = View.VISIBLE
 
-                    Toast.makeText(context, "Sessión iniciada correctamente", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
 
                     Log.d(TAG, dataWrapper.data.toString())
                     //TODO: Abrir activity segun el tipo de usuario
+                    getToken()
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -119,12 +125,36 @@ class TabRegisterFragment : Fragment() {
         })
     }
 
+    fun getToken() {
+        viewModel.getTokenId()
+        viewModel.token.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                    logo.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+                    Log.d(TAG, "Token obtenido: " + dataWrapper.data)
+
+                    if (dataWrapper.data != null) {
+                        context?.let { SessionManager(it).saveAccessToken(dataWrapper.data) }
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+                    Log.e(TAG, "Error obteniendo Token")
+                }
+            }
+        })
+    }
+
     companion object {
 
         @JvmStatic
         fun newInstance() =
-            TabRegisterFragment().apply {
-
-            }
+            TabRegisterClientFragment()
     }
 }

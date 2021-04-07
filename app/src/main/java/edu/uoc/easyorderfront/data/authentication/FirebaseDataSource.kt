@@ -2,12 +2,14 @@ package edu.uoc.easyorderfront.data.authentication
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import edu.uoc.easyorderfront.data.constants.InternalErrorMessages
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_CREDENCIALES_INCORRECTA
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_GENERICO
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_USUARIO_INEXISTENTE
@@ -44,6 +46,30 @@ class FirebaseDataSource(private val auth: FirebaseAuth = Firebase.auth) {
         }
 
         return userMutableLiveData
+    }
+
+    suspend fun getIdToken():MutableLiveData<DataWrapper<String>> {
+        val tokenMutableLiveData = MutableLiveData<DataWrapper<String>>(DataWrapper.loading(null))
+
+        val currentUser = auth.currentUser
+
+        currentUser.getIdToken(true).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "GetToken:success")
+                val idToken = task.getResult()?.token
+                tokenMutableLiveData.postValue(DataWrapper.success(idToken))
+            } else {
+                val exception = task.exception
+                Log.w(TAG, "GetToken:failure", exception)
+                if (exception?.message != null) {
+                    tokenMutableLiveData.postValue(DataWrapper.error(exception.message!!))
+                } else {
+                    tokenMutableLiveData.postValue(DataWrapper.error(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION))
+                }
+            }
+        }
+
+        return tokenMutableLiveData
     }
 
 }

@@ -1,4 +1,4 @@
-package edu.uoc.easyorderfront.ui
+package edu.uoc.easyorderfront.ui.main
 
 import android.content.Context
 import androidx.fragment.app.Fragment
@@ -6,16 +6,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.login.TabLoginFragment
-import edu.uoc.easyorderfront.ui.register.TabRegisterFragment
+import edu.uoc.easyorderfront.ui.register.TabRegisterClientFragment
 
-class MainPageAdapter(fm: FragmentManager, context: Context) : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class MainClientPageAdapter(fm: FragmentManager, context: Context) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val context = context
 
     override fun getItem(position: Int): Fragment {
         when(position) {
             0 -> {return TabLoginFragment()
             }
-            1 -> {return TabRegisterFragment()
+            1 -> {return TabRegisterClientFragment()
             }
             else -> {return TabLoginFragment()
             }
