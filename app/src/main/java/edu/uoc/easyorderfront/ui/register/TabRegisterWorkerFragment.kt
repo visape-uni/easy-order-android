@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
+import edu.uoc.easyorderfront.domain.model.User
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
@@ -84,7 +86,7 @@ class TabRegisterWorkerFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.contrase_na_almenos_8_caracteres), Toast.LENGTH_LONG).show()
             } else {
                 // No errores, hacer register
-                viewModel.register(username, email, clave, false)
+                viewModel.register(User(null, username, email, clave, false))
             }
         })
     }
@@ -107,6 +109,7 @@ class TabRegisterWorkerFragment : Fragment() {
 
                     Log.d(TAG, dataWrapper.data.toString())
                     //TODO: Abrir activity segun el tipo de usuario (ABRIR PANTALLA CREAR RESTAURANTE o PERFIL TRABAJADOR)
+                    dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
                 Status.ERROR -> {
@@ -117,14 +120,18 @@ class TabRegisterWorkerFragment : Fragment() {
                     Toast.makeText(context, dataWrapper.message, Toast.LENGTH_LONG).show()
                 }
             }
-
-
         })
+    }
+
+    fun saveUserId(uid: String) {
+        context?.let { context ->
+            SessionManager(context).saveUserId(uid)
+        }
     }
 
     fun getToken() {
         viewModel.getTokenId()
-        viewModel.token.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(this, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -136,7 +143,26 @@ class TabRegisterWorkerFragment : Fragment() {
                     Log.d(TAG, "Token obtenido: " + dataWrapper.data)
 
                     if (dataWrapper.data != null) {
-                        context?.let { SessionManager(it).saveAccessToken(dataWrapper.data) }
+                        context?.let {context ->
+                            dataWrapper.data.token?.let { token ->
+                                // Save Token in sessionManager
+                                SessionManager(context).saveAccessToken(token)
+                            }
+                        }
+
+                        if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
+                            Log.i(TAG, "Is Client")
+                            // TODO: Show client screen
+                        } else {
+                            Log.i(TAG, "Is Worker")
+                            // TODO: Show worker screen
+                            /* if (isWorking) {
+                                showRestaurantScreen
+                            else {
+                                showProfileScreen
+                            }
+                             */
+                        }
                     }
                 }
                 Status.ERROR -> {

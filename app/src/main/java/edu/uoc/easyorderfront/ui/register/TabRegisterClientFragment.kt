@@ -9,8 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
+import edu.uoc.easyorderfront.domain.model.User
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.email_txt
 import kotlinx.android.synthetic.main.fragment_tab_register_client.logo
@@ -86,7 +87,7 @@ class TabRegisterClientFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.contrase_na_almenos_8_caracteres), Toast.LENGTH_LONG).show()
             } else {
                 // No errores, hacer register
-                viewModel.register(username, email, clave, true)
+                viewModel.register(User(null, username, email, clave, true))
             }
         })
 
@@ -109,7 +110,8 @@ class TabRegisterClientFragment : Fragment() {
                     Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
 
                     Log.d(TAG, dataWrapper.data.toString())
-                    //TODO: Abrir activity segun el tipo de usuario
+                    //TODO: Abrir activity segun el tipo de usuario, guardar usuario y get token
+                    dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
                 Status.ERROR -> {
@@ -125,9 +127,15 @@ class TabRegisterClientFragment : Fragment() {
         })
     }
 
+    fun saveUserId(uid: String) {
+        context?.let { context ->
+            SessionManager(context).saveUserId(uid)
+        }
+    }
+
     fun getToken() {
         viewModel.getTokenId()
-        viewModel.token.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(this, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -139,7 +147,26 @@ class TabRegisterClientFragment : Fragment() {
                     Log.d(TAG, "Token obtenido: " + dataWrapper.data)
 
                     if (dataWrapper.data != null) {
-                        context?.let { SessionManager(it).saveAccessToken(dataWrapper.data) }
+                        context?.let {context ->
+                            dataWrapper.data.token?.let { token ->
+                                // Save Token in sessionManager
+                                SessionManager(context).saveAccessToken(token)
+                            }
+
+                            if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
+                                Log.i(TAG, "Is Client")
+                                // TODO: Show client screen
+                            } else {
+                                Log.i(TAG, "Is Worker")
+                                // TODO: Show worker screen
+                                /* if (isWorking) {
+                                    showRestaurantScreen
+                                else {
+                                    showProfileScreen
+                                }
+                                 */
+                            }
+                        }
                     }
                 }
                 Status.ERROR -> {

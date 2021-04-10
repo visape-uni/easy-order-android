@@ -12,5 +12,6 @@ object UIMessages {
     const val ERROR_LOGUEANDO = "Error iniciando sessión, vuelva a intentar"
     const val ERROR_BACKEND_ERROR = "Error: El servidor no está disponible actualmente"
     const val ERROR_USUARIO_EXISTENTE = "Error: Ya existe un usuario con este email"
+    const val ERROR_BACKEND_TIMEOUT = "Error: El servidor está tardando en contestar"
     const val ERROR_GENERICO = "Error inesperado, vuelva a intentar"
 }

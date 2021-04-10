@@ -50,4 +50,11 @@
     <string name="te_estas_registrando_como_trabajador">Te estas registrando como trabajador</string>
     <string name="session_iniciada_correctamente">Sessión iniciada correctamente</string>
     <string name="registrarse_trabajador">Registrarse como trabajador</string>
+    <string name="nombre_del_restaurante">Nombre del restaurante</string>
+    <string name="calle">Calle</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="codigo_postal">Codigo Postal</string>
+    <string name="pa_s">País</string>
+    <string name="crear">Crear</string>
+    <string name="resturante_">Restaurante:</string>
 </resources>

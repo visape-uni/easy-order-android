@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
@@ -76,8 +77,9 @@ class TabLoginFragment : Fragment() {
 
                     Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_SHORT).show()
 
-                    Log.d(TAG, dataWrapper.data?.email)
-                    //TODO: Abrir activity segun el tipo de usuario y get token
+                    Log.d(TAG, "Logged " + dataWrapper.data?.email)
+                    //TODO: Abrir activity segun el tipo de usuario, guardar usuario y get token
+                    dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
                 Status.ERROR -> {
@@ -93,9 +95,15 @@ class TabLoginFragment : Fragment() {
         })
     }
 
+    fun saveUserId(uid: String) {
+        context?.let { context ->
+            SessionManager(context).saveUserId(uid)
+        }
+    }
+
     fun getToken() {
         viewModel.getTokenId()
-        viewModel.token.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(this, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -107,7 +115,26 @@ class TabLoginFragment : Fragment() {
                     Log.d(TAG, "Token obtenido: " + dataWrapper.data)
 
                     if (dataWrapper.data != null) {
-                        context?.let { SessionManager(it).saveAccessToken(dataWrapper.data) }
+                        context?.let {context ->
+                            dataWrapper.data.token?.let { token ->
+                                // Save Token in sessionManager
+                                SessionManager(context).saveAccessToken(token)
+                            }
+                        }
+
+                        if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
+                            Log.i(TAG, "Is Client")
+                            // TODO: Show client screen
+                        } else {
+                            Log.i(TAG, "Is Worker")
+                            // TODO: Show worker screen
+                            /* if (isWorking) {
+                                showRestaurantScreen
+                            else {
+                                showProfileScreen
+                            }
+                             */
+                        }
                     }
                 }
                 Status.ERROR -> {

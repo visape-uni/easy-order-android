@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.data
 
 import android.content.Context
+import edu.uoc.easyorderfront.domain.model.User
 
 class SessionManager(context: Context) {
     private val sharedPreferencesName = "sessionPreferences"
@@ -8,6 +9,7 @@ class SessionManager(context: Context) {
         context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
 
     private val accessTokenKey = "accessTokeKey"
+    private val userIdKey = "userIdKey"
 
     fun getAccessToken(): String? {
         return sharedPreferences.getString(accessTokenKey, null)
@@ -25,4 +27,19 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
+    fun getUserId(): String? {
+        return sharedPreferences.getString(userIdKey, null)
+    }
+
+    fun saveUserId(userId: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(userIdKey, userId)
+        editor.apply()
+    }
+
+    fun clearUserId() {
+        val editor = sharedPreferences.edit()
+        editor.remove(userIdKey)
+        editor.apply()
+    }
 }

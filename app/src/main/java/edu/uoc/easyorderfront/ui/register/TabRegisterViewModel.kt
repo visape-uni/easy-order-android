@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GetTokenResult
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
-import edu.uoc.easyorderfront.data.authentication.User
 import edu.uoc.easyorderfront.data.constants.InternalErrorMessages
-import edu.uoc.easyorderfront.data.error.MyException
+import edu.uoc.easyorderfront.data.error.EasyOrderException
+import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
@@ -19,28 +20,31 @@ class TabRegisterViewModel(
 ) : ViewModel() {
     val registered = MutableLiveData<DataWrapper<User>>()
     lateinit var login : MutableLiveData<DataWrapper<FirebaseUser?>>
-    lateinit var token : MutableLiveData<DataWrapper<String>>
+    lateinit var getTokenResult : MutableLiveData<DataWrapper<GetTokenResult>>
 
     private val TAG = "TabRegisterViewModel"
 
-    fun register(username: String, email:String, password: String, isClient : Boolean) {
+    fun register(user: User) {
         viewModelScope.launch {
             try {
                 // Loding
-                registered.postValue(DataWrapper.loading(User(null, null, null)))
+                registered.postValue(DataWrapper.loading(user))
 
-                repository.register(username, email, password, isClient).let { response ->
-                    Log.d(TAG, "Register: $response")
-                    registered.postValue(DataWrapper.success(response))
+                repository.register(user).let { userResponse ->
+                    Log.d(TAG, "Register: $userResponse")
+                    registered.postValue(DataWrapper.success(userResponse))
                 }
-            } catch (myException: MyException) {
-                Log.e(TAG, myException.toString())
-                when(myException.message) {
+            } catch (easyOrderException: EasyOrderException) {
+                Log.e(TAG, easyOrderException.toString())
+                when(easyOrderException.message) {
                     InternalErrorMessages.ERROR_USER_ALREADY_EXISTS -> {
                         registered.postValue(DataWrapper.error(UIMessages.ERROR_USUARIO_EXISTENTE))
                     }
+                    InternalErrorMessages.ERROR_BACKEND_TIMEOUT -> {
+                        registered.postValue(DataWrapper.error(UIMessages.ERROR_BACKEND_TIMEOUT))
+                    }
                     else -> {
-                        if (myException.message?.startsWith(InternalErrorMessages.ERROR_INTERNAL_GENERIC)!!) {
+                        if (easyOrderException.message?.startsWith(InternalErrorMessages.ERROR_INTERNAL_GENERIC)!!) {
                             registered.postValue(DataWrapper.error(UIMessages.ERROR_BACKEND_ERROR))
                         } else {
                             registered.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
@@ -69,10 +73,10 @@ class TabRegisterViewModel(
     fun getTokenId() {
         viewModelScope.launch {
             try {
-                token = repository.getIdToken()
+                getTokenResult = repository.getIdToken()
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                token = repository.getIdToken()
+                getTokenResult = repository.getIdToken()
             }
         }
     }

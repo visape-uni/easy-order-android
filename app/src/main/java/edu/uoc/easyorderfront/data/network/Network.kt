@@ -34,9 +34,9 @@ object Network {
             }
             // Timeout
             install(HttpTimeout) {
-                requestTimeoutMillis = 15000L
-                connectTimeoutMillis = 15000L
-                socketTimeoutMillis = 15000L
+                requestTimeoutMillis = 60000L
+                connectTimeoutMillis = 60000L
+                socketTimeoutMillis = 60000L
             }
             // Apply to All Requests
             defaultRequest {
