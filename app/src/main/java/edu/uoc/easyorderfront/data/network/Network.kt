@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.data.network
 
 import android.content.Context
 import android.util.Log
+import edu.uoc.easyorderfront.data.SessionManager
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
@@ -41,11 +42,17 @@ object Network {
             // Apply to All Requests
             defaultRequest {
                 // Content Type
-                if (this.method != HttpMethod.Get) contentType(ContentType.Application.Json)
+                if (this.method != HttpMethod.Get) {
+                    contentType(ContentType.Application.Json)
+                }
                 accept(ContentType.Application.Json)
 
-            }
+                // TODO: PONER TOKEN
+                if (checkUrlToken(this.url.encodedPath)) {
+                    header("Authorization", "Bearer " + SessionManager(context).getAccessToken())
+                }
 
+            }
 
             // Add OAuth Feature
             /*install(OAuthFeature) {
@@ -69,5 +76,12 @@ object Network {
         ignoreUnknownKeys = true
         isLenient = true
         encodeDefaults = false
+    }
+
+    private val API_ENDPOINT = "/api"
+    private val GET_USER_ENDPOINT = "/user/get"
+
+    private fun checkUrlToken(url: String): Boolean {
+        return (url.contains(API_ENDPOINT) || url.contains(GET_USER_ENDPOINT))
     }
 }

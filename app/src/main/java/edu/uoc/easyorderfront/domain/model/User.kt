@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.domain.model
 
 import edu.uoc.easyorderfront.data.authentication.UserDTO
 
+
 open class User (
         open val uid:String?,
         open val username:String?,

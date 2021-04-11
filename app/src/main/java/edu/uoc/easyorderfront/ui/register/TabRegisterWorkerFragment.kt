@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.ui.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
@@ -155,6 +157,7 @@ class TabRegisterWorkerFragment : Fragment() {
                             // TODO: Show client screen
                         } else {
                             Log.i(TAG, "Is Worker")
+                            startActivity(Intent(context, WorkerProfileActivity::class.java))
                             // TODO: Show worker screen
                             /* if (isWorking) {
                                 showRestaurantScreen

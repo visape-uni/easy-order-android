@@ -24,7 +24,7 @@ class AuthenticationBackendDataSource(private val httpClient: HttpClient) {
                     }
         } catch (t: Throwable) {
 
-            Log.w(TAG, "Error creando usuario",t)
+            Log.w(TAG, "Error creando usuario", t)
 
             when (t) {
                 is ClientRequestException -> {

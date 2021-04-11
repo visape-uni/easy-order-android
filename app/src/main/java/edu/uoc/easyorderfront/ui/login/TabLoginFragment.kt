@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
@@ -127,6 +128,7 @@ class TabLoginFragment : Fragment() {
                             // TODO: Show client screen
                         } else {
                             Log.i(TAG, "Is Worker")
+                            startActivity(Intent(context, WorkerProfileActivity::class.java))
                             // TODO: Show worker screen
                             /* if (isWorking) {
                                 showRestaurantScreen

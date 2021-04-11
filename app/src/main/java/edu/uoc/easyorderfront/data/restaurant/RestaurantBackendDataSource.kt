@@ -19,6 +19,7 @@ class RestaurantBackendDataSource(private val httpClient: HttpClient) {
                     }
         } catch (t: Throwable) {
             Log.w(TAG, "Error creando restaurante", t)
+            // TODO: TRATAR EXCEPCIONES
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }

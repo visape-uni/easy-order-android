@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_id"
         android:layout_alignBaseline="@id/lbl_id"
-        android:textSize="20sp"
+        android:textSize="18sp"
         tools:text="Número ID"/>
 
     <TextView

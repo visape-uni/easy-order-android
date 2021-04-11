@@ -1,7 +1,9 @@
 package edu.uoc.easyorderfront.data.restaurant
 
 import edu.uoc.easyorderfront.domain.model.Restaurant
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RestaurantDTO(
         val name: String?,
         val street: String?,
