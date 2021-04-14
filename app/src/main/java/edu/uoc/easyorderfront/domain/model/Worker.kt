@@ -7,8 +7,8 @@ data class Worker(
      override val username:String?,
      override val email:String?,
      override val password:String? = null,
-        val restaurant: Restaurant): User(uid, username, email, password, false) {
+        val restaurant: Restaurant?): User(uid, username, email, password, false) {
     override fun convertToDTO(): UserDTO {
-        return UserDTO(uid, username, email, password, isClient, restaurant.id)
+        return UserDTO(uid, username, email, password, isClient, restaurant?.convertToDTO())
     }
 }

@@ -21,28 +21,29 @@ class WorkerProfileActivity : AppCompatActivity() {
     }
 
     fun prepareUI() {
-        //TODO: Observe workerProfile from viewModel
-        viewModel.workerProfile.observe(this, {dataWrapper ->
-            when(dataWrapper.status) {
-                Status.LOADING -> {
 
+        viewModel.workerProfile.observe(this, {dataWrapperUser ->
+            when(dataWrapperUser.status) {
+                Status.LOADING -> {
+                    //TODO: LOADING
                 }
                 Status.SUCCESS -> {
-                    Log.d(TAG, dataWrapper.data.toString())
-                    val worker = dataWrapper.data
+                    Log.d(TAG, dataWrapperUser.data.toString())
+                    val worker = dataWrapperUser.data
 
                     if (worker != null) {
                         txt_id.text = worker.uid
                         txt_nombre.text = worker.username
                         txt_email.text = worker.email
                         txt_tipo.text = "Trabajador"
+                        txt_restaurante.text = worker.restaurant?.name
+                                ?: getString(R.string.no_trabaja_en_restaurante_actualmente)
 
-                        //TODO: GET RESTAURANT Y PONER NOMBRE DEL RESTAURANTE
                     }
 
                 }
                 Status.ERROR -> {
-
+                    //TODO: ERROR
                 }
             }
         })

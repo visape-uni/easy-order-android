@@ -5,8 +5,8 @@ import edu.uoc.easyorderfront.data.authentication.UserDTO
 
 open class User (
         open val uid:String?,
-        open val username:String?,
-        open val email:String?,
+        open val username:String? = null,
+        open val email:String? = null,
         open val password:String? = null,
         open val isClient:Boolean? = null
 ) {

@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.data.authentication
 
+import edu.uoc.easyorderfront.data.restaurant.RestaurantDTO
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
@@ -14,7 +15,7 @@ data class UserDTO(
         @SerialName("email") val email:String?,
         @SerialName("password") val password:String? = null,
         @SerialName("isClient") val isClient:Boolean? = null,
-        @SerialName("idRestaurant") val restaurant:String? = null
+        @SerialName("restaurant") val restaurant:RestaurantDTO? = null
 
 ) {
     fun convertToModel(): User {
@@ -22,7 +23,7 @@ data class UserDTO(
         if (isClient != null && isClient) {
             user = User(uid, username, email, password, isClient)
         } else {
-            user = Worker(uid, username, email, password, Restaurant(restaurant))
+            user = Worker(uid, username, email, password, restaurant?.convertToModel())
         }
         return user
     }

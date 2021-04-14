@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
+import edu.uoc.easyorderfront.domain.model.User
 import kotlinx.android.synthetic.main.activity_create_restaurant.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -42,7 +44,9 @@ class CreateRestaurantActivity : AppCompatActivity() {
 
                 Toast.makeText(applicationContext, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
-                viewModel.createRestaurant(Restaurant(null, restaurantName, restaurantStreet, restaurantCity, restaurantZipCode, restaurantCountry))
+                // Guardar al usuario como dueño
+                val owner = User(SessionManager(applicationContext).getUserId())
+                viewModel.createRestaurant(Restaurant(null, restaurantName, restaurantStreet, restaurantCity, restaurantZipCode, restaurantCountry, owner = owner))
             }
         })
 

@@ -16,4 +16,8 @@ class RestaurantRepositoryImpl(
 
         return restaurantDTO?.convertToModel()
     }
+
+    override suspend fun getRestaurant(id: String): Restaurant? {
+        TODO("Not yet implemented")
+    }
 }

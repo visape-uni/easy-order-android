@@ -11,5 +11,5 @@ val uiModule = module {
     viewModel { TabRegisterViewModel(get()) }
     viewModel { TabLoginViewModel(get()) }
     viewModel { CreateRestaurantViewModel(get()) }
-    viewModel { WorkerProfileViewModel(get()) }
+    viewModel { WorkerProfileViewModel(get(), get()) }
 }

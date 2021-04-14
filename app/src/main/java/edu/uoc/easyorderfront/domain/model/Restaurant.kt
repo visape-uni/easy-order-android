@@ -9,9 +9,12 @@ data class Restaurant(
         val city: String? = null,
         val zipCode: String? = null,
         val country: String? = null,
-        val imageUrl: String? = null
+        val imageUrl: String? = null,
+        val workers: List<User>? = null,
+        val owner: User? = null
 ) {
     fun convertToDTO(): RestaurantDTO {
-        return RestaurantDTO(name, street, city, zipCode, country, imageUrl)
+        val workersList = workers?.map { user -> user.convertToDTO() }
+        return RestaurantDTO(id, name, street, city, zipCode, country, imageUrl, workersList, owner?.convertToDTO())
     }
 }
