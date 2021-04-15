@@ -13,8 +13,7 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class WorkerProfileViewModel(private val profileRepository: ProfileRepository,
-    private val restaurantRepository: RestaurantRepository): ViewModel() {
+class WorkerProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     val workerProfile = MutableLiveData<DataWrapper<Worker?>>()
     private val TAG = "WorkerProfileViewModel"
 

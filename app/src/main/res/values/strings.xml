@@ -57,5 +57,5 @@
     <string name="pa_s">País</string>
     <string name="crear">Crear</string>
     <string name="resturante_">Restaurante:</string>
-    <string name="no_trabaja_en_restaurante_actualmente">No trabaja en ningun restaurante actualmente</string>
+    <string name="no_trabaja_en_restaurante_actualmente">Por ahora no estas registrado en ningún restaurante.</string>
 </resources>

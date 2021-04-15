@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val uiModule = module {
     viewModel { TabRegisterViewModel(get()) }
-    viewModel { TabLoginViewModel(get()) }
+    viewModel { TabLoginViewModel(get(), get()) }
     viewModel { CreateRestaurantViewModel(get()) }
-    viewModel { WorkerProfileViewModel(get(), get()) }
+    viewModel { WorkerProfileViewModel(get()) }
 }

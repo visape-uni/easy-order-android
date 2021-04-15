@@ -54,6 +54,10 @@ class TabRegisterClientFragment : Fragment() {
 
                     Toast.makeText(context, "Registrado correctamente", Toast.LENGTH_SHORT).show()
 
+                    context?.let {context ->
+                        dataWrapper.data?.let { SessionManager(context).saveUser(it) }
+                    }
+
                     login()
                 }
                 Status.ERROR -> {
@@ -104,13 +108,10 @@ class TabRegisterClientFragment : Fragment() {
                     logo.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
 
                     Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
 
                     Log.d(TAG, dataWrapper.data.toString())
-                    //TODO: Abrir activity segun el tipo de usuario, guardar usuario y get token
                     dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
@@ -151,20 +152,16 @@ class TabRegisterClientFragment : Fragment() {
                             dataWrapper.data.token?.let { token ->
                                 // Save Token in sessionManager
                                 SessionManager(context).saveAccessToken(token)
-                            }
 
-                            if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
-                                Log.i(TAG, "Is Client")
-                                // TODO: Show client screen
-                            } else {
-                                Log.i(TAG, "Is Worker")
-                                // TODO: Show worker screen
-                                /* if (isWorking) {
-                                    showRestaurantScreen
-                                else {
-                                    showProfileScreen
+                                // Open client screen
+                                val user = SessionManager(context).getUser()
+                                if (user != null) {
+                                    //TODO: Show Client Screen
+
+                                } else {
+                                    Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()
+                                    Log.e(TAG, "Error obteniendo Perfil")
                                 }
-                                 */
                             }
                         }
                     }

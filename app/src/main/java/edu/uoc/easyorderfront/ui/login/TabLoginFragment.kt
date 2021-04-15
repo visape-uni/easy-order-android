@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
+import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
@@ -73,13 +74,7 @@ class TabLoginFragment : Fragment() {
                     logo.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-
-                    Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_SHORT).show()
-
                     Log.d(TAG, "Logged " + dataWrapper.data?.email)
-                    //TODO: Abrir activity segun el tipo de usuario, guardar usuario y get token
                     dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
@@ -91,8 +86,46 @@ class TabLoginFragment : Fragment() {
                     Toast.makeText(context, dataWrapper.message, Toast.LENGTH_SHORT).show()
                 }
             }
+        })
 
+        viewModel.userProfile.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                    logo.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
 
+                    Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_SHORT).show()
+
+                    context?.let { context ->
+                        dataWrapper.data?.let { SessionManager(context).saveUser(it) }
+                    }
+
+                    if (dataWrapper.data?.isClient ?: true) {
+                        Log.i(TAG, "Is Client")
+                        // TODO: Show client screen
+                    } else {
+                        Log.i(TAG, "Is Worker")
+                        val workerProfile = dataWrapper.data as Worker
+                        if (workerProfile.restaurant != null && workerProfile.restaurant.id != null) {
+                            // TODO: ShowRestaurantScreen
+                        } else {
+                            startActivity(Intent(context, WorkerProfileActivity::class.java))
+                        }
+                    }
+
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+
+                    Log.e(TAG, "Error obteniendo perfil")
+                    Toast.makeText(context, dataWrapper.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         })
     }
 
@@ -111,32 +144,22 @@ class TabLoginFragment : Fragment() {
                     logo.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
                     Log.d(TAG, "Token obtenido: " + dataWrapper.data)
 
                     if (dataWrapper.data != null) {
-                        context?.let {context ->
+                        context?.let { context ->
                             dataWrapper.data.token?.let { token ->
                                 // Save Token in sessionManager
                                 SessionManager(context).saveAccessToken(token)
+                                // Get user profile
+                                val uid = SessionManager(context).getUserId()
+                                if (uid != null) {
+                                    viewModel.getProfile(uid)
+                                }
                             }
                         }
-
-                        if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
-                            Log.i(TAG, "Is Client")
-                            // TODO: Show client screen
-                        } else {
-                            Log.i(TAG, "Is Worker")
-                            startActivity(Intent(context, WorkerProfileActivity::class.java))
-                            // TODO: Show worker screen
-                            /* if (isWorking) {
-                                showRestaurantScreen
-                            else {
-                                showProfileScreen
-                            }
-                             */
-                        }
+                    } else {
+                        Log.e(TAG, "Error obteniendo Token")
                     }
                 }
                 Status.ERROR -> {

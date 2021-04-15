@@ -11,6 +11,7 @@ import android.widget.Toast
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.User
+import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -54,6 +55,10 @@ class TabRegisterWorkerFragment : Fragment() {
                 Status.SUCCESS -> {
 
                     Toast.makeText(context, "Registrado correctamente", Toast.LENGTH_SHORT).show()
+
+                    context?.let { context ->
+                        dataWrapper.data?.let { SessionManager(context).saveUser(it) }
+                    }
 
                     login()
                 }
@@ -104,13 +109,9 @@ class TabRegisterWorkerFragment : Fragment() {
                     logo.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-
                     Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
 
                     Log.d(TAG, dataWrapper.data.toString())
-                    //TODO: Abrir activity segun el tipo de usuario (ABRIR PANTALLA CREAR RESTAURANTE o PERFIL TRABAJADOR)
                     dataWrapper.data?.uid?.let { saveUserId(it) }
                     getToken()
                 }
@@ -149,22 +150,20 @@ class TabRegisterWorkerFragment : Fragment() {
                             dataWrapper.data.token?.let { token ->
                                 // Save Token in sessionManager
                                 SessionManager(context).saveAccessToken(token)
-                            }
-                        }
 
-                        if (dataWrapper.data.claims.get(EasyOrderConstants.CLIENT_CLAIMS) as Boolean) {
-                            Log.i(TAG, "Is Client")
-                            // TODO: Show client screen
-                        } else {
-                            Log.i(TAG, "Is Worker")
-                            startActivity(Intent(context, WorkerProfileActivity::class.java))
-                            // TODO: Show worker screen
-                            /* if (isWorking) {
-                                showRestaurantScreen
-                            else {
-                                showProfileScreen
+                                // Open worker screen
+                                val worker = SessionManager(context).getUser() as Worker
+                                if (worker != null) {
+                                    if (worker.restaurant != null && worker.restaurant.id != null) {
+                                        // TODO: ShowRestaurantScreen
+                                    } else {
+                                        startActivity(Intent(context, WorkerProfileActivity::class.java))
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()
+                                    Log.e(TAG, "Error obteniendo Perfil")
+                                }
                             }
-                             */
                         }
                     }
                 }
