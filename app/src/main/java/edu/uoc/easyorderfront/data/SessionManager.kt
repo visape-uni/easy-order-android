@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.data
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
 
@@ -53,14 +54,21 @@ class SessionManager(context: Context) {
         if (userType) {
             return Gson().fromJson(userJson, User::class.java)
         } else {
-            return Gson().fromJson(userJson, Worker::class.java)
+            val worker = Gson().fromJson(userJson, Worker::class.java)
+
+            return worker;
         }
 
     }
 
     fun saveUser(user: User) {
         val editor = sharedPreferences.edit()
-        val userJson = Gson().toJson(user)
+        val userJson : String?
+        if (user.isClient != null && user.isClient!!) {
+            userJson = Gson().toJson(user)
+        } else {
+            userJson = Gson().toJson(user as Worker)
+        }
         editor.putString(userKey, userJson)
         editor.putBoolean(userType, user.isClient ?: true)
         editor.apply()

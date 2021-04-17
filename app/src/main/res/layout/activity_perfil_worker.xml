@@ -2,6 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
@@ -23,8 +30,17 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_id"
         android:layout_alignBaseline="@id/lbl_id"
+        android:layout_toStartOf="@id/btn_copy"
         android:textSize="16sp"
         tools:text="Número ID"/>
+    <ImageButton
+        android:id="@+id/btn_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_copy"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/logo"
+        android:backgroundTint="@color/white"/>
 
     <TextView
         android:id="@+id/lbl_nombre"

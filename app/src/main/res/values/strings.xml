@@ -58,4 +58,8 @@
     <string name="crear">Crear</string>
     <string name="resturante_">Restaurante:</string>
     <string name="no_trabaja_en_restaurante_actualmente">Por ahora no estas registrado en ningún restaurante.</string>
+    <string name="copiar_id">Copiar ID</string>
+    <string name="trabajador">Trabajador</string>
+    <string name="client">Cliente</string>
+    <string name="no_has_a_adido_ninguna_alergia">No has añadido ninguna alergia a tu lista</string>
 </resources>

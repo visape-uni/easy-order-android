@@ -2,6 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
     <ImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
@@ -13,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/id_"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:layout_below="@id/logo"/>
@@ -23,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_id"
         android:layout_alignBaseline="@id/lbl_id"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:text="Número ID"/>
 
     <TextView
@@ -31,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nombre_"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:layout_below="@id/txt_id"/>
@@ -41,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_nombre"
         android:layout_alignBaseline="@id/lbl_nombre"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:text="Nombre y apellidos del usuario"/>
 
     <TextView
@@ -49,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email_"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:layout_below="@id/txt_nombre"/>
@@ -59,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_email"
         android:layout_alignBaseline="@id/lbl_email"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:text="Email"/>
 
     <TextView
@@ -67,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tipo_"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:layout_below="@id/txt_email"/>
@@ -77,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/lbl_tipo"
         android:layout_alignBaseline="@id/lbl_tipo"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:text="Trabajador / Cliente"/>
 
     <TextView
@@ -85,10 +91,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/alergias_"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_margin="10dp"
         android:layout_below="@id/txt_tipo"/>
+    <TextView
+        android:id="@+id/txt_alergia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text=""
+        android:layout_alignBaseline="@id/lbl_alergia"
+        android:layout_toEndOf="@id/lbl_alergia"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_alergies"
         android:layout_width="match_parent"

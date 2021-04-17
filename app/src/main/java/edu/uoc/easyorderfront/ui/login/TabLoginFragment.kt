@@ -12,6 +12,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -106,7 +107,7 @@ class TabLoginFragment : Fragment() {
 
                     if (dataWrapper.data?.isClient ?: true) {
                         Log.i(TAG, "Is Client")
-                        // TODO: Show client screen
+                        startActivity(Intent(context, ClientProfileActivity::class.java))
                     } else {
                         Log.i(TAG, "Is Worker")
                         val workerProfile = dataWrapper.data as Worker

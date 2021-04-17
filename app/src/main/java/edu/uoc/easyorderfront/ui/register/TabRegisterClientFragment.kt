@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.ui.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.email_txt
@@ -156,7 +158,7 @@ class TabRegisterClientFragment : Fragment() {
                                 // Open client screen
                                 val user = SessionManager(context).getUser()
                                 if (user != null) {
-                                    //TODO: Show Client Screen
+                                    startActivity(Intent(context, ClientProfileActivity::class.java))
 
                                 } else {
                                     Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()

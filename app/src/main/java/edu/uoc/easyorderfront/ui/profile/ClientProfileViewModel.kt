@@ -4,36 +4,35 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
-import edu.uoc.easyorderfront.data.restaurant.RestaurantRepository
+import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class WorkerProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
-    val workerProfile = MutableLiveData<DataWrapper<Worker?>>()
-    private val TAG = "WorkerProfileViewModel"
+class ClientProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
+    val clientProfile = MutableLiveData<DataWrapper<User?>>()
+    private val TAG = "ClientProfileViewModel"
 
-    fun getWorkerProfile(id: String) {
+    fun getClientProfile(id: String) {
         viewModelScope.launch {
             try {
-                workerProfile.postValue(DataWrapper.loading(null))
+                clientProfile.postValue(DataWrapper.loading(null))
                 profileRepository.getProfile(id).let { userResponse ->
                     Log.d(TAG, "GetWorkerProfile: $userResponse")
 
-                    workerProfile.postValue(DataWrapper.success(userResponse as Worker))
+                    clientProfile.postValue(DataWrapper.success(userResponse))
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                workerProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                clientProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                workerProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                clientProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }

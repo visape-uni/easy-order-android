@@ -1,39 +1,41 @@
 package edu.uoc.easyorderfront.ui.profile
 
-
-import android.content.ClipData
-import android.content.ClipboardManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
-import edu.uoc.easyorderfront.domain.model.Worker
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
+import kotlinx.android.synthetic.main.activity_perfil_client.*
+import kotlinx.android.synthetic.main.activity_perfil_client.progress_bar
+import kotlinx.android.synthetic.main.activity_perfil_client.txt_email
+import kotlinx.android.synthetic.main.activity_perfil_client.txt_id
+import kotlinx.android.synthetic.main.activity_perfil_client.txt_nombre
+import kotlinx.android.synthetic.main.activity_perfil_client.txt_tipo
 import kotlinx.android.synthetic.main.activity_perfil_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class WorkerProfileActivity : AppCompatActivity() {
-    private val viewModel: WorkerProfileViewModel by viewModel()
+class ClientProfileActivity : AppCompatActivity() {
+
+    private val viewModel: ClientProfileViewModel by viewModel()
     private val TAG = "WorkerProfileActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil_worker)
+        setContentView(R.layout.activity_perfil_client)
 
         prepareUI()
     }
 
     fun prepareUI() {
-
-        viewModel.workerProfile.observe(this, {dataWrapperUser ->
-            when(dataWrapperUser.status) {
+        viewModel.clientProfile.observe(this, {dataWrapperUser ->
+            when (dataWrapperUser.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
                     window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -41,26 +43,19 @@ class WorkerProfileActivity : AppCompatActivity() {
                 }
                 Status.SUCCESS -> {
                     Log.d(TAG, dataWrapperUser.data.toString())
-                    val worker = dataWrapperUser.data
+                    val client = dataWrapperUser.data
 
-                    if (worker != null) {
-                        txt_id.text = worker.uid
-                        txt_nombre.text = worker.username
-                        txt_email.text = worker.email
-                        txt_tipo.text = getString(R.string.trabajador)
-                        txt_restaurante.text = worker.restaurant?.name
-                                ?: getString(R.string.no_trabaja_en_restaurante_actualmente)
+                    if(client != null) {
+                        txt_id.text = client.uid
+                        txt_nombre.text = client.username
+                        txt_email.text = client.email
+                        txt_tipo.text = getString(R.string.client)
 
-
-                        btn_copy.setOnClickListener({
-                            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText(EasyOrderConstants.WORKERID_LABEL, worker.uid)
-                            clipboardManager.setPrimaryClip(clip)
-                            Toast.makeText(applicationContext, "ID del trabajador copiado correctamente", Toast.LENGTH_LONG).show()
-                        })
-                        progress_bar.visibility = View.GONE
+                        //TODO: Mirar si el usuario tiene alergias, si no tiene mostrar texto de no alergias
+                        //TODO: Si tiene, mostrar el listado en el recycled view
+                        txt_alergia.visibility = View.VISIBLE
+                        txt_alergia.text = getString(R.string.no_has_a_adido_ninguna_alergia)
                     }
-
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -69,23 +64,23 @@ class WorkerProfileActivity : AppCompatActivity() {
             }
         })
 
-
         val profile = SessionManager(applicationContext).getUser()
         if (profile != null && profile.uid != null) {
-            viewModel.workerProfile.postValue(DataWrapper.success(profile as Worker))
+            viewModel.clientProfile.postValue(DataWrapper.success(profile))
         } else {
             // Si falla obteniendo perfil de SessionManager
             val uid = SessionManager(applicationContext).getUserId()
             if (uid != null) {
-                viewModel.getWorkerProfile(uid)
+                viewModel.getClientProfile(uid)
             } else {
                 progress_bar.visibility = View.GONE
                 Toast.makeText(
-                    applicationContext,
-                    UIMessages.ERROR_SESSION_EXPIRADA,
-                    Toast.LENGTH_LONG
+                        applicationContext,
+                        UIMessages.ERROR_SESSION_EXPIRADA,
+                        Toast.LENGTH_LONG
                 ).show()
             }
         }
+
     }
 }
