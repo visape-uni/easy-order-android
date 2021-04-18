@@ -21,7 +21,7 @@
             android:text="@string/c_digo_de_la_mesa"
             android:layout_marginBottom="10dp"/>
         <Button
-            android:id="@+id/bnt_ocupar_mesa"
+            android:id="@+id/btn_ocupar_mesa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ocupar_mesa"/>

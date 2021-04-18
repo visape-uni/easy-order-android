@@ -10,7 +10,8 @@
         android:roundIcon="@drawable/logo_easy_order"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyOrderFront">
-        <activity android:name=".ui.profile.ClientProfileActivity"></activity>
+        <activity android:name=".ui.table.OcupyTableActivity"></activity>
+        <activity android:name=".ui.profile.ClientProfileActivity" />
         <activity android:name=".ui.profile.WorkerProfileActivity" />
         <activity android:name=".ui.restaurant.CreateRestaurantActivity" />
         <activity android:name=".ui.main.MainWorkerActivity" />
@@ -25,8 +26,8 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 </manifest>

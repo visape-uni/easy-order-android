@@ -1,7 +1,10 @@
 package edu.uoc.easyorderfront.ui.restaurant
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
@@ -13,6 +16,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class CreateRestaurantActivity : AppCompatActivity() {
     private val viewModel: CreateRestaurantViewModel by viewModel()
     private val TAG = "CreateRestaurantActivity"
+    private val REQUEST_CODE_PICK_IMAGE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,13 @@ class CreateRestaurantActivity : AppCompatActivity() {
         //TODO: Observe createRestaurantState from viewModel
 
         //TODO: OnClickListener image restaurant
+        btn_add_image.setOnClickListener({
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.setType("image/*")
+            val mimeTypes = arrayOf("image/jped", "image/png")
+            photoPickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+            startActivityForResult(photoPickerIntent, REQUEST_CODE_PICK_IMAGE)
+        })
 
         btn_crear.setOnClickListener({
             val restaurantName = nombre_restaurante_txt.text.toString()
@@ -51,8 +62,19 @@ class CreateRestaurantActivity : AppCompatActivity() {
         })
 
         btn_cancelar.setOnClickListener({
-            //TODO: Mostrar pantalla del perfil de trabajador
+            startActivity(Intent(this, CreateRestaurantActivity::class.java))
             finish()
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val selectedImage = data?.data
+
+                img_view.setImageURI(selectedImage)
+            }
+        }
     }
 }
