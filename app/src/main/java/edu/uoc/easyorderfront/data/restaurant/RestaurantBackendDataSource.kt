@@ -25,6 +25,13 @@ class RestaurantBackendDataSource(private val httpClient: HttpClient) {
     }
 
     suspend fun getRestaurant(id: String): RestaurantDTO? {
-        TODO("Not yet implemented")
+        try {
+            return httpClient
+                .get<RestaurantDTO>(Endpoints.getRestaurantUrl + id)
+        } catch(t: Throwable) {
+            Log.w(TAG, "Error obteniendo restaurante", t)
+            // TODO: TRATAR EXCEPCIONES
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
     }
 }

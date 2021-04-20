@@ -14,6 +14,7 @@ import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
+import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
@@ -25,6 +26,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class TabRegisterWorkerFragment : Fragment() {
     private val viewModel: TabRegisterViewModel by viewModel()
     private val TAG = "TabRegisterWorkerFragment"
+    private val RESTAURANT_ID_KEY = "restaurantId"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,6 +158,9 @@ class TabRegisterWorkerFragment : Fragment() {
                                 if (worker != null) {
                                     if (worker.restaurant != null && worker.restaurant.id != null) {
                                         // TODO: ShowRestaurantScreen
+                                        val restaurantIntent = Intent(context, RestaurantProfileActivity::class.java)
+                                        restaurantIntent.putExtra(RESTAURANT_ID_KEY, worker.restaurant.id)
+                                        startActivity(restaurantIntent)
                                     } else {
                                         startActivity(Intent(context, WorkerProfileActivity::class.java))
                                     }

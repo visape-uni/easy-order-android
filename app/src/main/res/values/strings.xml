@@ -62,4 +62,9 @@
     <string name="trabajador">Trabajador</string>
     <string name="client">Cliente</string>
     <string name="no_has_a_adido_ninguna_alergia">No has añadido ninguna alergia a tu lista</string>
+    <string name="due_o">Dueño</string>
+    <string name="calle_">Calle:</string>
+    <string name="ciudad_">Ciudad:</string>
+    <string name="codigo_postal_">Codigo postal:</string>
+    <string name="pais_">País:</string>
 </resources>

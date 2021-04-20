@@ -7,11 +7,11 @@ object Endpoints {
 
     private const val userApi = "$easyOrderApiUrl/user"
     const val registerUrl = "$userApi/create"
-
     const val getUserUrl = "$userApi/get/"
 
     private const val restaurantApi = "$authenticationApi/restaurant"
     const val createRestaurantUrl = "$restaurantApi/create"
+    const val getRestaurantUrl = "$restaurantApi/get/"
 
 
 }

@@ -16,6 +16,7 @@ import java.lang.Exception
 
 class WorkerProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     val workerProfile = MutableLiveData<DataWrapper<Worker?>>()
+    val ownerMenu = MutableLiveData<Boolean?>()
     private val TAG = "WorkerProfileViewModel"
 
     fun getWorkerProfile(id: String) {
@@ -26,6 +27,8 @@ class WorkerProfileViewModel(private val profileRepository: ProfileRepository): 
                     Log.d(TAG, "GetWorkerProfile: $userResponse")
 
                     workerProfile.postValue(DataWrapper.success(userResponse as Worker))
+                    ownerMenu.postValue(userResponse.isOwner)
+                    Log.d(TAG, "ownerResponse ${userResponse.isOwner}")
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())

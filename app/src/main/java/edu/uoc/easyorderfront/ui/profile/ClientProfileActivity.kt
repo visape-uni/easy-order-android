@@ -38,8 +38,6 @@ class ClientProfileActivity : AppCompatActivity() {
             when (dataWrapperUser.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
-                    window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
                 Status.SUCCESS -> {
                     Log.d(TAG, dataWrapperUser.data.toString())

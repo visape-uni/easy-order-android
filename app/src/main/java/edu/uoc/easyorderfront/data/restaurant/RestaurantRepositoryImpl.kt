@@ -18,6 +18,10 @@ class RestaurantRepositoryImpl(
     }
 
     override suspend fun getRestaurant(id: String): Restaurant? {
-        TODO("Not yet implemented")
+        val restaurantDTO = restaurantBackendDataSource.getRestaurant(id)
+
+        Log.d(TAG, "GetRestaurant response $restaurantDTO")
+
+        return restaurantDTO?.convertToModel()
     }
 }

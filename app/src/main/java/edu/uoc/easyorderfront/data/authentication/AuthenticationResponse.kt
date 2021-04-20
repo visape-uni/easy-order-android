@@ -15,6 +15,7 @@ data class UserDTO(
         @SerialName("email") val email:String?,
         @SerialName("password") val password:String? = null,
         @SerialName("isClient") val isClient:Boolean? = null,
+        @SerialName("isOwner") val isOwner:Boolean? = null,
         @SerialName("restaurant") val restaurant:RestaurantDTO? = null
 
 ) {
@@ -23,7 +24,7 @@ data class UserDTO(
         if (isClient != null && isClient) {
             user = User(uid, username, email, password, isClient)
         } else {
-            user = Worker(uid, username, email, password, restaurant?.convertToModel())
+            user = Worker(uid, username, email, password, isOwner, restaurant?.convertToModel())
         }
         return user
     }
