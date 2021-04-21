@@ -3,18 +3,24 @@ package edu.uoc.easyorderfront.ui.profile
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.main.MainWorkerActivity
+import edu.uoc.easyorderfront.ui.table.CreateTableActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_worker.*
@@ -23,6 +29,8 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class WorkerProfileActivity : AppCompatActivity() {
     private val viewModel: WorkerProfileViewModel by viewModel()
     private val TAG = "WorkerProfileActivity"
+
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +46,16 @@ class WorkerProfileActivity : AppCompatActivity() {
             menuInflater.inflate(R.menu.menu_worker_profile, menu)
         }
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_add_table -> {
+                val createTableBottomActivity = CreateTableActivity()
+                createTableBottomActivity.show(supportFragmentManager, "TAG")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun prepareUI() {
