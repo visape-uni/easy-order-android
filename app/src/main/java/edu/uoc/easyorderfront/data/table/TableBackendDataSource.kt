@@ -4,6 +4,8 @@ import android.util.Log
 import edu.uoc.easyorderfront.data.constants.Endpoints
 import edu.uoc.easyorderfront.data.constants.InternalErrorMessages
 import edu.uoc.easyorderfront.data.error.EasyOrderException
+import edu.uoc.easyorderfront.data.restaurant.RestaurantDTO
+import edu.uoc.easyorderfront.domain.model.Restaurant
 import io.ktor.client.*
 import io.ktor.client.request.*
 

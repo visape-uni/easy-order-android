@@ -10,11 +10,13 @@ data class Restaurant(
         val zipCode: String? = null,
         val country: String? = null,
         val imageUrl: String? = null,
-        val workers: List<User>? = null,
+        val workers: MutableList<User>? = ArrayList(),
+        val tables: MutableList<Table>? = ArrayList(),
         val owner: User? = null
 ) {
     fun convertToDTO(): RestaurantDTO {
-        val workersList = workers?.map { user -> user.convertToDTO() }
-        return RestaurantDTO(id, name, street, city, zipCode, country, imageUrl, workersList, owner?.convertToDTO())
+        val workersList = workers?.map { user -> user.convertToDTO() }?.toMutableList()
+        val tablesList = tables?.map { table-> table.convertToDTO() }?.toMutableList()
+        return RestaurantDTO(id, name, street, city, zipCode, country, imageUrl, workersList, tablesList, owner?.convertToDTO())
     }
 }

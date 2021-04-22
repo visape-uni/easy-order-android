@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.data.table
 
 import android.util.Log
+import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 
 class TableRepositoryImpl(

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 import kotlinx.android.synthetic.main.activity_create_table.*
 import kotlinx.android.synthetic.main.activity_create_table.btn_crear
@@ -16,9 +17,13 @@ import kotlinx.android.synthetic.main.activity_create_table.txt_id
 import kotlinx.android.synthetic.main.activity_create_table.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CreateTableActivity : BottomSheetDialogFragment() {
+class CreateTableDialogFragment(
+        private val restaurant: Restaurant
+) : BottomSheetDialogFragment() {
     private val viewModel: CreateTableViewModel by viewModel()
     private val TAG = "CreateTableActivity"
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,27 +37,25 @@ class CreateTableActivity : BottomSheetDialogFragment() {
         return view;
     }
 
-    //TODO: BORRAR
-    // Mostrar la activity sin ocupar toda la pantalla
-    /*fun setActivityHalfScreen() {
-        val display = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(display)
-        val width = display.widthPixels
-        val height = display.heightPixels
-        window.setLayout((width * 1.0).toInt(), (height * 0.5).toInt())
-    }*/
 
     fun prepareUI(view: View) {
 
+        // Set Table ID (RestaurantID/numTables + 1) (Si tables is null, then return 1)
+        val tableNumber = restaurant.tables?.size?.plus(1) ?: 1
+        val tableId = restaurant.id + "/" + tableNumber
+        view.txt_id.setText(tableId)
+
         view.btn_crear.setOnClickListener({
-            val tableUid = txt_id.text.toString()
-            val tableCapacity = txt_capacidad.text.toString().toIntOrNull()
+            val tableUid = view.txt_id.text.toString()
+            val tableCapacity = view.txt_capacidad.text.toString().toIntOrNull()
 
             if (tableUid.isBlank()
                 || tableCapacity != null) {
                 Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
-                viewModel.createTable(Table(tableUid, tableCapacity, "EMPTY"))
+                val table = Table(tableUid, tableCapacity, "EMPTY")
+                restaurant.tables?.add(table)
+                viewModel.createTable(table)
             }
         })
 
