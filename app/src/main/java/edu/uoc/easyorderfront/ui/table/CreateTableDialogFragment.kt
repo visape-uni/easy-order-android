@@ -53,6 +53,7 @@ class CreateTableDialogFragment(
 
                     view.progress_bar.visibility = View.GONE
                     Toast.makeText(context, "Mesa creada correctamente", Toast.LENGTH_LONG).show()
+                    dismiss()
                 }
                 Status.ERROR -> {
 
