@@ -12,6 +12,9 @@ import edu.uoc.easyorderfront.data.profile.ProfileRepositoryImpl
 import edu.uoc.easyorderfront.data.restaurant.RestaurantBackendDataSource
 import edu.uoc.easyorderfront.data.restaurant.RestaurantRepository
 import edu.uoc.easyorderfront.data.restaurant.RestaurantRepositoryImpl
+import edu.uoc.easyorderfront.data.table.TableBackendDataSource
+import edu.uoc.easyorderfront.data.table.TableRepository
+import edu.uoc.easyorderfront.data.table.TableRepositoryImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -24,6 +27,7 @@ val dataModule = module {
     single { AuthenticationBackendDataSource(get()) }
     single { RestaurantBackendDataSource(get()) }
     single { ProfileBackendDataSource(get())}
+    single { TableBackendDataSource(get()) }
 
     single { FirebaseDataSource() }
 
@@ -31,5 +35,6 @@ val dataModule = module {
     single<AuthenticationRepository> { AuthenticationRepositoryImpl(get(), get())}
     single<RestaurantRepository> { RestaurantRepositoryImpl(get())}
     single<ProfileRepository> { ProfileRepositoryImpl(get())}
+    single<TableRepository> { TableRepositoryImpl(get())}
 
 }

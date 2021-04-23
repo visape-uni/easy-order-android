@@ -8,6 +8,7 @@ object UIMessages {
     const val ERROR_CREDENCIALES_INCORRECTA = "El email o la contraseña introducidos no son validos"
     const val ERROR_USUARIO_INEXISTENTE = "No existe ningun usuario con este email"
 
+    const val ERROR_CREANDO_TABLE = "Erro creando mesa"
     const val ERROR_CARGANDO_RESTAURANTE = "Error cargando restaurante"
     const val ERROR_CARGANDO_PERFIL = "Error cargando perfil"
     const val ERROR_SESSION_EXPIRADA = "Error sessión expirada"

@@ -11,10 +11,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
+import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_create_table.*
 import kotlinx.android.synthetic.main.activity_create_table.btn_crear
 import kotlinx.android.synthetic.main.activity_create_table.txt_id
 import kotlinx.android.synthetic.main.activity_create_table.view.*
+import kotlinx.android.synthetic.main.activity_perfil_client.*
+import kotlinx.android.synthetic.main.activity_perfil_restaurante.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateTableDialogFragment(
@@ -40,6 +44,24 @@ class CreateTableDialogFragment(
 
     fun prepareUI(view: View) {
 
+        viewModel.created.observe(this, {dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    view.progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+
+                    view.progress_bar.visibility = View.GONE
+                    Toast.makeText(context, "Mesa creada correctamente", Toast.LENGTH_LONG).show()
+                }
+                Status.ERROR -> {
+
+                    view.progress_bar.visibility = View.GONE
+                    Toast.makeText(context, UIMessages.ERROR_CREANDO_TABLE, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
         // Set Table ID (RestaurantID/numTables + 1) (Si tables is null, then return 1)
         val tableNumber = restaurant.tables?.size?.plus(1) ?: 1
         val tableId = restaurant.id + "/" + tableNumber
@@ -50,7 +72,7 @@ class CreateTableDialogFragment(
             val tableCapacity = view.txt_capacidad.text.toString().toIntOrNull()
 
             if (tableUid.isBlank()
-                || tableCapacity != null) {
+                || tableCapacity == null) {
                 Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
                 val table = Table(tableUid, tableCapacity, "EMPTY")
