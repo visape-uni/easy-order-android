@@ -13,5 +13,8 @@ object Endpoints {
     const val createRestaurantUrl = "$restaurantApi/create"
     const val getRestaurantUrl = "$restaurantApi/get/"
 
+    private const val tableApi = "$authenticationApi/table"
+    const val createTableUrl = "$tableApi/create"
+    const val getAllTablesUrl = "$tableApi/getAll/"
 
 }

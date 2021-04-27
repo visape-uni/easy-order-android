@@ -2,7 +2,6 @@ package edu.uoc.easyorderfront.data.authentication
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,8 +10,13 @@ import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_CREDENCIALES_INCORRE
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_GENERICO
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_USUARIO_INEXISTENTE
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import okhttp3.internal.wait
 
-class FirebaseDataSource(private val auth: FirebaseAuth = Firebase.auth) {
+class FirebaseDataSource(
+    private val auth: FirebaseAuth = Firebase.auth
+) {
 
     private val TAG = "FirebaseDataSource"
 
@@ -49,7 +53,6 @@ class FirebaseDataSource(private val auth: FirebaseAuth = Firebase.auth) {
         val tokenMutableLiveData = MutableLiveData<DataWrapper<GetTokenResult>>(DataWrapper.loading(null))
 
         val currentUser = auth.currentUser
-
         currentUser.getIdToken(true).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "GetToken:success")
@@ -65,8 +68,27 @@ class FirebaseDataSource(private val auth: FirebaseAuth = Firebase.auth) {
                 }
             }
         }
-
         return tokenMutableLiveData
     }
 
+
+    suspend fun getRefreshToken(): String? {
+        val currentUser = auth.currentUser
+        var token: String? = null
+        if (currentUser != null) {
+            Log.d(TAG, "RefreshToken STARTS")
+            runBlocking {
+                val result = async {
+                    currentUser.getIdToken(true).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            token = task.result?.token
+                            Log.d(TAG, "RefreshToken Token: $token")
+                        }
+                    }
+                }.wait()
+                Log.d(TAG, "RefreshToken Wait END")
+            }
+        }
+        return token
+    }
 }

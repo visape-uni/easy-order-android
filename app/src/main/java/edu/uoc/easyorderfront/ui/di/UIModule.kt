@@ -6,6 +6,8 @@ import edu.uoc.easyorderfront.ui.profile.WorkerProfileViewModel
 import edu.uoc.easyorderfront.ui.register.TabRegisterViewModel
 import edu.uoc.easyorderfront.ui.restaurant.CreateRestaurantViewModel
 import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileViewModel
+import edu.uoc.easyorderfront.ui.table.CreateTableViewModel
+import edu.uoc.easyorderfront.ui.table.TableListViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,4 +18,6 @@ val uiModule = module {
     viewModel { WorkerProfileViewModel(get()) }
     viewModel { ClientProfileViewModel(get()) }
     viewModel { RestaurantProfileViewModel(get()) }
+    viewModel { CreateTableViewModel(get()) }
+    viewModel { TableListViewModel(get(), get()) }
 }

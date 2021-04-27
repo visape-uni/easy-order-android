@@ -3,6 +3,7 @@ package edu.uoc.easyorderfront.data.network
 import android.content.Context
 import android.util.Log
 import edu.uoc.easyorderfront.data.SessionManager
+import edu.uoc.easyorderfront.data.authentication.FirebaseDataSource
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
@@ -17,9 +18,6 @@ object Network {
 
     fun createHttpClient(context: Context): HttpClient {
         return HttpClient(OkHttp) {
-            install(HttpTimeout) {
-                requestTimeoutMillis = 30000
-            }
             // Json
             install(JsonFeature) {
                 serializer = KotlinxSerializer(json)
@@ -54,6 +52,31 @@ object Network {
 
             }
 
+            HttpResponseValidator {
+                validateResponse { response ->
+                    val statusCode = response.status.value
+                    when (statusCode) {
+                        in 300..399 -> throw RedirectResponseException(response)
+                        in 400..499 -> throw ClientRequestException(response)
+                        in 500..599 -> throw ServerResponseException(response)
+                    }
+                }
+            }
+
+            /*install(OAuthFeature) {
+                getToken = {
+                    val accessToken = SessionManager(context).getAccessToken() ?: ""
+
+                    Log.d(TAG, "Adding Bearer header with token $accessToken")
+                    accessToken
+                }
+                refreshToken = {
+                    SessionManager(context).clearAccessToken()
+                    launchTokenRefresh(context)
+                }
+            }*/
+
+
             // Add OAuth Feature
             /*install(OAuthFeature) {
                 getToken = {
@@ -70,6 +93,17 @@ object Network {
                 }
             }*/
         }
+    }
+
+    private suspend fun launchTokenRefresh(context: Context) {
+        Log.d(TAG, "LaunchTokenRefresh:Start")
+
+        val token = FirebaseDataSource().getRefreshToken()
+
+        token?.let { token ->
+            SessionManager(context).saveAccessToken(token)
+        }
+        Log.d(TAG, "LaunchTokenRefresh: END")
     }
 
     private val json = kotlinx.serialization.json.Json {
