@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
 import edu.uoc.easyorderfront.data.constants.InternalErrorMessages
 import edu.uoc.easyorderfront.data.error.EasyOrderException
@@ -18,8 +17,8 @@ class TabRegisterViewModel(
         private val repository: AuthenticationRepository
 ) : ViewModel() {
     val registered = MutableLiveData<DataWrapper<User>>()
-    lateinit var login : MutableLiveData<DataWrapper<FirebaseUser?>>
-    lateinit var getTokenResult : MutableLiveData<DataWrapper<GetTokenResult>>
+    val login = MutableLiveData<DataWrapper<FirebaseUser?>>()
+    val getTokenResult = MutableLiveData<DataWrapper<String?>>()
 
     private val TAG = "TabRegisterViewModel"
 
@@ -57,25 +56,36 @@ class TabRegisterViewModel(
         }
     }
 
-    fun login(email: String, password: String) {
+    fun getTokenId() {
         viewModelScope.launch {
             try {
-                login = repository.login(email, password)
+                getTokenResult.postValue(DataWrapper.loading(null))
 
+                repository.getIdToken().let { tokenResponse ->
+                    Log.d(TAG, "Register: $tokenResponse")
+                    getTokenResult.postValue(DataWrapper.success(tokenResponse))
+                }
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                login = repository.login(email, password)
+                getTokenResult.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }
 
-    fun getTokenId() {
+    fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                getTokenResult = repository.getIdToken()
+                login.postValue(DataWrapper.loading(null))
+                repository.login(email, password).let { loginResponse ->
+                    Log.d(TAG, "Login: $loginResponse")
+                    login.postValue(DataWrapper.success(loginResponse))
+                }
+            } catch (e: EasyOrderException) {
+                Log.e(TAG, e.toString())
+                login.postValue(DataWrapper.error(e.message.toString()))
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                getTokenResult = repository.getIdToken()
+                login.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }

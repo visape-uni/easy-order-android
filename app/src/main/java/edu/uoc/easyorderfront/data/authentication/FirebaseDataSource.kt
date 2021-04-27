@@ -1,18 +1,17 @@
 package edu.uoc.easyorderfront.data.authentication
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import edu.uoc.easyorderfront.data.constants.InternalErrorMessages
+import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_CREDENCIALES_INCORRECTA
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_GENERICO
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_USUARIO_INEXISTENTE
-import edu.uoc.easyorderfront.ui.utils.DataWrapper
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
+import kotlinx.coroutines.tasks.await
 
 class FirebaseDataSource(
     private val auth: FirebaseAuth = Firebase.auth
@@ -20,75 +19,40 @@ class FirebaseDataSource(
 
     private val TAG = "FirebaseDataSource"
 
-    suspend fun login(email: String, password: String): MutableLiveData<DataWrapper<FirebaseUser?>> {
-
-        val userMutableLiveData = MutableLiveData<DataWrapper<FirebaseUser?>>(DataWrapper.loading(null));
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener { task ->
-            Log.d(TAG, "SignInWithEmail:success")
+    suspend fun login(email: String, password: String): FirebaseUser? {
+        Log.d(TAG, "SignInWithEmail")
+        try {
+            auth.signInWithEmailAndPassword(email, password).await()
             val user = auth.currentUser
-            userMutableLiveData.postValue(DataWrapper.success(user))
-        }.addOnFailureListener {exception ->
-            Log.w(TAG, "SignInWithEmail:failure", exception)
-            val message : String
-            when (exception) {
+            Log.d(TAG, "SignInWithEmail:success")
+            return user
+        } catch(e: Exception) {
+            Log.w(TAG, "SignInWithEmail:failure", e)
+            when (e) {
                 is FirebaseAuthInvalidCredentialsException -> {
-                    message = ERROR_CREDENCIALES_INCORRECTA
+                    throw EasyOrderException(ERROR_CREDENCIALES_INCORRECTA)
                 }
                 is FirebaseAuthInvalidUserException -> {
-                    message = ERROR_USUARIO_INEXISTENTE
+                    throw EasyOrderException(ERROR_USUARIO_INEXISTENTE)
                 }
                 else -> {
-                    message = ERROR_GENERICO
-                }
-            }
-
-            userMutableLiveData.postValue(DataWrapper.error(message))
-
-        }
-
-        return userMutableLiveData
-    }
-
-    suspend fun getIdToken():MutableLiveData<DataWrapper<GetTokenResult>> {
-        val tokenMutableLiveData = MutableLiveData<DataWrapper<GetTokenResult>>(DataWrapper.loading(null))
-
-        val currentUser = auth.currentUser
-        currentUser.getIdToken(true).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "GetToken:success")
-                val tokenResult = task.getResult()
-                tokenMutableLiveData.postValue(DataWrapper.success(tokenResult))
-            } else {
-                val exception = task.exception
-                Log.w(TAG, "GetToken:failure", exception)
-                if (exception?.message != null) {
-                    tokenMutableLiveData.postValue(DataWrapper.error(exception.message!!))
-                } else {
-                    tokenMutableLiveData.postValue(DataWrapper.error(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION))
+                    throw EasyOrderException(ERROR_GENERICO)
                 }
             }
         }
-        return tokenMutableLiveData
     }
 
-
-    suspend fun getRefreshToken(): String? {
+    suspend fun getToken(): String? {
+        Log.d(TAG, "RefreshToken STARTS")
         val currentUser = auth.currentUser
         var token: String? = null
-        if (currentUser != null) {
-            Log.d(TAG, "RefreshToken STARTS")
-            runBlocking {
-                val result = async {
-                    currentUser.getIdToken(true).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            token = task.result?.token
-                            Log.d(TAG, "RefreshToken Token: $token")
-                        }
-                    }
-                }.wait()
-                Log.d(TAG, "RefreshToken Wait END")
-            }
+        if ( currentUser != null) {
+            val tokenResult = currentUser.getIdToken(true).await()
+
+            token = tokenResult.token
+            Log.d(TAG, "RefreshToken Token: $token")
         }
+        Log.d(TAG, "RefreshToken END")
         return token
     }
 }

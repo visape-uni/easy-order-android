@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
@@ -16,8 +15,8 @@ import kotlinx.coroutines.launch
 
 class TabLoginViewModel (private val repository: AuthenticationRepository,
                          private val profileRepository: ProfileRepository) : ViewModel() {
-    lateinit var isLogged  : MutableLiveData<DataWrapper<FirebaseUser?>>
-    lateinit var getTokenResult: MutableLiveData<DataWrapper<GetTokenResult>>
+    val isLogged = MutableLiveData<DataWrapper<FirebaseUser?>>()
+    val getTokenResult = MutableLiveData<DataWrapper<String?>>()
 
     var userProfile = MutableLiveData<DataWrapper<User?>>()
 
@@ -26,11 +25,17 @@ class TabLoginViewModel (private val repository: AuthenticationRepository,
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                isLogged = repository.login(email, password)
-
+                isLogged.postValue(DataWrapper.loading(null))
+                repository.login(email, password).let { loginResponse ->
+                    Log.d(TAG, "Login: $loginResponse")
+                    isLogged.postValue(DataWrapper.success(loginResponse))
+                }
+            } catch (e: EasyOrderException) {
+                Log.e(TAG, e.toString())
+                isLogged.postValue(DataWrapper.error(e.message.toString()))
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                isLogged = repository.login(email, password)
+                isLogged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }
@@ -38,10 +43,15 @@ class TabLoginViewModel (private val repository: AuthenticationRepository,
     fun getTokenId() {
         viewModelScope.launch {
             try {
-                getTokenResult = repository.getIdToken()
+                getTokenResult.postValue(DataWrapper.loading(null))
+
+                repository.getIdToken().let { tokenResponse ->
+                    Log.d(TAG, "Register: $tokenResponse")
+                    getTokenResult.postValue(DataWrapper.success(tokenResponse))
+                }
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
-                getTokenResult = repository.getIdToken()
+                getTokenResult.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }

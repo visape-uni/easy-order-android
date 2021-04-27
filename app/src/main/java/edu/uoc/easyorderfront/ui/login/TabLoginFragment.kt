@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
@@ -60,13 +60,41 @@ class TabLoginFragment : Fragment() {
             } else if (password.isBlank()) {
                 Toast.makeText(context, getString(R.string.introducir_contrase_a), Toast.LENGTH_LONG).show()
             } else {
-                login(email, password)
+                viewModel.login(email, password)
             }
         })
-    }
 
-    fun login(email: String, password: String) {
-        viewModel.login(email, password)
+        viewModel.getTokenResult.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                    logo.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+                    Log.d(TAG, "Token obtenido: " + dataWrapper.data)
+
+                    if (dataWrapper.data != null) {
+                        context?.let { context ->
+                            val token = dataWrapper.data
+                            // Save Token in sessionManager
+                            SessionManager(context).saveAccessToken(token)
+                            // Get user profile
+                            val uid = SessionManager(context).getUserId()
+                            if (uid != null) {
+                                viewModel.getProfile(uid)
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Error obteniendo Token")
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+                    Log.e(TAG, "Error obteniendo Token")
+                }
+            }
+        })
 
         viewModel.isLogged.observe(this, { dataWrapper ->
 
@@ -78,7 +106,8 @@ class TabLoginFragment : Fragment() {
                 Status.SUCCESS -> {
                     Log.d(TAG, "Logged " + dataWrapper.data?.email)
                     dataWrapper.data?.uid?.let { saveUserId(it) }
-                    getToken()
+
+                    viewModel.getTokenId()
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -118,14 +147,15 @@ class TabLoginFragment : Fragment() {
                                 val restaurantIntent =
                                     Intent(context, RestaurantProfileActivity::class.java)
                                 restaurantIntent.putExtra(
-                                    RESTAURANT_ID_KEY,
+                                    EasyOrderConstants.RESTAURANT_ID_KEY,
                                     workerProfile.restaurant.id
                                 )
                                 startActivity(restaurantIntent)
                             } else {
                                 val tableListIntent =
                                     Intent(context, TableListActivity::class.java)
-                                tableListIntent.putExtra(RESTAURANT_ID_KEY,
+                                tableListIntent.putExtra(
+                                    EasyOrderConstants.RESTAURANT_ID_KEY,
                                     workerProfile.restaurant.id
                                 )
                                 startActivity(tableListIntent)
@@ -151,42 +181,6 @@ class TabLoginFragment : Fragment() {
         context?.let { context ->
             SessionManager(context).saveUserId(uid)
         }
-    }
-
-    fun getToken() {
-        viewModel.getTokenId()
-        viewModel.getTokenResult.observe(this, { dataWrapper ->
-            when (dataWrapper.status) {
-                Status.LOADING -> {
-                    progress_bar.visibility = View.VISIBLE
-                    logo.visibility = View.GONE
-                }
-                Status.SUCCESS -> {
-                    Log.d(TAG, "Token obtenido: " + dataWrapper.data)
-
-                    if (dataWrapper.data != null) {
-                        context?.let { context ->
-                            dataWrapper.data.token?.let { token ->
-                                // Save Token in sessionManager
-                                SessionManager(context).saveAccessToken(token)
-                                // Get user profile
-                                val uid = SessionManager(context).getUserId()
-                                if (uid != null) {
-                                    viewModel.getProfile(uid)
-                                }
-                            }
-                        }
-                    } else {
-                        Log.e(TAG, "Error obteniendo Token")
-                    }
-                }
-                Status.ERROR -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-                    Log.e(TAG, "Error obteniendo Token")
-                }
-            }
-        })
     }
 
     companion object {
