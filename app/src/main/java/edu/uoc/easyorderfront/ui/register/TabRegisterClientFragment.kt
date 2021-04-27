@@ -3,21 +3,17 @@ package edu.uoc.easyorderfront.ui.register
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.User
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
-import kotlinx.android.synthetic.main.fragment_tab_register_client.email_txt
-import kotlinx.android.synthetic.main.fragment_tab_register_client.logo
-import kotlinx.android.synthetic.main.fragment_tab_register_client.progress_bar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -44,7 +40,6 @@ class TabRegisterClientFragment : Fragment() {
     }
 
     fun prepareUI() {
-
         viewModel.registered.observe(this, { dataWrapper ->
 
             when(dataWrapper.status) {
@@ -100,6 +95,7 @@ class TabRegisterClientFragment : Fragment() {
     }
 
     fun login () {
+
         viewModel.login(email_txt.text.toString(), contraseña_txt.text.toString())
 
         viewModel.login.observe(this, { dataWrapper ->

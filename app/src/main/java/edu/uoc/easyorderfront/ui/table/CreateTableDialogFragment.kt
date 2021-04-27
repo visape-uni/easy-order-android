@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.UIMessages
@@ -52,7 +53,15 @@ class CreateTableDialogFragment(
                 Status.SUCCESS -> {
 
                     view.progress_bar.visibility = View.GONE
-                    Toast.makeText(context, "Mesa creada correctamente", Toast.LENGTH_LONG).show()
+                    if (dataWrapper.data != null) {
+                        Toast.makeText(context, "Mesa creada correctamente", Toast.LENGTH_LONG)
+                            .show()
+
+                        addTableToRestaurant(dataWrapper.data)
+                    } else {
+                        Toast.makeText(context, UIMessages.ERROR_CREANDO_TABLE, Toast.LENGTH_LONG)
+                            .show()
+                    }
                     dismiss()
                 }
                 Status.ERROR -> {
@@ -76,14 +85,22 @@ class CreateTableDialogFragment(
                 || tableCapacity == null) {
                 Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
-                val table = Table(tableUid, tableCapacity, "EMPTY")
-                restaurant.tables?.add(table)
-                viewModel.createTable(table)
+                createTable(tableUid, tableCapacity)
             }
         })
 
         view.btn_cancelar.setOnClickListener({
             dismiss()
         })
+    }
+
+    fun createTable(tableUid: String, tableCapacity: Int) {
+        val table = Table(tableUid, tableCapacity, "EMPTY")
+        viewModel.createTable(table)
+    }
+    fun addTableToRestaurant(table: Table) {
+        restaurant.tables?.add(table)
+        SessionManager(requireContext()).addTable(table)
+        (activity as TableListActivity).getRestaurantTables()
     }
 }

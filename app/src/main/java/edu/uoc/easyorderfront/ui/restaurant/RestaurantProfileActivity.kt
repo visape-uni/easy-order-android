@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.ui.restaurant
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -13,8 +14,10 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.table.CreateTableDialogFragment
+import edu.uoc.easyorderfront.ui.table.TableListActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_restaurante.*
@@ -27,7 +30,6 @@ class RestaurantProfileActivity : AppCompatActivity() {
     private val viewModel: RestaurantProfileViewModel by viewModel()
     private val TAG = "RestaurantProfileActivity"
 
-    private val RESTAURANT_ID_KEY = "restaurantId"
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
@@ -45,10 +47,14 @@ class RestaurantProfileActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.btn_add_table -> {
+            R.id.btn_table -> {
                 if (viewModel.restaurantProfile.value?.data != null) {
-                    val createTableBottomActivity = CreateTableDialogFragment(viewModel.restaurantProfile.value?.data!!)
-                    createTableBottomActivity.show(supportFragmentManager, "TAG")
+                    val tableListIntent =
+                        Intent(applicationContext, TableListActivity::class.java)
+                    tableListIntent.putExtra(RESTAURANT_ID_KEY,
+                        viewModel.restaurantProfile.value?.data!!.id
+                    )
+                    startActivity(tableListIntent)
                 } else {
                     Toast.makeText(applicationContext, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
                 }
@@ -101,6 +107,10 @@ class RestaurantProfileActivity : AppCompatActivity() {
             }
         })
 
+        getRestaurant()
+    }
+
+    fun getRestaurant() {
 
         val restaurant = (SessionManager(applicationContext).getUser() as Worker).restaurant
         if (restaurant != null) {

@@ -13,7 +13,6 @@ import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class TabLoginViewModel (private val repository: AuthenticationRepository,
                          private val profileRepository: ProfileRepository) : ViewModel() {

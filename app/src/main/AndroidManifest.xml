@@ -11,6 +11,7 @@
         android:roundIcon="@drawable/logo_easy_order"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyOrderFront">
+        <activity android:name=".ui.table.TableListActivity"></activity>
         <activity android:name=".ui.restaurant.RestaurantProfileActivity" />
         <activity android:name=".ui.table.OcupyTableActivity" />
         <activity android:name=".ui.profile.ClientProfileActivity" />
@@ -28,9 +29,9 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 </manifest>

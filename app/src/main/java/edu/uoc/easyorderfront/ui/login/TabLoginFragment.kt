@@ -11,11 +11,12 @@ import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
 import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileActivity
+import edu.uoc.easyorderfront.ui.table.TableListActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,7 +24,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class TabLoginFragment : Fragment() {
     private val viewModel: TabLoginViewModel by viewModel()
     private val TAG = "TabLoginFragment"
-    private val RESTAURANT_ID_KEY = "restaurantId"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,6 @@ class TabLoginFragment : Fragment() {
     }
 
     fun prepareUI() {
-
         // Si pulsa el boton de contraseña oblidada se abre la activity de recuperación
         forgot_password_txt.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, PasswordRecoveryActivity::class.java))
@@ -114,10 +113,23 @@ class TabLoginFragment : Fragment() {
                         Log.i(TAG, "Is Worker")
                         val workerProfile = dataWrapper.data as Worker
                         if (workerProfile.restaurant != null && workerProfile.restaurant.id != null) {
-                            // TODO: ShowRestaurantScreen
-                            val restaurantIntent = Intent(context, RestaurantProfileActivity::class.java)
-                            restaurantIntent.putExtra(RESTAURANT_ID_KEY, workerProfile.restaurant.id)
-                            startActivity(restaurantIntent)
+                            if (workerProfile.isOwner != null) {
+                                // TODO: ShowRestaurantScreen
+                                val restaurantIntent =
+                                    Intent(context, RestaurantProfileActivity::class.java)
+                                restaurantIntent.putExtra(
+                                    RESTAURANT_ID_KEY,
+                                    workerProfile.restaurant.id
+                                )
+                                startActivity(restaurantIntent)
+                            } else {
+                                val tableListIntent =
+                                    Intent(context, TableListActivity::class.java)
+                                tableListIntent.putExtra(RESTAURANT_ID_KEY,
+                                    workerProfile.restaurant.id
+                                )
+                                startActivity(tableListIntent)
+                            }
                         } else {
                             startActivity(Intent(context, WorkerProfileActivity::class.java))
                         }

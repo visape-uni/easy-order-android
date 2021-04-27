@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_create_table"
     tools:context=".ui.table.CreateTableDialogFragment">
     <TextView
         android:id="@+id/lbl_crear_mesa"

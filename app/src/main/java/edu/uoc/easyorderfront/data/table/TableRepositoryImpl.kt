@@ -16,4 +16,13 @@ class TableRepositoryImpl(
 
         return tableDTO?.convertToModel()
     }
+
+    override suspend fun getTables(restaurantId: String): List<Table> {
+        val listTableDTO = tableBackendDataSource.getTables(restaurantId)
+
+        Log.d(TAG, "Get tables response $listTableDTO")
+        val tablesList = listTableDTO.map { table-> table.convertToModel() }.toMutableList()
+
+        return tablesList
+    }
 }
