@@ -39,6 +39,24 @@
             tools:text="Pidiendo"
             android:layout_toEndOf="@id/lbl_estado"
             android:layout_alignBaseline="@id/lbl_estado"/>
+        <TextView
+            android:id="@+id/lbl_capacidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/capacidad_"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_below="@id/lbl_estado"/>
+        <TextView
+            android:id="@+id/txt_capacidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            tools:text="4 personas"
+            android:layout_toEndOf="@id/lbl_capacidad"
+            android:layout_alignBaseline="@id/lbl_capacidad"/>
+
 
         <TextView
             android:id="@+id/lbl_tiempo"
@@ -48,7 +66,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:layout_below="@id/lbl_estado"/>
+            android:layout_below="@id/lbl_capacidad"/>
         <TextView
             android:id="@+id/txt_tiempo"
             android:layout_width="wrap_content"

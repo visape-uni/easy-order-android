@@ -70,4 +70,8 @@
     <string name="id_de_la_mesa">ID de la mesa</string>
     <string name="el_restaurante_no_tiene_mesas_creadas">El restaurante no tiene mesas creadas</string>
     <string name="mesa_num">Mesa %1$s</string>
+    <string name="la_mesa_esta_libre">La mesa esta libre</string>
+    <string name="la_mesa_esta_ocupada">La mesa esta ocupada</string>
+    <string name="capacidad_">Capacidad:</string>
+    <string name="num_personas"> %1$s Personas</string>
 </resources>

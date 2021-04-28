@@ -16,7 +16,6 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.UIMessages
-import edu.uoc.easyorderfront.ui.table.CreateTableDialogFragment
 import edu.uoc.easyorderfront.ui.table.TableListActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -81,7 +80,7 @@ class RestaurantProfileActivity : AppCompatActivity() {
 
                         btn_copy.setOnClickListener({
                             val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText(EasyOrderConstants.WORKERID_LABEL, restaurant.id)
+                            val clip = ClipData.newPlainText(EasyOrderConstants.WORKER_ID_LABEL, restaurant.id)
                             clipboardManager.setPrimaryClip(clip)
                             Toast.makeText(applicationContext, "ID del restaurante copiado correctamente", Toast.LENGTH_LONG).show()
                         })
