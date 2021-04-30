@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.ui.di
 
 import edu.uoc.easyorderfront.ui.login.TabLoginViewModel
+import edu.uoc.easyorderfront.ui.order.OrderWorkerViewModel
 import edu.uoc.easyorderfront.ui.profile.ClientProfileViewModel
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileViewModel
 import edu.uoc.easyorderfront.ui.register.TabRegisterViewModel
@@ -20,4 +21,5 @@ val uiModule = module {
     viewModel { RestaurantProfileViewModel(get()) }
     viewModel { CreateTableViewModel(get()) }
     viewModel { TableListViewModel(get(), get()) }
+    viewModel { OrderWorkerViewModel()}
 }

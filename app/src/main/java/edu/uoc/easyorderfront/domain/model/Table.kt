@@ -6,7 +6,8 @@ import java.io.Serializable
 class Table(
     val uid: String?,
     val capacity: Int? = 0,
-    val state: String? = null
+    val state: String? = null,
+    var tableRef: String? = null
 ) : Serializable {
     fun convertToDTO(): TableDTO {
         return TableDTO(uid, capacity, state)

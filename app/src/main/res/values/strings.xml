@@ -74,4 +74,5 @@
     <string name="la_mesa_esta_ocupada">La mesa esta ocupada</string>
     <string name="capacidad_">Capacidad:</string>
     <string name="num_personas"> %1$s Personas</string>
+    <string name="guardar_codigo">Guardar codigo</string>
 </resources>

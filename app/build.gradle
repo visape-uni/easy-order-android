@@ -68,6 +68,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     // QR Code (ZXing)
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
 
     // Testing
     testImplementation 'junit:junit:4.+'

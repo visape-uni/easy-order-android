@@ -1,28 +1,20 @@
 package edu.uoc.easyorderfront.ui.table
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
-import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
-import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.activity_create_table.*
-import kotlinx.android.synthetic.main.activity_nou_plat.*
 import kotlinx.android.synthetic.main.activity_table_list.*
-import kotlinx.android.synthetic.main.activity_table_list.progress_bar
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -86,6 +78,9 @@ class TableListActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     val tableList = dataWrapper.data
+                    tableList?.forEach { table ->
+                        table.tableRef = viewModel.restaurantProfile.value?.data?.id + '/' + table.uid
+                    }
                     if (tableList != null && tableList.isNotEmpty()) {
                         adapter.submitList(tableList)
                     } else {
