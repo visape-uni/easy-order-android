@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="20dp"/>
     <Button
-        android:id="@+id/btn_crear"
+        android:id="@+id/btn_guardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/guardar_codigo"
