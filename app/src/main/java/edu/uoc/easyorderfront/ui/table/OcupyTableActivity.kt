@@ -59,10 +59,34 @@ class OcupyTableActivity : AppCompatActivity() {
             }
         })
 
+        viewModel.table.observe(this, { dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    if (dataWrapper.data?.state != EasyOrderConstants.EMPTY_STATE) {
+                        Toast.makeText(this, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
+                    } else {
+                        val codigoMesa = txt_codigo_mesa.text.toString()
+                        viewModel.changeTableState(codigoMesa, EasyOrderConstants.OCCUPIED_STATE)
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Toast.makeText(applicationContext, UIMessages.ERROR_OBTENIENDO_MESA, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
         btn_ocupar_mesa.setOnClickListener({
             val codigoMesa = txt_codigo_mesa.text.toString()
-            if (codigoMesa.isNotBlank()) {
-                viewModel.changeTableState(codigoMesa, EasyOrderConstants.OCCUPIED_STATE)
+            val stringArray = codigoMesa.split("/").toTypedArray()
+            if (codigoMesa.isNotBlank() && stringArray.size == 2) {
+                val restaurantId = stringArray.get(0)
+                val tableId = stringArray.get(1)
+                viewModel.getTable(restaurantId, tableId)
             } else {
                 Toast.makeText(this, "El codigo de la mesa no es vàlido", Toast.LENGTH_LONG).show()
             }

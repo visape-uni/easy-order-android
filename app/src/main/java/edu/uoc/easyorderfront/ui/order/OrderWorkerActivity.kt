@@ -37,7 +37,6 @@ class OrderWorkerActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.qr_btn -> {
-                // TODO: obtener el codigo QR
                 generateQR()
             }
         }

@@ -44,4 +44,14 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }
+
+    suspend fun getTable(restaurantId: String, tableId: String): TableDTO {
+        try {
+            return httpClient
+                    .get<TableDTO>(Endpoints.getTableUrl+restaurantId+"/"+tableId)
+        } catch (t: Throwable) {
+            Log.w(TAG, "Error obteniendo mesa", t)
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
+    }
 }

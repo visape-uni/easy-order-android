@@ -32,4 +32,12 @@ class TableRepositoryImpl(
 
         return tableDTO?.convertToModel()
     }
+
+    override suspend fun getTable(restaurantId: String, tableId: String): Table? {
+        val tableDTO = tableBackendDataSource.getTable(restaurantId, tableId)
+
+        Log.d(TAG, "Get table response $tableDTO")
+
+        return tableDTO?.convertToModel()
+    }
 }

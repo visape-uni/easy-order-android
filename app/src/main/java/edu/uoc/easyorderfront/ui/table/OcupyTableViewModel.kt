@@ -16,6 +16,8 @@ class OcupyTableViewModel(
 ) : ViewModel() {
     val tableStateChanged = MutableLiveData<DataWrapper<Table>>()
 
+    val table = MutableLiveData<DataWrapper<Table>>()
+
     private val TAG = "OcupyTableViewModel"
 
     fun changeTableState(tableId: String, newState: String) {
@@ -26,6 +28,26 @@ class OcupyTableViewModel(
                 repository.changeTableState(tableId, newState).let {tableResponse ->
                     Log.d(TAG, "ChangeTableState: $tableResponse")
                     tableStateChanged.postValue(DataWrapper.success(tableResponse))
+                }
+
+            }  catch (easyOrderException: EasyOrderException) {
+                Log.e(TAG, easyOrderException.toString())
+                tableStateChanged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                tableStateChanged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+            }
+        }
+    }
+
+    fun getTable(restaurantId: String, tableId: String) {
+        viewModelScope.launch {
+            try {
+                table.postValue(DataWrapper.loading(null))
+                repository.getTable(restaurantId, tableId).let { tableResponse ->
+                    Log.d(TAG, "GetTable: $tableResponse")
+                    table.postValue(DataWrapper.success(tableResponse))
                 }
 
             }  catch (easyOrderException: EasyOrderException) {
