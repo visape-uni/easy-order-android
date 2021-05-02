@@ -1,11 +1,8 @@
 package edu.uoc.easyorderfront.data.authentication
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
 import edu.uoc.easyorderfront.domain.model.User
-import edu.uoc.easyorderfront.ui.utils.DataWrapper
 
 class AuthenticationRepositoryImpl(
     private val authenticationBackendDataSource: AuthenticationBackendDataSource,
@@ -14,11 +11,11 @@ class AuthenticationRepositoryImpl(
 
     private val TAG = "AuthenticationRepositoryImpl"
 
-    override suspend fun login(email: String, password: String): MutableLiveData<DataWrapper<FirebaseUser?>> {
-        val userMutableLiveData = firebaseDataSource.login(email, password)
-        Log.d(TAG, "Login response $userMutableLiveData")
+    override suspend fun login(email: String, password: String): FirebaseUser? {
+        val firebaseUserResponse = firebaseDataSource.login(email, password)
+        Log.d(TAG, "Login response $firebaseUserResponse")
 
-        return userMutableLiveData
+        return firebaseUserResponse
     }
 
 
@@ -30,10 +27,10 @@ class AuthenticationRepositoryImpl(
         return registerDTO?.convertToModel()
     }
 
-    override suspend fun getIdToken(): MutableLiveData<DataWrapper<GetTokenResult>> {
-        val tokenMutableLiveData = firebaseDataSource.getIdToken()
-        Log.d(TAG, "getIdToken response $tokenMutableLiveData")
+    override suspend fun getIdToken(): String? {
+        val token = firebaseDataSource.getToken()
+        Log.d(TAG, "getIdToken response $token")
 
-        return tokenMutableLiveData
+        return token
     }
 }

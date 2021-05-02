@@ -46,9 +46,9 @@ object Network {
                 accept(ContentType.Application.Json)
 
                 // TODO: PONER TOKEN
-                if (checkUrlToken(this.url.encodedPath)) {
+                /* (checkUrlToken(this.url.encodedPath)) {
                     header("Authorization", "Bearer " + SessionManager(context).getAccessToken())
-                }
+                }*/
 
             }
 
@@ -63,7 +63,7 @@ object Network {
                 }
             }
 
-            /*install(OAuthFeature) {
+            install(OAuthFeature) {
                 getToken = {
                     val accessToken = SessionManager(context).getAccessToken() ?: ""
 
@@ -74,7 +74,7 @@ object Network {
                     SessionManager(context).clearAccessToken()
                     launchTokenRefresh(context)
                 }
-            }*/
+            }
 
 
             // Add OAuth Feature
@@ -98,8 +98,8 @@ object Network {
     private suspend fun launchTokenRefresh(context: Context) {
         Log.d(TAG, "LaunchTokenRefresh:Start")
 
-        val token = FirebaseDataSource().getRefreshToken()
-
+        val token = FirebaseDataSource().getToken()
+        Log.d(TAG, "LaunchTokenRefresh:token $token")
         token?.let { token ->
             SessionManager(context).saveAccessToken(token)
         }

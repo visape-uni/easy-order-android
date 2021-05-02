@@ -28,9 +28,7 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
             return httpClient
                 .get<List<TableDTO>>(Endpoints.getAllTablesUrl+restaurantId)
         } catch (t: Throwable) {
-            //TODO: IF MESSAGE = "Authentication failed, wrong token!" GET NEW ID AND CALL REQUEST AGAIN
             Log.w(TAG, "Error obteniendo mesas", t)
-            //TODO: TRATAR EXCEPCIONES
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }

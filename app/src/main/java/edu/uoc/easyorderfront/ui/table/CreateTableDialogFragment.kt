@@ -1,8 +1,6 @@
 package edu.uoc.easyorderfront.ui.table
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +12,7 @@ import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.activity_create_table.*
-import kotlinx.android.synthetic.main.activity_create_table.btn_crear
-import kotlinx.android.synthetic.main.activity_create_table.txt_id
-import kotlinx.android.synthetic.main.activity_create_table.view.*
-import kotlinx.android.synthetic.main.activity_perfil_client.*
-import kotlinx.android.synthetic.main.activity_perfil_restaurante.*
+import kotlinx.android.synthetic.main.bottom_fragment_create_table.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CreateTableDialogFragment(
@@ -35,7 +28,7 @@ class CreateTableDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_create_table, container, false)
+        val view = inflater.inflate(R.layout.bottom_fragment_create_table, container, false)
 
         prepareUI(view)
 

@@ -94,7 +94,7 @@ class WorkerProfileActivity : AppCompatActivity() {
 
                         btn_copy.setOnClickListener({
                             val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText(EasyOrderConstants.WORKERID_LABEL, worker.uid)
+                            val clip = ClipData.newPlainText(EasyOrderConstants.WORKER_ID_LABEL, worker.uid)
                             clipboardManager.setPrimaryClip(clip)
                             Toast.makeText(applicationContext, "ID del trabajador copiado correctamente", Toast.LENGTH_LONG).show()
                         })

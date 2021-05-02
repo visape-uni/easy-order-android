@@ -40,6 +40,68 @@ class TabRegisterClientFragment : Fragment() {
     }
 
     fun prepareUI() {
+        viewModel.getTokenResult.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                    logo.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+                    Log.d(TAG, "Token obtenido: " + dataWrapper.data)
+
+                    if (dataWrapper.data != null) {
+                        context?.let {context ->
+                            val token = dataWrapper.data
+
+                            SessionManager(context).saveAccessToken(token)
+
+                            // Open client screen
+                            val user = SessionManager(context).getUser()
+                            if (user != null) {
+                                startActivity(Intent(context, ClientProfileActivity::class.java))
+
+                            } else {
+                                Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()
+                                Log.e(TAG, "Error obteniendo Perfil")
+                            }
+                        }
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+                    Log.e(TAG, "Error obteniendo Token")
+                }
+            }
+        })
+
+        viewModel.login.observe(this, { dataWrapper ->
+
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                    logo.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+
+                    Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
+
+                    Log.d(TAG, dataWrapper.data.toString())
+                    dataWrapper.data?.uid?.let { saveUserId(it) }
+                    viewModel.getTokenId()
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    logo.visibility = View.VISIBLE
+
+                    Log.e(TAG, "Error iniciando sessión")
+                    Toast.makeText(context, dataWrapper.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
         viewModel.registered.observe(this, { dataWrapper ->
 
             when(dataWrapper.status) {
@@ -55,7 +117,7 @@ class TabRegisterClientFragment : Fragment() {
                         dataWrapper.data?.let { SessionManager(context).saveUser(it) }
                     }
 
-                    login()
+                    viewModel.login(email_txt.text.toString(), contraseña_txt.text.toString())
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -94,83 +156,10 @@ class TabRegisterClientFragment : Fragment() {
 
     }
 
-    fun login () {
-
-        viewModel.login(email_txt.text.toString(), contraseña_txt.text.toString())
-
-        viewModel.login.observe(this, { dataWrapper ->
-
-            when(dataWrapper.status) {
-                Status.LOADING -> {
-                    progress_bar.visibility = View.VISIBLE
-                    logo.visibility = View.GONE
-                }
-                Status.SUCCESS -> {
-
-                    Toast.makeText(context, getString(R.string.session_iniciada_correctamente), Toast.LENGTH_LONG).show()
-
-                    Log.d(TAG, dataWrapper.data.toString())
-                    dataWrapper.data?.uid?.let { saveUserId(it) }
-                    getToken()
-                }
-                Status.ERROR -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-
-                    Log.e(TAG, "Error iniciando sessión")
-                    Toast.makeText(context, dataWrapper.message, Toast.LENGTH_LONG).show()
-                }
-            }
-
-
-        })
-    }
-
     fun saveUserId(uid: String) {
         context?.let { context ->
             SessionManager(context).saveUserId(uid)
         }
-    }
-
-    fun getToken() {
-        viewModel.getTokenId()
-        viewModel.getTokenResult.observe(this, { dataWrapper ->
-            when (dataWrapper.status) {
-                Status.LOADING -> {
-                    progress_bar.visibility = View.VISIBLE
-                    logo.visibility = View.GONE
-                }
-                Status.SUCCESS -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-                    Log.d(TAG, "Token obtenido: " + dataWrapper.data)
-
-                    if (dataWrapper.data != null) {
-                        context?.let {context ->
-                            dataWrapper.data.token?.let { token ->
-                                // Save Token in sessionManager
-                                SessionManager(context).saveAccessToken(token)
-
-                                // Open client screen
-                                val user = SessionManager(context).getUser()
-                                if (user != null) {
-                                    startActivity(Intent(context, ClientProfileActivity::class.java))
-
-                                } else {
-                                    Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()
-                                    Log.e(TAG, "Error obteniendo Perfil")
-                                }
-                            }
-                        }
-                    }
-                }
-                Status.ERROR -> {
-                    progress_bar.visibility = View.GONE
-                    logo.visibility = View.VISIBLE
-                    Log.e(TAG, "Error obteniendo Token")
-                }
-            }
-        })
     }
 
     companion object {
