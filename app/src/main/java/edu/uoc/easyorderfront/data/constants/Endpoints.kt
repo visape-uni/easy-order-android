@@ -16,5 +16,6 @@ object Endpoints {
     private const val tableApi = "$authenticationApi/table"
     const val createTableUrl = "$tableApi/create"
     const val getAllTablesUrl = "$tableApi/getAll/"
+    const val changeTableStateUrl = "$tableApi/changeState/"
 
 }
