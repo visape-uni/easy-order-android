@@ -1,17 +1,14 @@
 package edu.uoc.easyorderfront.ui.table
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
-import java.io.File
-import java.io.FileInputStream
 
 class OcupyTableActivity : AppCompatActivity() {
     private val TAG = "OcupyTableActivity"
