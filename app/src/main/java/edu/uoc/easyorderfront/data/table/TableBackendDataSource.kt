@@ -33,7 +33,7 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
         }
     }
 
-    suspend fun changeTableState(tableId: String, newState: String): TableDTO {
+    suspend fun changeTableState(tableId: String, newState: TableStateDTO): TableDTO {
         try {
             return httpClient
                     .put<TableDTO>(Endpoints.changeTableStateUrl+tableId) {
