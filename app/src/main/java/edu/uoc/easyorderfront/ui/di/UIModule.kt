@@ -22,6 +22,6 @@ val uiModule = module {
     viewModel { RestaurantProfileViewModel(get()) }
     viewModel { CreateTableViewModel(get()) }
     viewModel { TableListViewModel(get(), get()) }
-    viewModel { OrderWorkerViewModel()}
+    viewModel { OrderWorkerViewModel(get())}
     viewModel { OcupyTableViewModel(get())}
 }

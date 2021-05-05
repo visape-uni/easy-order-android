@@ -13,8 +13,3 @@ data class TableDTO(
         return Table(uid, capacity, state)
     }
 }
-
-@Serializable
-data class TableStateDTO(
-        val state: String? = null
-)

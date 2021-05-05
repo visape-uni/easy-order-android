@@ -19,4 +19,7 @@ object Endpoints {
     const val changeTableStateUrl = "$tableApi/changeState/"
     const val getTableUrl = "$tableApi/get/"
 
+    private const val orderApi = "$authenticationApi/order"
+    const val getLastOrderUrl = "$orderApi/getLast/"
+
 }

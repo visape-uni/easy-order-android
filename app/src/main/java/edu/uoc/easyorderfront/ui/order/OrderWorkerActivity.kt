@@ -2,10 +2,12 @@ package edu.uoc.easyorderfront.ui.order
 
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,8 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_order_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class OrderWorkerActivity : AppCompatActivity() {
     private val viewModel: OrderWorkerViewModel by viewModel()
@@ -44,11 +48,53 @@ class OrderWorkerActivity : AppCompatActivity() {
     }
 
     fun prepareUI() {
-        viewModel.table.observe(this, { dataWrapper ->
-
+        viewModel.lastOrder.observe(this, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    val order = dataWrapper.data
 
+                    var timeDif: String
+
+                    if (order != null) {
+                        val orderStartedMilis = order.startedTime
+                        if(orderStartedMilis != null) {
+                            val actualTimeMilis = Calendar.getInstance().timeInMillis
+
+                            val difMillis = (actualTimeMilis - orderStartedMilis)
+
+                            timeDif = getHours(difMillis) + ":" + getMinutes(difMillis)
+                        } else {
+                            timeDif = "Desconocido"
+                        }
+
+                        if (order.orderedDishes != null && !order.orderedDishes.isEmpty()) {
+                            txt_pedido.visibility = View.GONE
+                            //TODO: LISTA CON LOS PLATOS
+                        } else {
+                            txt_pedido.visibility = View.VISIBLE
+                        }
+
+                        txt_tiempo.text = timeDif
+                        txt_total.text = order.price.toString() + "€"
+                    }
+                    progress_bar.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Log.e(TAG, "Error obteniendo comanda")
+                    Toast.makeText(applicationContext, dataWrapper.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        })
+
+        viewModel.table.observe(this, { dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
                     val table = dataWrapper.data
@@ -67,15 +113,15 @@ class OrderWorkerActivity : AppCompatActivity() {
                             lbl_total.visibility = View.GONE
                             txt_total.visibility = View.GONE
                         } else {
-                            //TODO: LA MESA ESTA OCUPADA, HAY QUE RECIBIR LA COMANDA
-                            //TODO: PONER TIEMPO Y LISTADO DE PLATOS
                             txt_estado.text = getString(R.string.la_mesa_esta_ocupada)
-                            //TODO: GET COMANDA
+                            viewModel.getLastOrderFromTable(table.tableRef!!)
                         }
                     }
                 }
                 Status.ERROR -> {
-
+                    progress_bar.visibility = View.GONE
+                    Log.e(TAG, "Error obteniendo mesa")
+                    Toast.makeText(applicationContext, dataWrapper.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -112,6 +158,14 @@ class OrderWorkerActivity : AppCompatActivity() {
         val getQrCodeActivity = GetQrCodeActivity(bitmap)
         getQrCodeActivity.show(supportFragmentManager, "TAG")
 
+    }
 
+    private fun getHours(millis: Long): String {
+        return String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis))
+    }
+
+    private fun getMinutes(millis: Long): String {
+        return String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))
     }
 }

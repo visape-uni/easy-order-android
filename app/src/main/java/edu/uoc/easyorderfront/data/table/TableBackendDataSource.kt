@@ -33,11 +33,11 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
         }
     }
 
-    suspend fun changeTableState(tableId: String, newState: TableStateDTO): TableDTO {
+    suspend fun changeTableState(tableId: String, newStateTable: TableDTO): TableDTO {
         try {
             return httpClient
                     .put<TableDTO>(Endpoints.changeTableStateUrl+tableId) {
-                        body = newState
+                        body = newStateTable
                     }
         } catch (t: Throwable) {
             Log.w(TAG, "Error cambiando la mesa de estado", t)
