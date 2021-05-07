@@ -1,7 +1,6 @@
 package edu.uoc.easyorderfront.ui.table
 
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Table
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.order.OrderWorkerActivity
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
+import edu.uoc.easyorderfront.ui.order.OrderWorkerFragment
 import kotlinx.android.synthetic.main.item_estat_taules.view.*
 
 class TablesAdapter() : ListAdapter<Table, TablesAdapter.TableViewHolder>(streamsDiffCallback) {
@@ -45,9 +44,11 @@ class TablesAdapter() : ListAdapter<Table, TablesAdapter.TableViewHolder>(stream
             }
 
             itemView.table_constraint_layout.setOnClickListener({
-                val intent = Intent(context, OrderWorkerActivity::class.java)
+                /*val intent = Intent(context, OrderWorkerFragment::class.java)
                 intent.putExtra(EasyOrderConstants.TABLE_ID_KEY, table)
-                context.startActivity(intent)
+                context.startActivity(intent)*/
+                val fragment = OrderWorkerFragment.newInstance(table)
+                (itemView.context as MainWorkerMenuActivity).replaceFragment(fragment)
             })
         }
     }

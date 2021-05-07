@@ -1,14 +1,12 @@
 package edu.uoc.easyorderfront.ui.order
 
+import android.content.Context.WINDOW_SERVICE
 import android.graphics.Point
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
@@ -17,21 +15,35 @@ import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_order_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class OrderWorkerActivity : AppCompatActivity() {
+class OrderWorkerFragment : Fragment() {
     private val viewModel: OrderWorkerViewModel by viewModel()
 
     private val TAG = "OrderWorkerActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_worker)
-
-        prepareUI()
+        setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_order_worker, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_order_worker, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Preparar Vista
+        prepareUI()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_order_worker, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -80,14 +92,14 @@ class OrderWorkerActivity : AppCompatActivity() {
                 }
             }
         })
-        val table = intent.getSerializableExtra(EasyOrderConstants.TABLE_ID_KEY) as Table
+        val table =  arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
         viewModel.table.postValue(DataWrapper.success(table))
 
     }
 
     fun generateQR() {
 
-        val manager = getSystemService(WINDOW_SERVICE) as WindowManager
+        val manager = activity?.getSystemService(WINDOW_SERVICE) as WindowManager
         val display = manager.defaultDisplay
 
         val point = Point()
@@ -111,8 +123,16 @@ class OrderWorkerActivity : AppCompatActivity() {
         val bitmap = qrgEncoder.encodeAsBitmap()
 
         val getQrCodeActivity = GetQrCodeActivity(bitmap)
-        getQrCodeActivity.show(supportFragmentManager, "TAG")
+        getQrCodeActivity.show(fragmentManager!!, "TAG")
+    }
 
-
+    companion object {
+        @JvmStatic
+        fun newInstance(table: Table) =
+            OrderWorkerFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(EasyOrderConstants.TABLE_ID_KEY, table)
+                }
+            }
     }
 }

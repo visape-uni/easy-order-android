@@ -2,30 +2,25 @@ package edu.uoc.easyorderfront.ui.restaurant
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.UIMessages
-import edu.uoc.easyorderfront.ui.table.TableListActivity
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
+import edu.uoc.easyorderfront.ui.table.TableListFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_restaurante.*
-import kotlinx.android.synthetic.main.activity_perfil_restaurante.progress_bar
-import kotlinx.android.synthetic.main.activity_perfil_restaurante.txt_id
-import kotlinx.android.synthetic.main.activity_perfil_restaurante.txt_nombre
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class RestaurantProfileActivity : AppCompatActivity() {
+class RestaurantProfileFragment : Fragment() {
     private val viewModel: RestaurantProfileViewModel by viewModel()
     private val TAG = "RestaurantProfileActivity"
 
@@ -34,28 +29,39 @@ class RestaurantProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil_restaurante)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_perfil_restaurante, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Preparar Vista
         prepareUI()
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO: SOLO MOSTRAR MENU SI ES EL DUEÑO
-        menuInflater.inflate(R.menu.menu_worker_profile, menu)
-        return super.onPrepareOptionsMenu(menu)
+        inflater.inflate(R.menu.menu_worker_profile, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_table -> {
                 if (viewModel.restaurantProfile.value?.data != null) {
-                    val tableListIntent =
-                        Intent(applicationContext, TableListActivity::class.java)
-                    tableListIntent.putExtra(RESTAURANT_ID_KEY,
-                        viewModel.restaurantProfile.value?.data!!.id
-                    )
-                    startActivity(tableListIntent)
+                    val fragment = TableListFragment.newInstance(viewModel.restaurantProfile.value?.data!!.id!!)
+                    (activity as MainWorkerMenuActivity).replaceFragment(fragment)
                 } else {
-                    Toast.makeText(applicationContext, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -79,20 +85,20 @@ class RestaurantProfileActivity : AppCompatActivity() {
                         txt_pais.text = restaurant.country
 
                         btn_copy.setOnClickListener({
-                            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                            val clipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
                             val clip = ClipData.newPlainText(EasyOrderConstants.WORKER_ID_LABEL, restaurant.id)
                             clipboardManager.setPrimaryClip(clip)
-                            Toast.makeText(applicationContext, "ID del restaurante copiado correctamente", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "ID del restaurante copiado correctamente", Toast.LENGTH_LONG).show()
                         })
 
                     } else {
-                        Toast.makeText(applicationContext, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
                     }
                     progress_bar.visibility = View.GONE
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
-                    Toast.makeText(applicationContext, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
                 }
             }
             val restaurant = dataWrapper.data
@@ -111,12 +117,22 @@ class RestaurantProfileActivity : AppCompatActivity() {
 
     fun getRestaurant() {
 
-        val restaurant = (SessionManager(applicationContext).getUser() as Worker).restaurant
+        val restaurant = (SessionManager(context!!).getUser() as Worker).restaurant
         if (restaurant != null) {
             viewModel.restaurantProfile.postValue(DataWrapper.success(restaurant))
         } else {
-            val restrurantId = intent.getStringExtra(RESTAURANT_ID_KEY)
+            val restrurantId = arguments?.getString(EasyOrderConstants.RESTAURANT_ID_KEY)
             viewModel.getRestaurant(restrurantId!!)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(restaurantId: String) =
+            RestaurantProfileFragment().apply {
+                arguments = Bundle().apply {
+                    putString(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                }
+            }
     }
 }

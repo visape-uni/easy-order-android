@@ -94,6 +94,6 @@ class CreateTableDialogFragment(
     fun addTableToRestaurant(table: Table) {
         restaurant.tables?.add(table)
         SessionManager(requireContext()).addTable(table)
-        (activity as TableListActivity).getRestaurantTables()
+        (activity as TableListFragment).getRestaurantTables()
     }
 }
