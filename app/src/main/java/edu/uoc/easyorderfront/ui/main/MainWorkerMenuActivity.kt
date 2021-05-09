@@ -13,6 +13,7 @@ import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.menu.EditarMenuFragment
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileFragment
 import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileFragment
 import edu.uoc.easyorderfront.ui.table.TableListFragment
@@ -80,7 +81,7 @@ class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
             R.id.nav_menu -> {
                 val worker = SessionManager(applicationContext).getUser() as Worker
                 if (worker.restaurant?.id != null) {
-                    val fragment = TableListFragment.newInstance(worker.restaurant?.id)
+                    val fragment = EditarMenuFragment.newInstance(worker.restaurant?.id)
                     replaceFragment(fragment)
                 } else {
                     Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()

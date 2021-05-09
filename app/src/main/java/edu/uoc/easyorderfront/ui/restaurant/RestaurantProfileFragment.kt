@@ -24,7 +24,6 @@ class RestaurantProfileFragment : Fragment() {
     private val viewModel: RestaurantProfileViewModel by viewModel()
     private val TAG = "RestaurantProfileActivity"
 
-
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,7 +7,7 @@ data class Menu (
     val categories: MutableList<Category>? = ArrayList()
 ) {
     fun convertToDTO(): MenuDTO {
-        val categoriesList = categories?.map{ category -> category.convertToModel() }?.toMutableList()
+        val categoriesList = categories?.map{ category -> category.convertToDTO() }?.toMutableList()
         return MenuDTO(uid, categoriesList)
     }
 }

@@ -82,4 +82,8 @@
     <string name="listado_de_mesas">Listado de mesas</string>
     <string name="men_del_restaurante">Menú del restaurante</string>
     <string name="no_hay_ninguna_categoria_creada">No hay ninguna categoria creada</string>
+    <string name="nombre_de_la_categoria">Nombre de la categoria</string>
+    <string name="descripcion_">Descripción:</string>
+    <string name="nuevo_plato_para_la_categoria">NUEVO PLATO PARA LA CATEGORIA %1$s</string>
+    <string name="precio_">Precio:</string>
 </resources>

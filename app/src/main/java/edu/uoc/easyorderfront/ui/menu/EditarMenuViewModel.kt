@@ -21,6 +21,7 @@ class EditarMenuViewModel(
     private val TAG = "EditarMenuViewModel"
 
     val menu = MutableLiveData<DataWrapper<Menu>>()
+    val menuDeleted = MutableLiveData<DataWrapper<Menu>>()
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()
 
     fun getMenu(restaurantId: String?) {
@@ -60,6 +61,30 @@ class EditarMenuViewModel(
                     throw EasyOrderException(UIMessages.ERROR_ID_RESTAURANT_NUL)
                 }
 
+            } catch (easyOrderException: EasyOrderException) {
+                Log.e(TAG, easyOrderException.toString())
+                restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+            }
+        }
+    }
+
+    fun deleteDish(restaurantId: String?, categoryId: String?, dishId: String?) {
+        viewModelScope.launch {
+            try {
+                repository.deleteDish(restaurantId, categoryId, dishId)
+                val dishes = menu.value?.data?.categories?.get(categoryId?.toInt()!! - 1)?.dishes!!
+                for (i in dishes.indices) {
+                    if (dishes.get(i).uid.equals(dishId)) {
+                        dishes.removeAt(i)
+                        break
+                    }
+                }
+
+                menuDeleted.postValue(DataWrapper.success(menu.value!!.data))
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
                 restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))

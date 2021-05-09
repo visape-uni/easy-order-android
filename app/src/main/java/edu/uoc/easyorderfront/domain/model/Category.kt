@@ -8,7 +8,7 @@ data class Category(
     val description: String? = null,
     val dishes: MutableList<Dish>? = ArrayList()
 ) {
-    fun convertToModel(): CategoryDTO {
+    fun convertToDTO(): CategoryDTO {
         val dishesList = dishes?.map { dish -> dish.convertToDTO() }?.toMutableList()
         return CategoryDTO(uid, name, description, dishesList)
     }

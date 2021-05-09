@@ -97,7 +97,7 @@ class TableListFragment : Fragment() {
                     if (tableList != null && tableList.isNotEmpty()) {
                         adapter.submitList(tableList)
                     } else {
-                        if (adapter.currentList.isNotEmpty()) {
+                        if (adapter.currentList.isEmpty()) {
                             error_message.visibility = View.VISIBLE
                         }
                     }

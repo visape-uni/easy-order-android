@@ -5,6 +5,9 @@ import edu.uoc.easyorderfront.data.authentication.AuthenticationBackendDataSourc
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
 import edu.uoc.easyorderfront.data.authentication.AuthenticationRepositoryImpl
 import edu.uoc.easyorderfront.data.authentication.FirebaseDataSource
+import edu.uoc.easyorderfront.data.menu.MenuBackendDataSource
+import edu.uoc.easyorderfront.data.menu.MenuRepository
+import edu.uoc.easyorderfront.data.menu.MenuRepositoryImpl
 import edu.uoc.easyorderfront.data.network.Network
 import edu.uoc.easyorderfront.data.profile.ProfileBackendDataSource
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
@@ -28,6 +31,7 @@ val dataModule = module {
     single { RestaurantBackendDataSource(get()) }
     single { ProfileBackendDataSource(get())}
     single { TableBackendDataSource(get()) }
+    single { MenuBackendDataSource(get()) }
 
     single { FirebaseDataSource() }
 
@@ -36,5 +40,6 @@ val dataModule = module {
     single<RestaurantRepository> { RestaurantRepositoryImpl(get())}
     single<ProfileRepository> { ProfileRepositoryImpl(get())}
     single<TableRepository> { TableRepositoryImpl(get())}
+    single<MenuRepository> { MenuRepositoryImpl(get())}
 
 }

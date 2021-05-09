@@ -19,5 +19,8 @@ object Endpoints {
 
     private const val menuApi = "$authenticationApi/menu"
     const val getMenuUrl = "$menuApi/getFromRestaurant/"
+    const val createCategoryUrl = "$menuApi/createCategory/"
+    const val createDishUrl = "$menuApi/createDish/"
+    const val deleteDishUrl = "$menuApi/deleteDish/"
 
 }
