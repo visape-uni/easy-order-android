@@ -77,6 +77,15 @@ class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
                     Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
                 }
             }
+            R.id.nav_menu -> {
+                val worker = SessionManager(applicationContext).getUser() as Worker
+                if (worker.restaurant?.id != null) {
+                    val fragment = TableListFragment.newInstance(worker.restaurant?.id)
+                    replaceFragment(fragment)
+                } else {
+                    Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
+                }
+            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

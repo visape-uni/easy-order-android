@@ -1,101 +1,70 @@
-package edu.uoc.easyorderfront.ui.table
+package edu.uoc.easyorderfront.ui.menu
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
-import edu.uoc.easyorderfront.ui.adapter.TablesAdapter
+import edu.uoc.easyorderfront.ui.adapter.EditMenuAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.activity_table_list.*
+import kotlinx.android.synthetic.main.activity_editar_menu.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-/**
- * Pass RestaurantID in intent
- */
+class EditarMenuFragment : Fragment() {
 
-class TableListFragment : Fragment() {
+    private val TAG = "EditarMenuActivity"
 
-    private val TAG = "TableListActivity"
-
-    private val adapter = TablesAdapter()
+    private val adapter = EditMenuAdapter()
     private val layoutManager = LinearLayoutManager(context)
 
-    private val viewModel: TableListViewModel by viewModel()
+    private val viewModel: EditarMenuViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_table_list, container, false)
+        return inflater.inflate(R.layout.activity_editar_menu, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Preparar Vista
         prepareUI()
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_table_list, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.btn_add_table -> {
-                if (viewModel.restaurantProfile.value?.data != null) {
-                    val createTableBottomActivity = CreateTableDialogFragment(viewModel.restaurantProfile.value?.data!!)
-                    createTableBottomActivity.show(fragmentManager!!, "TAG")
-
-                } else {
-                    Toast.makeText(context, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     fun initRecyclerView() {
 
         // Set Layout Manager
-        recycler_view_estado_mesas.layoutManager = layoutManager
+        recycler_view_editar_menu.layoutManager = layoutManager
 
         // Set Adapter
-        recycler_view_estado_mesas.adapter = adapter
+        recycler_view_editar_menu.adapter = adapter
     }
 
     fun prepareUI() {
 
-        viewModel.tables.observe(this, { dataWrapper ->
+        viewModel.menu.observe(this, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
-                    val tableList = dataWrapper.data
-                    tableList?.forEach { table ->
-                        table.tableRef = viewModel.restaurantProfile.value?.data?.id + '/' + table.uid
-                    }
-                    if (tableList != null && tableList.isNotEmpty()) {
-                        adapter.submitList(tableList)
+                    val menu = dataWrapper.data
+                    if (menu?.categories != null && menu.categories.isNotEmpty()) {
+                        adapter.submitList(menu.categories)
                     } else {
                         if (adapter.currentList.isNotEmpty()) {
                             error_message.visibility = View.VISIBLE
@@ -117,7 +86,7 @@ class TableListFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     // Get Table
-                    viewModel.getTables(dataWrapper.data?.id)
+                    viewModel.getMenu(dataWrapper.data?.id)
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -129,27 +98,27 @@ class TableListFragment : Fragment() {
 
         initRecyclerView()
 
-        getRestaurantTables()
+        getMenu()
     }
 
-    fun getRestaurantTables() {
-
+    fun getMenu() {
         val restaurant = (SessionManager(context!!).getUser() as Worker).restaurant
         if (restaurant != null) {
             viewModel.restaurantProfile.postValue(DataWrapper.success(restaurant))
         } else {
-            val restrurantId = arguments?.getString(RESTAURANT_ID_KEY)
+            val restrurantId = arguments?.getString(EasyOrderConstants.RESTAURANT_ID_KEY)
             viewModel.getRestaurant(restrurantId!!)
         }
     }
 
     companion object {
+
         @JvmStatic
         fun newInstance(restaurantId: String) =
-            TableListFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                EditarMenuFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                    }
                 }
-            }
     }
 }

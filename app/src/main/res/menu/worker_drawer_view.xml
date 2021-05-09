@@ -12,5 +12,8 @@
         <item
             android:id="@+id/nav_mesas"
             android:title="@string/listado_de_mesas" />
+        <item
+            android:id="@+id/nav_menu"
+            android:title="@string/men_del_restaurante" />
     </group>
 </menu>

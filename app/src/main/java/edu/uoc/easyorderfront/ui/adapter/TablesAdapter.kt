@@ -1,4 +1,4 @@
-package edu.uoc.easyorderfront.ui.table
+package edu.uoc.easyorderfront.ui.adapter
 
 
 import android.view.LayoutInflater
