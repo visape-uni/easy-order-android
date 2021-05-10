@@ -2,10 +2,12 @@ package edu.uoc.easyorderfront.ui.restaurant
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
@@ -13,17 +15,31 @@ import edu.uoc.easyorderfront.domain.model.User
 import kotlinx.android.synthetic.main.activity_create_restaurant.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CreateRestaurantActivity : AppCompatActivity() {
+class CreateRestaurantFragment : Fragment() {
     private val viewModel: CreateRestaurantViewModel by viewModel()
     private val TAG = "CreateRestaurantActivity"
     private val REQUEST_CODE_PICK_IMAGE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_restaurant)
-
-        prepareUI()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_create_restaurant, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Preparar Vista
+        prepareUI()
+
+    }
+
 
     fun prepareUI() {
 
@@ -53,17 +69,18 @@ class CreateRestaurantActivity : AppCompatActivity() {
                 || restaurantZipCode.isBlank()
                 || restaurantCountry.isBlank()) {
 
-                Toast.makeText(applicationContext, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
                 // Guardar al usuario como dueño
-                val owner = User(SessionManager(applicationContext).getUserId())
+                val owner = User(SessionManager(context!!).getUserId())
                 viewModel.createRestaurant(Restaurant(null, restaurantName, restaurantStreet, restaurantCity, restaurantZipCode, restaurantCountry, owner = owner))
             }
         })
 
         btn_cancelar.setOnClickListener({
-            startActivity(Intent(this, CreateRestaurantActivity::class.java))
-            finish()
+            /*startActivity(Intent(this, CreateRestaurantFragment::class.java))
+            finish()*/
+
         })
     }
 
@@ -76,5 +93,12 @@ class CreateRestaurantActivity : AppCompatActivity() {
                 img_view.setImageURI(selectedImage)
             }
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            CreateRestaurantFragment().apply {
+            }
     }
 }

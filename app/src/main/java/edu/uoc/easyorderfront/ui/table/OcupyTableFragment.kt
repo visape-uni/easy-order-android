@@ -3,11 +3,10 @@ package edu.uoc.easyorderfront.ui.table
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
@@ -16,26 +15,40 @@ import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class OcupyTableActivity : AppCompatActivity() {
+class OcupyTableFragment : Fragment() {
     private val TAG = "OcupyTableActivity"
     private val viewModel: OcupyTableViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ocupar_mesa)
-
-        prepareUI()
+        setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_ocupar_mesa, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_ocupar_mesa, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Preparar Vista
+        prepareUI()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_ocupar_mesa, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.qr_btn -> {
-                IntentIntegrator(this).initiateScan()
+                IntentIntegrator(activity).initiateScan()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -50,11 +63,11 @@ class OcupyTableActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     //TODO: MOSTRAR MENU DEL RESTAURANTE
-                    Toast.makeText(applicationContext, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
-                    Toast.makeText(applicationContext, UIMessages.ERROR_OCUPANDO_MESA, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, UIMessages.ERROR_OCUPANDO_MESA, Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -67,7 +80,7 @@ class OcupyTableActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     if (dataWrapper.data?.state != EasyOrderConstants.EMPTY_STATE) {
-                        Toast.makeText(this, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
                     } else {
                         val codigoMesa = txt_codigo_mesa.text.toString()
                         viewModel.changeTableState(codigoMesa, EasyOrderConstants.OCCUPIED_STATE)
@@ -75,7 +88,7 @@ class OcupyTableActivity : AppCompatActivity() {
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
-                    Toast.makeText(applicationContext, UIMessages.ERROR_OBTENIENDO_MESA, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, UIMessages.ERROR_OBTENIENDO_MESA, Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -88,7 +101,7 @@ class OcupyTableActivity : AppCompatActivity() {
                 val tableId = stringArray.get(1)
                 viewModel.getTable(restaurantId, tableId)
             } else {
-                Toast.makeText(this, "El codigo de la mesa no es vàlido", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "El codigo de la mesa no es vàlido", Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -97,7 +110,7 @@ class OcupyTableActivity : AppCompatActivity() {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
-                Toast.makeText(this, "Cancelado", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Cancelado", Toast.LENGTH_LONG).show()
             } else {
                 txt_codigo_mesa.setText(result.contents)
                 Log.d(TAG, "El valor escaneado es: " + result.contents)
@@ -105,5 +118,12 @@ class OcupyTableActivity : AppCompatActivity() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            OcupyTableFragment().apply {
+            }
     }
 }

@@ -1,43 +1,55 @@
 package edu.uoc.easyorderfront.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.UIMessages
-import edu.uoc.easyorderfront.ui.table.OcupyTableActivity
+import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
+import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ClientProfileActivity : AppCompatActivity() {
+class ClientProfileFragment : Fragment() {
 
     private val viewModel: ClientProfileViewModel by viewModel()
     private val TAG = "WorkerProfileActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perfil_client)
-
-        prepareUI()
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_client_profile, menu)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.activity_perfil_client, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Preparar Vista
+        prepareUI()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_client_profile, menu)
         return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_table -> {
-                startActivity(Intent(this, OcupyTableActivity::class.java))
+                val fragment = OcupyTableFragment.newInstance()
+                (activity as MainClientMenuActivity).replaceFragment(fragment)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -67,28 +79,34 @@ class ClientProfileActivity : AppCompatActivity() {
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
-                    Toast.makeText(applicationContext, UIMessages.ERROR_CARGANDO_PERFIL, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, UIMessages.ERROR_CARGANDO_PERFIL, Toast.LENGTH_LONG).show()
                 }
             }
         })
 
-        val profile = SessionManager(applicationContext).getUser()
+        val profile = SessionManager(context!!).getUser()
         if (profile != null && profile.uid != null) {
             viewModel.clientProfile.postValue(DataWrapper.success(profile))
         } else {
             // Si falla obteniendo perfil de SessionManager
-            val uid = SessionManager(applicationContext).getUserId()
+            val uid = SessionManager(context!!).getUserId()
             if (uid != null) {
                 viewModel.getClientProfile(uid)
             } else {
                 progress_bar.visibility = View.GONE
                 Toast.makeText(
-                        applicationContext,
+                        context,
                         UIMessages.ERROR_SESSION_EXPIRADA,
                         Toast.LENGTH_LONG
                 ).show()
             }
         }
+    }
 
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            ClientProfileFragment().apply {
+            }
     }
 }

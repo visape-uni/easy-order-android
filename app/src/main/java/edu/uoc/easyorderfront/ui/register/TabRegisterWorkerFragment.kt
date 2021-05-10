@@ -13,8 +13,7 @@ import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
-import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileActivity
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_register_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -64,11 +63,17 @@ class TabRegisterWorkerFragment : Fragment() {
                             if (worker != null) {
                                 if (worker.restaurant != null && worker.restaurant.id != null) {
                                     // TODO: ShowRestaurantScreen
-                                    val restaurantIntent = Intent(context, RestaurantProfileActivity::class.java)
+                                    /*val restaurantIntent = Intent(context, RestaurantProfileFragment::class.java)
                                     restaurantIntent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, worker.restaurant.id)
-                                    startActivity(restaurantIntent)
+                                    startActivity(restaurantIntent)*/
+                                    val intent = Intent(context, MainWorkerMenuActivity::class.java)
+                                    intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
+                                    startActivity(intent)
                                 } else {
-                                    startActivity(Intent(context, WorkerProfileActivity::class.java))
+                                    //startActivity(Intent(context, WorkerProfileFragment::class.java))
+                                    val intent = Intent(context, MainWorkerMenuActivity::class.java)
+                                    intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.WORKER_PROFILE_FRAGMENT)
+                                    startActivity(intent)
                                 }
                             } else {
                                 Toast.makeText(context, "Error obteniendo el perfil", Toast.LENGTH_LONG).show()

@@ -75,5 +75,15 @@
     <string name="capacidad_">Capacidad:</string>
     <string name="num_personas"> %1$s Personas</string>
     <string name="guardar_codigo">Guardar codigo</string>
-    <string name="no_se_han_realizado_pedidos_aun">No se han realizado pedidos aun</string>
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Closed</string>
+    <string name="restaurant_profile">Restaurant profile</string>
+    <string name="user_profile">User profile</string>
+    <string name="listado_de_mesas">Listado de mesas</string>
+    <string name="men_del_restaurante">Menú del restaurante</string>
+    <string name="no_hay_ninguna_categoria_creada">No hay ninguna categoria creada</string>
+    <string name="nombre_de_la_categoria">Nombre de la categoria</string>
+    <string name="descripcion_">Descripción:</string>
+    <string name="nuevo_plato_para_la_categoria">NUEVO PLATO PARA LA CATEGORIA %1$s</string>
+    <string name="precio_">Precio:</string>
 </resources>

@@ -12,11 +12,9 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.profile.ClientProfileActivity
-import edu.uoc.easyorderfront.ui.profile.WorkerProfileActivity
+import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.recovery.PasswordRecoveryActivity
-import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileActivity
-import edu.uoc.easyorderfront.ui.table.TableListActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.fragment_tab_login_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -137,31 +135,45 @@ class TabLoginFragment : Fragment() {
 
                     if (dataWrapper.data?.isClient ?: true) {
                         Log.i(TAG, "Is Client")
-                        startActivity(Intent(context, ClientProfileActivity::class.java))
+                        //startActivity(Intent(context, ClientProfileFragment::class.java))
+                        val intent = Intent(context, MainClientMenuActivity::class.java)
+                        intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.CLIENT_PROFILE_FRAGMENT)
+                        startActivity(intent)
                     } else {
                         Log.i(TAG, "Is Worker")
                         val workerProfile = dataWrapper.data as Worker
                         if (workerProfile.restaurant != null && workerProfile.restaurant.id != null) {
                             if (workerProfile.isOwner != null) {
                                 // TODO: ShowRestaurantScreen
-                                val restaurantIntent =
-                                    Intent(context, RestaurantProfileActivity::class.java)
+                                /*val restaurantIntent =
+                                    Intent(context, RestaurantProfileFragment::class.java)
                                 restaurantIntent.putExtra(
                                     EasyOrderConstants.RESTAURANT_ID_KEY,
                                     workerProfile.restaurant.id
                                 )
-                                startActivity(restaurantIntent)
+                                startActivity(restaurantIntent)*/
+                                val intent = Intent(context, MainWorkerMenuActivity::class.java)
+                                intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
+                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant.id)
+                                startActivity(intent)
                             } else {
-                                val tableListIntent =
-                                    Intent(context, TableListActivity::class.java)
+                                /*val tableListIntent =
+                                    Intent(context, TableListFragment::class.java)
                                 tableListIntent.putExtra(
                                     EasyOrderConstants.RESTAURANT_ID_KEY,
                                     workerProfile.restaurant.id
                                 )
-                                startActivity(tableListIntent)
+                                startActivity(tableListIntent)*/
+                                val intent = Intent(context, MainWorkerMenuActivity::class.java)
+                                intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.TABLE_LIST_FRAGMENT)
+                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant.id)
+                                startActivity(intent)
                             }
                         } else {
-                            startActivity(Intent(context, WorkerProfileActivity::class.java))
+                            //startActivity(Intent(context, WorkerProfileFragment::class.java))
+                            val intent = Intent(context, MainWorkerMenuActivity::class.java)
+                            intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.WORKER_PROFILE_FRAGMENT)
+                            startActivity(intent)
                         }
                     }
 

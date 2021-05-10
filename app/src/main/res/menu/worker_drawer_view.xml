@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_user"
+            android:title="@string/user_profile" />
+        <item
+            android:id="@+id/nav_restaurant"
+            android:title="@string/restaurant_profile" />
+        <item
+            android:id="@+id/nav_mesas"
+            android:title="@string/listado_de_mesas" />
+        <item
+            android:id="@+id/nav_menu"
+            android:title="@string/men_del_restaurante" />
+    </group>
+</menu>
