@@ -13,15 +13,16 @@ import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
 
 class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     var currentFragment: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_client_menu)
 
-        setSupportActionBar(toolbar)
-
         currentFragment = intent.getStringExtra(EasyOrderConstants.FRAGMENT_KEY)
+
+        setSupportActionBar(toolbar)
 
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -48,9 +49,10 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            /*R.id.nav_public -> {
-                Toast.makeText(this, "Publication", Toast.LENGTH_SHORT).show()
-            }*/
+            R.id.nav_user -> {
+                val fragment = ClientProfileFragment.newInstance()
+                replaceFragment(fragment)
+            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

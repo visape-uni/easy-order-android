@@ -86,4 +86,5 @@
     <string name="descripcion_">Descripción:</string>
     <string name="nuevo_plato_para_la_categoria">NUEVO PLATO PARA LA CATEGORIA %1$s</string>
     <string name="precio_">Precio:</string>
+    <string name="no_se_han_realizado_pedidos_aun">No se han realizado pedidos aún</string>
 </resources>
