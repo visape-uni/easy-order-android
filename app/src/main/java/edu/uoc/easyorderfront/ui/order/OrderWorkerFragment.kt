@@ -122,6 +122,7 @@ class OrderWorkerFragment : Fragment() {
                             lbl_tiempo.visibility = View.GONE
                             txt_tiempo.visibility = View.GONE
                             lbl_pedido.visibility = View.GONE
+                            txt_pedido.visibility = View.GONE
                             recycler_view_pedido.visibility = View.GONE
                             lbl_total.visibility = View.GONE
                             txt_total.visibility = View.GONE

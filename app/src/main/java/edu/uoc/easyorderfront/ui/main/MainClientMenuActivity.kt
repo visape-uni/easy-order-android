@@ -1,16 +1,22 @@
 package edu.uoc.easyorderfront.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
+import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
+import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 
 class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,6 +59,10 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
                 val fragment = ClientProfileFragment.newInstance()
                 replaceFragment(fragment)
             }
+            R.id.nav_ocupar_mesa -> {
+                val fragment = OcupyTableFragment.newInstance()
+                replaceFragment(fragment)
+            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
@@ -80,5 +90,19 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
     private fun setCurrentFragmentTitle() {
         //TODO: SET TITLE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents == null) {
+                Toast.makeText(applicationContext, "Cancelado", Toast.LENGTH_LONG).show()
+            } else {
+                txt_codigo_mesa.setText(result.contents)
+                Log.d("OcupyTableFragment", "El valor escaneado es: " + result.contents)
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 }
