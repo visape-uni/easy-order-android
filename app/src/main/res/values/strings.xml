@@ -75,4 +75,5 @@
     <string name="capacidad_">Capacidad:</string>
     <string name="num_personas"> %1$s Personas</string>
     <string name="guardar_codigo">Guardar codigo</string>
+    <string name="no_se_han_realizado_pedidos_aun">No se han realizado pedidos aun</string>
 </resources>

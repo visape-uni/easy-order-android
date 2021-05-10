@@ -32,4 +32,26 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }
+
+    suspend fun changeTableState(tableId: String, newStateTable: TableDTO): TableDTO {
+        try {
+            return httpClient
+                    .put<TableDTO>(Endpoints.changeTableStateUrl+tableId) {
+                        body = newStateTable
+                    }
+        } catch (t: Throwable) {
+            Log.w(TAG, "Error cambiando la mesa de estado", t)
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
+    }
+
+    suspend fun getTable(restaurantId: String, tableId: String): TableDTO {
+        try {
+            return httpClient
+                    .get<TableDTO>(Endpoints.getTableUrl+restaurantId+"/"+tableId)
+        } catch (t: Throwable) {
+            Log.w(TAG, "Error obteniendo mesa", t)
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
+    }
 }

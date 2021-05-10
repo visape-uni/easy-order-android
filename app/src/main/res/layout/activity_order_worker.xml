@@ -5,6 +5,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/lbl_id"
             android:layout_width="wrap_content"
@@ -85,12 +91,20 @@
             android:textStyle="bold"
             android:layout_margin="10dp"
             android:layout_below="@id/lbl_tiempo"/>
+        <TextView
+            android:id="@+id/txt_pedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/no_se_han_realizado_pedidos_aun"
+            android:layout_toEndOf="@id/lbl_pedido"
+            android:layout_alignBaseline="@id/lbl_pedido"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_pedido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:layout_below="@id/lbl_pedido"
+            android:layout_below="@id/txt_pedido"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"/>
 

@@ -6,4 +6,5 @@ object EasyOrderConstants {
     const val TABLE_ID_KEY = "tableID"
 
     const val EMPTY_STATE = "EMPTY"
+    const val OCCUPIED_STATE = "OCCUPIED"
 }

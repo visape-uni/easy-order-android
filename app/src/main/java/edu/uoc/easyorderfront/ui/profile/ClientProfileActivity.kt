@@ -1,24 +1,20 @@
 package edu.uoc.easyorderfront.ui.profile
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.table.OcupyTableActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_client.*
-import kotlinx.android.synthetic.main.activity_perfil_client.progress_bar
-import kotlinx.android.synthetic.main.activity_perfil_client.txt_email
-import kotlinx.android.synthetic.main.activity_perfil_client.txt_id
-import kotlinx.android.synthetic.main.activity_perfil_client.txt_nombre
-import kotlinx.android.synthetic.main.activity_perfil_client.txt_tipo
-import kotlinx.android.synthetic.main.activity_perfil_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ClientProfileActivity : AppCompatActivity() {
@@ -31,6 +27,20 @@ class ClientProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_perfil_client)
 
         prepareUI()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_client_profile, menu)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_table -> {
+                startActivity(Intent(this, OcupyTableActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun prepareUI() {
