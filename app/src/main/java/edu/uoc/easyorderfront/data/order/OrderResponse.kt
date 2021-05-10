@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OrderDTO(
         val uid: String?,
-        val price: Int? = 0,
+        val price: Double? = 0.0,
         val state: String? = null,
         val startedTime: Long? = null,
         val orderedDishes: MutableList<OrderedDishDTO>? = ArrayList()
@@ -23,7 +23,7 @@ data class OrderDTO(
 data class OrderedDishDTO(
         val uid: String?,
         val quantity: Int? = 0,
-        val totalPrice: Int? = 0
+        val totalPrice: Double? = 0.9
         //val dish: DishDTO?
 ) {
     fun convertToModel(): OrderedDish {

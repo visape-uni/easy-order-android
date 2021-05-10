@@ -11,6 +11,8 @@ import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -18,6 +20,8 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class OcupyTableFragment : Fragment() {
     private val TAG = "OcupyTableActivity"
     private val viewModel: OcupyTableViewModel by viewModel()
+
+    lateinit var restaurantId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +66,12 @@ class OcupyTableFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
-                    //TODO: MOSTRAR MENU DEL RESTAURANTE
                     Toast.makeText(context, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
+
+
+                    val fragment = MenuRestaurantFragment.newInstance(restaurantId)
+                    (activity as MainClientMenuActivity).replaceFragment(fragment)
+
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -83,6 +91,10 @@ class OcupyTableFragment : Fragment() {
                         Toast.makeText(context, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
                     } else {
                         val codigoMesa = txt_codigo_mesa.text.toString()
+
+                        val codigoMesaSplit = codigoMesa.split("/")
+
+                        restaurantId = codigoMesaSplit.get(0)
                         viewModel.changeTableState(codigoMesa, EasyOrderConstants.OCCUPIED_STATE)
                     }
                 }

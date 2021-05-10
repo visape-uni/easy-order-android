@@ -4,6 +4,7 @@ import edu.uoc.easyorderfront.ui.login.TabLoginViewModel
 import edu.uoc.easyorderfront.ui.menu.CreateCategoryViewModel
 import edu.uoc.easyorderfront.ui.menu.CreateDishViewModel
 import edu.uoc.easyorderfront.ui.menu.EditarMenuViewModel
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantViewModel
 import edu.uoc.easyorderfront.ui.order.OrderWorkerViewModel
 import edu.uoc.easyorderfront.ui.profile.ClientProfileViewModel
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileViewModel
@@ -30,4 +31,5 @@ val uiModule = module {
     viewModel { CreateDishViewModel(get()) }
     viewModel { OrderWorkerViewModel(get())}
     viewModel { OcupyTableViewModel(get())}
+    viewModel { MenuRestaurantViewModel(get(), get()) }
 }

@@ -12,11 +12,12 @@
         android:textSize="16sp"
         android:text="Plato "
         android:textColor="@color/black"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/lbl_dish_price"/>
+        app:layout_constraintEnd_toStartOf="@id/lbl_dish_price"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
         android:id="@+id/lbl_dish_price"
         android:layout_width="wrap_content"

@@ -1,58 +1,45 @@
 package edu.uoc.easyorderfront.ui.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Category
-import edu.uoc.easyorderfront.ui.menu.CreateDishDialogFragment
-import edu.uoc.easyorderfront.ui.menu.EditarMenuViewModel
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantViewModel
 import kotlinx.android.synthetic.main.item_menu.view.*
 
-
-class EditMenuAdapter(
-        private val restaurantId: String,
-        private val viewModel: EditarMenuViewModel
-) : ListAdapter<Category, EditMenuAdapter.CategoryViewHolder>(categoryDiffCallback) {
+class MenuRestaurantAdapter(
+        private val viewModel: MenuRestaurantViewModel
+) : ListAdapter<Category, MenuRestaurantAdapter.CategoryViewHolder>(categoryDiffCallback){
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): CategoryViewHolder {
-        return CategoryViewHolder(LayoutInflater.from(parent.context)
+    ): MenuRestaurantAdapter.CategoryViewHolder {
+        return MenuRestaurantAdapter.CategoryViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_menu, parent, false))
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bindTo(getItem(position), restaurantId, viewModel)
+    override fun onBindViewHolder(holder: MenuRestaurantAdapter.CategoryViewHolder, position: Int) {
+        holder.bindTo(getItem(position), viewModel)
     }
 
     class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindTo(category: Category, restaurantId: String, viewModel: EditarMenuViewModel) {
+        fun bindTo(category: Category, viewModel: MenuRestaurantViewModel) {
+
+            itemView.btn_edit.visibility = View.GONE
 
             itemView.categoria.text = category.name
-
-            itemView.btn_edit.setOnClickListener({
-                val createDishActivity = CreateDishDialogFragment(
-                        restaurantId,
-                        category,
-                        viewModel.menu
-                )
-                createDishActivity.show((itemView.context as FragmentActivity).supportFragmentManager, "TAG")
-            })
-
 
             val layoutManager = LinearLayoutManager(itemView.context)
             // Set Layout Manager
             itemView.recycler_view_platos_menu.layoutManager = layoutManager
 
-            val adapter = EditDishAdapter(category.uid!!, viewModel)
+            val adapter = MenuDishAdapter(category.uid!!, viewModel)
             // Set Adapter
             itemView.recycler_view_platos_menu.adapter = adapter
 
@@ -66,7 +53,6 @@ class EditMenuAdapter(
             }
         }
     }
-
 
     companion object {
         private val categoryDiffCallback = object : DiffUtil.ItemCallback<Category>() {

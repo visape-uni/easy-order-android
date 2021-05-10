@@ -87,18 +87,7 @@ class EditarMenuFragment : Fragment() {
                     progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
-                    initRecyclerView()
-                    progress_bar.visibility = View.GONE
-                    error_message.visibility = View.GONE
-                    val menu = dataWrapper.data
-                    if (menu?.categories != null && menu.categories.isNotEmpty()) {
-                        adapter.submitList(menu.categories)
-
-                    } else {
-                        if (adapter.currentList.isEmpty()) {
-                            error_message.visibility = View.VISIBLE
-                        }
-                    }
+                    updateMenu(dataWrapper)
                     Toast.makeText(context, "Plato eliminado correctamente", Toast.LENGTH_LONG).show()
                 }
                 Status.ERROR -> {
@@ -115,19 +104,7 @@ class EditarMenuFragment : Fragment() {
                     progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
-                    initRecyclerView()
-                    progress_bar.visibility = View.GONE
-                    error_message.visibility = View.GONE
-                    val menu = dataWrapper.data
-                    if (menu?.categories != null && menu.categories.isNotEmpty()) {
-                        adapter.submitList(menu.categories)
-
-                    } else {
-                        if (adapter.currentList.isEmpty()) {
-                            error_message.visibility = View.VISIBLE
-                        }
-                    }
-
+                    updateMenu(dataWrapper)
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE
@@ -164,6 +141,21 @@ class EditarMenuFragment : Fragment() {
         } else {
             val restrurantId = arguments?.getString(EasyOrderConstants.RESTAURANT_ID_KEY)
             viewModel.getRestaurant(restrurantId!!)
+        }
+    }
+
+    fun updateMenu(dataWrapper: DataWrapper<edu.uoc.easyorderfront.domain.model.Menu>) {
+        initRecyclerView()
+        progress_bar.visibility = View.GONE
+        error_message.visibility = View.GONE
+        val menu = dataWrapper.data
+        if (menu?.categories != null && menu.categories.isNotEmpty()) {
+            adapter.submitList(menu.categories)
+
+        } else {
+            if (adapter.currentList.isEmpty()) {
+                error_message.visibility = View.VISIBLE
+            }
         }
     }
 
