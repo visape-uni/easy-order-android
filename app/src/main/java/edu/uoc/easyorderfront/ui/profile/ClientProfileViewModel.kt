@@ -7,11 +7,9 @@ import androidx.lifecycle.viewModelScope
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
 import edu.uoc.easyorderfront.domain.model.User
-import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class ClientProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     val clientProfile = MutableLiveData<DataWrapper<User?>>()

@@ -2,14 +2,14 @@ package edu.uoc.easyorderfront.ui.profile
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
+import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_client.*
@@ -38,6 +38,21 @@ class ClientProfileFragment : Fragment() {
         // Preparar Vista
         prepareUI()
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_client_profile, menu)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_table -> {
+                val fragment = OcupyTableFragment.newInstance()
+                (activity as MainClientMenuActivity).replaceFragment(fragment)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun prepareUI() {

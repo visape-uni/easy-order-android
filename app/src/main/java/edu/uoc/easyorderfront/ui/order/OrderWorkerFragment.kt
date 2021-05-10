@@ -3,7 +3,10 @@ package edu.uoc.easyorderfront.ui.order
 import android.content.Context.WINDOW_SERVICE
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.view.View
+import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.fragment.app.Fragment
@@ -14,6 +17,8 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_order_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class OrderWorkerFragment : Fragment() {
     private val viewModel: OrderWorkerViewModel by viewModel()
@@ -26,8 +31,8 @@ class OrderWorkerFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_order_worker, container, false)
@@ -49,7 +54,6 @@ class OrderWorkerFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.qr_btn -> {
-                // TODO: obtener el codigo QR
                 generateQR()
             }
         }
@@ -57,18 +61,60 @@ class OrderWorkerFragment : Fragment() {
     }
 
     fun prepareUI() {
-        viewModel.table.observe(this, { dataWrapper ->
-
-            when(dataWrapper.status) {
+        viewModel.lastOrder.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
                 Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    val order = dataWrapper.data
 
+                    var timeDif: String
+
+                    if (order != null) {
+                        val orderStartedMilis = order.startedTime
+                        if (orderStartedMilis != null) {
+                            val actualTimeMilis = Calendar.getInstance().timeInMillis
+
+                            val difMillis = (actualTimeMilis - orderStartedMilis)
+
+                            timeDif = getHours(difMillis) + ":" + getMinutes(difMillis)
+                        } else {
+                            timeDif = "Desconocido"
+                        }
+
+                        if (order.orderedDishes != null && !order.orderedDishes.isEmpty()) {
+                            txt_pedido.visibility = View.GONE
+                            //TODO: LISTA CON LOS PLATOS
+                        } else {
+                            txt_pedido.visibility = View.VISIBLE
+                        }
+
+                        txt_tiempo.text = timeDif
+                        txt_total.text = order.price.toString() + "€"
+                    }
+                    progress_bar.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Log.e(TAG, "Error obteniendo comanda")
+                    Toast.makeText(context, dataWrapper.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        })
+
+        viewModel.table.observe(this, { dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
                     val table = dataWrapper.data
                     if (table != null) {
                         txt_id.text = table.uid
                         txt_capacidad.text =
-                            getString(R.string.num_personas, table.capacity.toString())
+                                getString(R.string.num_personas, table.capacity.toString())
 
                         if (table.state.equals(EasyOrderConstants.EMPTY_STATE)) {
                             txt_estado.text = getString(R.string.la_mesa_esta_libre)
@@ -80,19 +126,19 @@ class OrderWorkerFragment : Fragment() {
                             lbl_total.visibility = View.GONE
                             txt_total.visibility = View.GONE
                         } else {
-                            //TODO: LA MESA ESTA OCUPADA, HAY QUE RECIBIR LA COMANDA
-                            //TODO: PONER TIEMPO Y LISTADO DE PLATOS
                             txt_estado.text = getString(R.string.la_mesa_esta_ocupada)
-                            //TODO: GET COMANDA
+                            viewModel.getLastOrderFromTable(table.tableRef!!)
                         }
                     }
                 }
                 Status.ERROR -> {
-
+                    progress_bar.visibility = View.GONE
+                    Log.e(TAG, "Error obteniendo mesa")
+                    Toast.makeText(context, dataWrapper.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-        val table =  arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
+        val table = arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
         viewModel.table.postValue(DataWrapper.success(table))
 
     }
@@ -115,7 +161,7 @@ class OrderWorkerFragment : Fragment() {
         } else {
             dimen = height
         }
-        dimen = dimen * 3/4
+        dimen = dimen * 3 / 4
 
         val tableID = viewModel.table.value?.data?.tableRef
         val qrgEncoder = QRGEncoder(tableID, null, QRGContents.Type.TEXT, dimen)
@@ -129,10 +175,20 @@ class OrderWorkerFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(table: Table) =
-            OrderWorkerFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(EasyOrderConstants.TABLE_ID_KEY, table)
+                OrderWorkerFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable(EasyOrderConstants.TABLE_ID_KEY, table)
+                    }
                 }
-            }
+
+
+        private fun getHours(millis: Long): String {
+            return String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis))
+        }
+
+        private fun getMinutes(millis: Long): String {
+            return String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) -
+                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))
+        }
     }
 }

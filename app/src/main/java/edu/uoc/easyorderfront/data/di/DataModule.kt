@@ -9,6 +9,9 @@ import edu.uoc.easyorderfront.data.menu.MenuBackendDataSource
 import edu.uoc.easyorderfront.data.menu.MenuRepository
 import edu.uoc.easyorderfront.data.menu.MenuRepositoryImpl
 import edu.uoc.easyorderfront.data.network.Network
+import edu.uoc.easyorderfront.data.order.OrderBackendDataSource
+import edu.uoc.easyorderfront.data.order.OrderRepository
+import edu.uoc.easyorderfront.data.order.OrderRepositoryImpl
 import edu.uoc.easyorderfront.data.profile.ProfileBackendDataSource
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
 import edu.uoc.easyorderfront.data.profile.ProfileRepositoryImpl
@@ -32,6 +35,7 @@ val dataModule = module {
     single { ProfileBackendDataSource(get())}
     single { TableBackendDataSource(get()) }
     single { MenuBackendDataSource(get()) }
+    single { OrderBackendDataSource(get()) }
 
     single { FirebaseDataSource() }
 
@@ -41,5 +45,6 @@ val dataModule = module {
     single<ProfileRepository> { ProfileRepositoryImpl(get())}
     single<TableRepository> { TableRepositoryImpl(get())}
     single<MenuRepository> { MenuRepositoryImpl(get())}
+    single<OrderRepository> { OrderRepositoryImpl(get()) }
 
 }
