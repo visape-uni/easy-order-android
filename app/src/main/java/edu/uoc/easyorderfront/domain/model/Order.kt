@@ -5,8 +5,8 @@ import edu.uoc.easyorderfront.data.order.OrderDTO
 
 class Order(
         val uid: String?,
-        val price: Double? = 0.0,
-        val state: String? = null,
+        var price: Double? = 0.0,
+        var state: String? = null,
         val startedTime: Long? = null,
         val orderedDishes: MutableList<OrderedDish>? = ArrayList()
 ) {

@@ -8,6 +8,7 @@ import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.menu.MenuRepository
 import edu.uoc.easyorderfront.data.restaurant.RestaurantRepository
 import edu.uoc.easyorderfront.domain.model.Menu
+import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
@@ -19,6 +20,7 @@ class MenuRestaurantViewModel(
 ) : ViewModel() {
     private val TAG = "MenuRestaurantViewModel"
 
+    val order = MutableLiveData<Order>()
     val orderPrice = MutableLiveData<Double>()
     val menu = MutableLiveData<DataWrapper<Menu>>()
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()

@@ -9,10 +9,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment
 import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
@@ -45,10 +47,15 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            if (supportFragmentManager.backStackEntryCount > 1) {
-                super.onBackPressed()
+            val menuRestaurantFragment = supportFragmentManager.findFragmentByTag("edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment")
+            if (menuRestaurantFragment != null && menuRestaurantFragment.isVisible) {
+                (menuRestaurantFragment as MenuRestaurantFragment).dialogDesocuparMesa()
             } else {
-                //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
+                if (supportFragmentManager.backStackEntryCount > 1) {
+                    super.onBackPressed()
+                } else {
+                    //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
+                }
             }
         }
     }
@@ -70,10 +77,22 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
 
     public fun replaceFragment(fragment: Fragment){
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.content_frame, fragment)
+        val name = fragment.javaClass.name
+
+        val fragmentManager = supportFragmentManager
+
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.content_frame, fragment, name)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+
+    }
+
+    public fun removeFragment(fragment: Fragment) {
+        if(fragment.isVisible()) {
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+            supportFragmentManager.popBackStack(fragment.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
     }
 
     private fun showFragment() {
@@ -105,4 +124,5 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
 }

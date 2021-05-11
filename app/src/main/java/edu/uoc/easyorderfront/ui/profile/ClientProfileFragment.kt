@@ -12,6 +12,7 @@ import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
+import kotlinx.android.synthetic.main.activity_main_client_menu.*
 import kotlinx.android.synthetic.main.activity_perfil_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -50,6 +51,9 @@ class ClientProfileFragment : Fragment() {
         when (item.itemId) {
             R.id.btn_table -> {
                 val fragment = OcupyTableFragment.newInstance()
+
+                val menuItem = (activity as MainClientMenuActivity).navigation_view.menu.getItem(1)
+                menuItem.setChecked(true)
                 (activity as MainClientMenuActivity).replaceFragment(fragment)
             }
         }

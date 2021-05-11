@@ -21,7 +21,6 @@ class EditarMenuFragment : Fragment() {
     private val TAG = "EditarMenuActivity"
 
     private lateinit var adapter : EditMenuAdapter
-    private val layoutManager = LinearLayoutManager(context)
 
     private val viewModel: EditarMenuViewModel by viewModel()
 
@@ -72,7 +71,7 @@ class EditarMenuFragment : Fragment() {
     fun initRecyclerView() {
 
         // Set Layout Manager
-        recycler_view_editar_menu.layoutManager = layoutManager
+        recycler_view_editar_menu.layoutManager = LinearLayoutManager(context)
 
         adapter = EditMenuAdapter(viewModel.restaurantProfile.value?.data?.id!!, viewModel)
         // Set Adapter

@@ -89,4 +89,6 @@
     <string name="no_se_han_realizado_pedidos_aun">No se han realizado pedidos aún</string>
     <string name="no_hay_ningun_men_creado_para_este_restaurante">No hay ningun menú creado para este restaurante</string>
     <string name="haz_tu_pedido_por_x">Haz tu pedido por %1$s€</string>
+    <string name="a_adir">Añadir</string>
+    <string name="a_adir_nuevo_plato">Añadir nuevo plato</string>
 </resources>

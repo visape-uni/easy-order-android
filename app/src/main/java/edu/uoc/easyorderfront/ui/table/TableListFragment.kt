@@ -26,7 +26,6 @@ class TableListFragment : Fragment() {
     private val TAG = "TableListActivity"
 
     private val adapter = TablesAdapter()
-    private val layoutManager = LinearLayoutManager(context)
 
     private val viewModel: TableListViewModel by viewModel()
 
@@ -75,7 +74,7 @@ class TableListFragment : Fragment() {
     fun initRecyclerView() {
 
         // Set Layout Manager
-        recycler_view_estado_mesas.layoutManager = layoutManager
+        recycler_view_estado_mesas.layoutManager = LinearLayoutManager(context)
 
         // Set Adapter
         recycler_view_estado_mesas.adapter = adapter

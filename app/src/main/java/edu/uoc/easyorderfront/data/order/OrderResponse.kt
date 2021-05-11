@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.data.order
 
+import edu.uoc.easyorderfront.data.menu.DishDTO
 import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.OrderedDish
 import kotlinx.serialization.Serializable
@@ -23,11 +24,11 @@ data class OrderDTO(
 data class OrderedDishDTO(
         val uid: String?,
         val quantity: Int? = 0,
-        val totalPrice: Double? = 0.9
-        //val dish: DishDTO?
+        val totalPrice: Double? = 0.0,
+        val dish: DishDTO?
 ) {
     fun convertToModel(): OrderedDish {
-        return OrderedDish(uid, quantity, totalPrice)
+        return OrderedDish(uid, quantity, totalPrice, dish?.convertToModel())
     }
 }
 

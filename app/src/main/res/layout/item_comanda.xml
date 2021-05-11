@@ -47,6 +47,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        tools:text="€8.5" />-->
+        tools:text="€8.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
