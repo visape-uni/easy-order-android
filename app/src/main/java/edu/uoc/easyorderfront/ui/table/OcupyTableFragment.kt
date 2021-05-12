@@ -22,6 +22,7 @@ class OcupyTableFragment : Fragment() {
     private val viewModel: OcupyTableViewModel by viewModel()
 
     lateinit var restaurantId: String
+    lateinit var tableId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +76,7 @@ class OcupyTableFragment : Fragment() {
 
                     val intent = Intent(context, MenuRestaurantActivity::class.java)
                     intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                    intent.putExtra(EasyOrderConstants.TABLE_ID_KEY, tableId)
                     startActivity(intent)
 
                 }
@@ -96,6 +98,7 @@ class OcupyTableFragment : Fragment() {
                         Toast.makeText(context, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
                     } else {
                         val codigoMesa = txt_codigo_mesa.text.toString()
+                        tableId = codigoMesa
 
                         val codigoMesaSplit = codigoMesa.split("/")
 

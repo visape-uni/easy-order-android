@@ -54,8 +54,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
-    public fun dialogDesocuparMesa() {
+    fun dialogDesocuparMesa() {
         val dialog = AlertDialog.Builder(this)
             .setTitle("Desocupar mesa")
             .setMessage("Estas seguro que quieres dejar la mesa?")
@@ -64,14 +63,32 @@ class MenuRestaurantActivity : AppCompatActivity() {
             }
             .setPositiveButton("Si") {dialog, _ ->
                 //TODO: IMPORTANT COMPROBAR QUE NO HE HA HECHO PEDIDO Y PONER MESA COMO EMPTY
+                val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
+                viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
+                //TODO: TERMINAR CUENTA EN BACKEND
 
-                finish()
                 dialog.dismiss()
             }
         dialog.show()
     }
 
     fun prepareUI() {
+
+        viewModel.tableStateChanged.observe(this, {dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    finish()
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Toast.makeText(applicationContext, "No has podido desocupar la mesa", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
         viewModel.menu.observe(this, { dataWrapper ->
             when(dataWrapper.status) {

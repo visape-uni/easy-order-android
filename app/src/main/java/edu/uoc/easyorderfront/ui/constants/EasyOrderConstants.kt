@@ -17,4 +17,5 @@ object EasyOrderConstants {
     const val CLIENT_PROFILE_FRAGMENT = "clientProfile"
 
     const val OCCUPIED_STATE = "OCCUPIED"
+    const val TABLE_STATE = "EMPTY"
 }
