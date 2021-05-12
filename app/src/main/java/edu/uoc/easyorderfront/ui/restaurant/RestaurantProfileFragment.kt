@@ -35,6 +35,8 @@ class RestaurantProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as MainWorkerMenuActivity).setItemMenu(1)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_perfil_restaurante, container, false)
     }

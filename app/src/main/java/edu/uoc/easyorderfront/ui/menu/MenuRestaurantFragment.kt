@@ -69,9 +69,9 @@ class MenuRestaurantFragment : Fragment() {
                 }
                 .setPositiveButton("Si") {dialog, _ ->
                     //TODO: IMPORTANT COMPROBAR QUE NO HE HA HECHO PEDIDO
-                    (activity as MainClientMenuActivity).removeFragment(this)
+                    val fragmentTag = OcupyTableFragment::class.qualifiedName.toString()
                     val fragment = OcupyTableFragment.newInstance()
-                    (activity as MainClientMenuActivity).replaceFragment(fragment)
+                    (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)
                     dialog.dismiss()
                 }
         dialog.show()

@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var currentFragment: String? = null
+    val MENU_RESTAURANT_FRAGMENT_NAME = "edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +48,12 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            val menuRestaurantFragment = supportFragmentManager.findFragmentByTag("edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment")
+            Log.d("MainClientTEST", supportFragmentManager.backStackEntryCount.toString())
+            val menuRestaurantFragment = supportFragmentManager.findFragmentByTag(MENU_RESTAURANT_FRAGMENT_NAME)
             if (menuRestaurantFragment != null && menuRestaurantFragment.isVisible) {
                 (menuRestaurantFragment as MenuRestaurantFragment).dialogDesocuparMesa()
             } else {
+                Log.d("MainClientTEST", "ELSE")
                 if (supportFragmentManager.backStackEntryCount > 1) {
                     super.onBackPressed()
                 } else {
@@ -63,12 +66,14 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_user -> {
+                val fragmentTag = ClientProfileFragment::class.qualifiedName.toString()
                 val fragment = ClientProfileFragment.newInstance()
-                replaceFragment(fragment)
+                replaceFragment(fragment, fragmentTag)
             }
             R.id.nav_ocupar_mesa -> {
-                val fragment = OcupyTableFragment.newInstance()
-                replaceFragment(fragment)
+                val fragmentTag = OcupyTableFragment::class.qualifiedName.toString()
+                val fragment  = OcupyTableFragment.newInstance()
+                replaceFragment(fragment, fragmentTag)
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -76,35 +81,34 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
     }
 
 
-    public fun replaceFragment(fragment: Fragment){
-        val name = fragment.javaClass.name
+    public fun replaceFragment(fragment: Fragment, fragmentTag: String){
 
-        val fragmentManager = supportFragmentManager
+        supportFragmentManager.popBackStack(fragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.content_frame, fragment, name)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.content_frame, fragment, fragmentTag).addToBackStack(fragmentTag).commit()
 
     }
 
     public fun removeFragment(fragment: Fragment) {
-        if(fragment.isVisible()) {
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
             supportFragmentManager.popBackStack(fragment.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
     }
 
     private fun showFragment() {
 
         when(currentFragment) {
             EasyOrderConstants.CLIENT_PROFILE_FRAGMENT -> {
-                val fragment = ClientProfileFragment.newInstance()
-                replaceFragment(fragment)
-                val menuItem = navigation_view.menu.getItem(0)
-                menuItem.setChecked(true)
+                val fragmentTag = ClientProfileFragment::class.qualifiedName.toString()
+                val fragment  = ClientProfileFragment.newInstance()
+                replaceFragment(fragment, fragmentTag)
             }
         }
+    }
+
+    public fun setItemMenu(item: Int) {
+        val menuItem = navigation_view.menu.getItem(item)
+        menuItem.setChecked(true)
     }
 
     private fun setCurrentFragmentTitle() {

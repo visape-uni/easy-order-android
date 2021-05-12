@@ -12,7 +12,6 @@ import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
-import kotlinx.android.synthetic.main.activity_main_client_menu.*
 import kotlinx.android.synthetic.main.activity_perfil_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -31,6 +30,7 @@ class ClientProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainClientMenuActivity).setItemMenu(0)
         return inflater.inflate(R.layout.activity_perfil_client, container, false)
     }
 
@@ -50,11 +50,10 @@ class ClientProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_table -> {
-                val fragment = OcupyTableFragment.newInstance()
 
-                val menuItem = (activity as MainClientMenuActivity).navigation_view.menu.getItem(1)
-                menuItem.setChecked(true)
-                (activity as MainClientMenuActivity).replaceFragment(fragment)
+                val fragmentTag = OcupyTableFragment::class.qualifiedName.toString()
+                val fragment = OcupyTableFragment.newInstance()
+                (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)
             }
         }
         return super.onOptionsItemSelected(item)

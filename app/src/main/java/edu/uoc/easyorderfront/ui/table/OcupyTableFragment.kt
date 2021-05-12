@@ -32,6 +32,7 @@ class OcupyTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainClientMenuActivity).setItemMenu(1)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_ocupar_mesa, container, false)
     }
@@ -68,9 +69,9 @@ class OcupyTableFragment : Fragment() {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(context, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
 
-
+                    val fragmentTag = MenuRestaurantFragment::class.qualifiedName.toString()
                     val fragment = MenuRestaurantFragment.newInstance(restaurantId)
-                    (activity as MainClientMenuActivity).replaceFragment(fragment)
+                    (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)
 
                 }
                 Status.ERROR -> {

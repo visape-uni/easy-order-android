@@ -15,6 +15,7 @@ import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.table.CreateTableDialogFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -36,6 +37,7 @@ class WorkerProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainWorkerMenuActivity).setItemMenu(0)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_perfil_worker, container, false)
     }

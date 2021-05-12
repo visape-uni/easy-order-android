@@ -104,27 +104,26 @@ class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
             EasyOrderConstants.WORKER_PROFILE_FRAGMENT -> {
                 val fragment = WorkerProfileFragment.newInstance()
                 replaceFragment(fragment)
-                val menuItem = navigation_view.menu.getItem(0)
-                menuItem.setChecked(true)
             }
             EasyOrderConstants.RESTAURANT_FRAGMENT -> {
                 val restaurantId = intent.getStringExtra(EasyOrderConstants.RESTAURANT_ID_KEY)
                 val fragment = RestaurantProfileFragment.newInstance(restaurantId)
                 replaceFragment(fragment)
-                val menuItem = navigation_view.menu.getItem(1)
-                menuItem.setChecked(true)
             }
             EasyOrderConstants.TABLE_LIST_FRAGMENT -> {
                 val restaurantId = intent.getStringExtra(EasyOrderConstants.RESTAURANT_ID_KEY)
                 val fragment = TableListFragment.newInstance(restaurantId)
                 replaceFragment(fragment)
-                val menuItem = navigation_view.menu.getItem(2)
-                menuItem.setChecked(true)
             }
         }
     }
 
     private fun setCurrentFragmentTitle() {
         //TODO: SET TITLE
+    }
+
+    public fun setItemMenu(item: Int) {
+        val menuItem = navigation_view.menu.getItem(item)
+        menuItem.setChecked(true)
     }
 }

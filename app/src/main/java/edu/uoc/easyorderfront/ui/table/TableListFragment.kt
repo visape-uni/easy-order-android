@@ -12,6 +12,7 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.adapter.TablesAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_table_list.*
@@ -39,6 +40,7 @@ class TableListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as MainWorkerMenuActivity).setItemMenu(2)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_table_list, container, false)
     }
