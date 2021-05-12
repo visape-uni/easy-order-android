@@ -18,14 +18,7 @@
         android:theme="@style/Theme.EasyOrderFront">
         <activity android:name=".ui.main.MainWorkerMenuActivity"></activity>
         <activity android:name=".ui.main.MainClientMenuActivity" />
-        <activity android:name=".ui.order.GetQrCodeActivity" />
-        <activity android:name=".ui.order.OrderWorkerFragment" />
-        <activity android:name=".ui.table.TableListFragment" />
-        <activity android:name=".ui.restaurant.RestaurantProfileFragment" />
-        <activity android:name=".ui.table.OcupyTableFragment" />
-        <activity android:name=".ui.profile.ClientProfileFragment" />
-        <activity android:name=".ui.profile.WorkerProfileFragment" />
-        <activity android:name=".ui.restaurant.CreateRestaurantFragment" />
+        <activity android:name=".ui.menu.MenuRestaurantActivity"/>
         <activity android:name=".ui.main.MainWorkerActivity" />
         <activity
             android:name=".ui.recovery.PasswordRecoveryActivity"

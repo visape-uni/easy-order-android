@@ -14,7 +14,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment
 import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
@@ -33,7 +32,6 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
 
         setSupportActionBar(toolbar)
 
-
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.isDrawerIndicatorEnabled = true
@@ -48,17 +46,10 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            Log.d("MainClientTEST", supportFragmentManager.backStackEntryCount.toString())
-            val menuRestaurantFragment = supportFragmentManager.findFragmentByTag(MENU_RESTAURANT_FRAGMENT_NAME)
-            if (menuRestaurantFragment != null && menuRestaurantFragment.isVisible) {
-                (menuRestaurantFragment as MenuRestaurantFragment).dialogDesocuparMesa()
+            if (supportFragmentManager.backStackEntryCount > 1) {
+                super.onBackPressed()
             } else {
-                Log.d("MainClientTEST", "ELSE")
-                if (supportFragmentManager.backStackEntryCount > 1) {
-                    super.onBackPressed()
-                } else {
-                    //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
-                }
+                //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
             }
         }
     }
@@ -128,5 +119,4 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
 }

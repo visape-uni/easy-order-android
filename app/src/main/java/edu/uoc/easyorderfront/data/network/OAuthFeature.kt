@@ -42,7 +42,6 @@ class OAuthFeature(
                 if (subject.status == HttpStatusCode.Unauthorized
                         && context.request.headers[RefreshKey] != true.toString()) {
                     try {
-
                         // Execute RefreshToken
                         feature.refreshToken()
 
@@ -53,7 +52,6 @@ class OAuthFeature(
                         ) as HttpClientCall
 
                         proceedWith(call.response)
-
 
                         return@intercept
                     } catch (exception: Exception) {

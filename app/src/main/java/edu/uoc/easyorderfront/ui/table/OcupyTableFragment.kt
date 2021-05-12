@@ -12,7 +12,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
-import edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -69,9 +69,13 @@ class OcupyTableFragment : Fragment() {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(context, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
 
-                    val fragmentTag = MenuRestaurantFragment::class.qualifiedName.toString()
+                    /*val fragmentTag = MenuRestaurantFragment::class.qualifiedName.toString()
                     val fragment = MenuRestaurantFragment.newInstance(restaurantId)
-                    (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)
+                    (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)*/
+
+                    val intent = Intent(context, MenuRestaurantActivity::class.java)
+                    intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                    startActivity(intent)
 
                 }
                 Status.ERROR -> {
