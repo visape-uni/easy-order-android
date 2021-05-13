@@ -9,6 +9,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Dish
 import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.OrderedDish
+import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.android.synthetic.main.bottom_fragment_add_dish_to_order.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -59,7 +60,7 @@ class AddDishToOrderFragment(
             order.price = order.price?.plus(totalPrice)
             order.orderedDishes?.add(orderedDish)
 
-            restaurantViewModel.order.postValue(order)
+            restaurantViewModel.order.postValue(DataWrapper.success(order))
             dismiss()
         })
 

@@ -44,6 +44,7 @@ object Network {
                     contentType(ContentType.Application.Json)
                 }
                 accept(ContentType.Application.Json)
+                header("Connection", "close")
 
                 // TODO: PONER TOKEN
                 /* (checkUrlToken(this.url.encodedPath)) {

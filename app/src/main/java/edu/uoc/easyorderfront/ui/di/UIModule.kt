@@ -26,7 +26,7 @@ val uiModule = module {
     viewModel { EditarMenuViewModel(get(), get()) }
     viewModel { CreateCategoryViewModel(get()) }
     viewModel { CreateDishViewModel(get()) }
-    viewModel { OrderWorkerViewModel(get())}
+    viewModel { OrderWorkerViewModel(get(), get())}
     viewModel { OcupyTableViewModel(get())}
     viewModel { MenuRestaurantViewModel(get(), get(), get()) }
     viewModel { AddDishToOrderViewModel(get()) }

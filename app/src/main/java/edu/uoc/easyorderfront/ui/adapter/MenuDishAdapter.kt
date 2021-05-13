@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_dish.view.*
 class MenuDishAdapter(
         private val categoryId: String,
         private val viewModel: MenuRestaurantViewModel
-) : ListAdapter<Dish, MenuDishAdapter.DishViewHolder>(MenuDishAdapter.dishDiffCallback) {
+) : ListAdapter<Dish, MenuDishAdapter.DishViewHolder>(dishDiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,7 +37,7 @@ class MenuDishAdapter(
             itemView.lbl_dish_price.text = dish.price.toString() + "€"
 
             itemView.dish_layout.setOnClickListener({
-                val addDishActivity = AddDishToOrderFragment(viewModel.order.value!!, dish, viewModel)
+                val addDishActivity = AddDishToOrderFragment(viewModel.order.value?.data!!, dish, viewModel)
                 addDishActivity.show((itemView.context as FragmentActivity).supportFragmentManager, "TAG")
             })
         }

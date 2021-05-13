@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.uoc.easyorderfront">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <application
         android:name=".data.MyApplication"
         android:allowBackup="true"
@@ -16,9 +11,10 @@
         android:roundIcon="@drawable/logo_easy_order"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyOrderFront">
-        <activity android:name=".ui.main.MainWorkerMenuActivity"></activity>
+        <activity android:name=".ui.order.OrderClientActivity"></activity>
+        <activity android:name=".ui.main.MainWorkerMenuActivity" />
         <activity android:name=".ui.main.MainClientMenuActivity" />
-        <activity android:name=".ui.menu.MenuRestaurantActivity"/>
+        <activity android:name=".ui.menu.MenuRestaurantActivity" />
         <activity android:name=".ui.main.MainWorkerActivity" />
         <activity
             android:name=".ui.recovery.PasswordRecoveryActivity"
@@ -31,5 +27,10 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

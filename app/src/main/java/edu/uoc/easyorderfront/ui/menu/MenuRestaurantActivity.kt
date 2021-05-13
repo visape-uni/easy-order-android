@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
-import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.MenuRestaurantAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.activity_editar_menu.progress_bar
 import kotlinx.android.synthetic.main.activity_editar_menu.recycler_view_editar_menu
 import kotlinx.android.synthetic.main.activity_menu_restaurante.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 class MenuRestaurantActivity : AppCompatActivity() {
 
@@ -58,14 +56,19 @@ class MenuRestaurantActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setTitle("Desocupar mesa")
             .setMessage("Estas seguro que quieres dejar la mesa?")
-            .setNegativeButton("No") {dialog, _ ->
+            .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
-            .setPositiveButton("Si") {dialog, _ ->
-                //TODO: IMPORTANT COMPROBAR QUE NO HE HA HECHO PEDIDO Y PONER MESA COMO EMPTY
+            .setPositiveButton("Si") { dialog, _ ->
+
                 val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
-                viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
-                //TODO: TERMINAR CUENTA EN BACKEND
+                val order = viewModel.order.value?.data
+
+                if (order != null && order.orderedDishes != null && order.orderedDishes.isNotEmpty()) {
+                    Toast.makeText(applicationContext, "No puedes dejar la mesa sin pagar si ya has hecho un pedido", Toast.LENGTH_LONG).show()
+                } else {
+                    viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
+                }
 
                 dialog.dismiss()
             }
@@ -137,15 +140,28 @@ class MenuRestaurantActivity : AppCompatActivity() {
         viewModel.orderPrice.observe(this, { orderPrice ->
             val price = String.format("%.2f", orderPrice)
             btn_pedido.text = getString(R.string.haz_tu_pedido_por_x, price)
-            viewModel.order.value?.price = orderPrice
+            viewModel.order.value?.data?.price = orderPrice
         })
 
-        viewModel.order.observe(this, { order ->
-            viewModel.orderPrice.postValue(order.price)
+        viewModel.order.observe(this, { dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    viewModel.orderPrice.postValue(dataWrapper.data?.price)
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Log.e(TAG, "Error obteniendo pedido")
+                    Toast.makeText(applicationContext, dataWrapper.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         })
 
-        val startedTime = Calendar.getInstance().time.time
-        viewModel.order.postValue(Order(null, 0.0, EasyOrderConstants.ORDERING_STATE, startedTime))
+        val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
+        viewModel.getLastOrderFromTable(tableId)
 
         btn_pedido.setOnClickListener({
             //TODO: MOSTRAR PEDIDO

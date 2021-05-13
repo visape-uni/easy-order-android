@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.menu.MenuRepository
+import edu.uoc.easyorderfront.data.order.OrderRepository
 import edu.uoc.easyorderfront.data.restaurant.RestaurantRepository
 import edu.uoc.easyorderfront.data.table.TableRepository
 import edu.uoc.easyorderfront.domain.model.Menu
@@ -19,11 +20,12 @@ import kotlinx.coroutines.launch
 class MenuRestaurantViewModel(
         private val repository: MenuRepository,
         private val restaurantRepository: RestaurantRepository,
-        private val tableRepository: TableRepository
+        private val tableRepository: TableRepository,
+        private val orderRepository: OrderRepository
 ) : ViewModel() {
     private val TAG = "MenuRestaurantViewModel"
 
-    val order = MutableLiveData<Order>()
+    val order = MutableLiveData<DataWrapper<Order>>()
     val orderPrice = MutableLiveData<Double>()
     val menu = MutableLiveData<DataWrapper<Menu>>()
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()
@@ -94,6 +96,27 @@ class MenuRestaurantViewModel(
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
                 restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+            }
+        }
+    }
+
+    fun getLastOrderFromTable(tableId: String) {
+        viewModelScope.launch {
+            try {
+                order.postValue(DataWrapper.loading(null))
+
+                orderRepository.getLastOrder(tableId).let { orderResponse->
+                    Log.d(TAG, "GetLastOrderFromTable: $orderResponse")
+                    order.postValue(DataWrapper.success(orderResponse))
+                }
+
+            } catch (easyOrderException: EasyOrderException) {
+                Log.e(TAG, easyOrderException.toString())
+                order.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                order.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }

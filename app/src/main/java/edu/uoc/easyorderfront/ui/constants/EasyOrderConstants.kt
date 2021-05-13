@@ -4,6 +4,7 @@ object EasyOrderConstants {
     const val WORKER_ID_LABEL = "WorkingID"
     const val RESTAURANT_ID_KEY = "restaurantID"
     const val TABLE_ID_KEY = "tableID"
+    const val ORDER_KEY = "orderID"
 
     const val EMPTY_STATE = "EMPTY"
     const val ORDERING_STATE = "ORDERING"

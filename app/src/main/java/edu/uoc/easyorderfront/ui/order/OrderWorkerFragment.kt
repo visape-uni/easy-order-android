@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.ui.order
 
+import android.app.AlertDialog
 import android.content.Context.WINDOW_SERVICE
 import android.graphics.Point
 import android.os.Bundle
@@ -56,6 +57,9 @@ class OrderWorkerFragment : Fragment() {
             R.id.qr_btn -> {
                 generateQR()
             }
+            R.id.change_state_btn -> {
+                changeState()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -110,6 +114,7 @@ class OrderWorkerFragment : Fragment() {
                     progress_bar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
                     val table = dataWrapper.data
                     if (table != null) {
                         txt_id.text = table.uid
@@ -142,6 +147,26 @@ class OrderWorkerFragment : Fragment() {
         val table = arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
         viewModel.table.postValue(DataWrapper.success(table))
 
+    }
+
+    fun changeState() {
+        val dialog = AlertDialog.Builder(context)
+                .setTitle("Cambiar estado de la mesa")
+                .setMessage("Estas seguro que quieres cambiar de estado la mesa? Si la mesa tiene un pedido abierto se cancelará")
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Si") { dialog, _ ->
+                    val tableId = viewModel.table.value?.data?.tableRef
+                    if (tableId != null) {
+                        viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
+                    } else {
+                        Toast.makeText(context, "La referencia de la mesa es incorrecta", Toast.LENGTH_LONG).show()
+                    }
+                    dialog.dismiss()
+                }
+
+        dialog.show()
     }
 
     fun generateQR() {

@@ -5,17 +5,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/lbl_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/id_"
+            android:text="@string/mesa"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
@@ -125,7 +119,12 @@
             tools:text="45,80€"
             android:layout_toEndOf="@id/lbl_total"
             android:layout_alignBaseline="@id/lbl_total"/>
-
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </ScrollView>

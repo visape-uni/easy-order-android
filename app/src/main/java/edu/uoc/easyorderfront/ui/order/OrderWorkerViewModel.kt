@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.order.OrderRepository
+import edu.uoc.easyorderfront.data.table.TableRepository
 import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.UIMessages
@@ -13,10 +14,10 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
 
 class OrderWorkerViewModel(
-        private val repository: OrderRepository
+        private val repository: OrderRepository,
+        private val tableRepository: TableRepository
 ) : ViewModel() {
     val table = MutableLiveData<DataWrapper<Table>>()
-
     val lastOrder = MutableLiveData<DataWrapper<Order>>()
 
     private val TAG = "OrderWorkerViewModel"
@@ -38,6 +39,26 @@ class OrderWorkerViewModel(
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
                 lastOrder.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+            }
+        }
+    }
+
+    fun changeTableState(tableId: String, newState: String) {
+        viewModelScope.launch {
+            try {
+                table.postValue(DataWrapper.loading(null))
+
+                tableRepository.changeTableState(tableId, newState).let {tableResponse ->
+                    Log.d(TAG, "ChangeTableState: $tableResponse")
+                    table.postValue(DataWrapper.success(tableResponse))
+                }
+            } catch (easyOrderException: EasyOrderException) {
+                Log.e(TAG, easyOrderException.toString())
+                table.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
+            } catch (e : Exception) {
+                Log.e(TAG, e.toString())
+                table.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
         }
     }

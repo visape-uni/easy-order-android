@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/change_state_btn"
+        android:title="Cambiar estado"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_cambiar_estado_mesa" />
+    <item
         android:id="@+id/qr_btn"
         android:title="Obtener QR"
         app:showAsAction="always"
