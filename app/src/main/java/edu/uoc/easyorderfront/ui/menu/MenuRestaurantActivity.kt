@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.ui.menu
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.adapter.MenuRestaurantAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
+import edu.uoc.easyorderfront.ui.order.OrderClientActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_editar_menu.error_message
 import kotlinx.android.synthetic.main.activity_editar_menu.progress_bar
@@ -164,7 +167,9 @@ class MenuRestaurantActivity : AppCompatActivity() {
         viewModel.getLastOrderFromTable(tableId)
 
         btn_pedido.setOnClickListener({
-            //TODO: MOSTRAR PEDIDO
+            val intent = Intent(this, OrderClientActivity::class.java)
+            intent.putExtra(ORDER_KEY, viewModel.order.value?.data)
+            startActivity(intent)
         })
 
         getMenu()

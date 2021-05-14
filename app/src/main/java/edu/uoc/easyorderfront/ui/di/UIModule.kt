@@ -28,6 +28,6 @@ val uiModule = module {
     viewModel { CreateDishViewModel(get()) }
     viewModel { OrderWorkerViewModel(get(), get())}
     viewModel { OcupyTableViewModel(get())}
-    viewModel { MenuRestaurantViewModel(get(), get(), get()) }
+    viewModel { MenuRestaurantViewModel(get(), get(), get(), get()) }
     viewModel { AddDishToOrderViewModel(get()) }
 }

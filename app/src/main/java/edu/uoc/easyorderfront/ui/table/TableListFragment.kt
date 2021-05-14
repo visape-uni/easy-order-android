@@ -118,6 +118,7 @@ class TableListFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     // Get Table
+                    progress_bar.visibility = View.VISIBLE
                     viewModel.getTables(dataWrapper.data?.id)
                 }
                 Status.ERROR -> {

@@ -7,7 +7,6 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
-import kotlinx.android.synthetic.main.activity_menu_restaurante.*
 import kotlinx.android.synthetic.main.activity_menu_restaurante.toolbar
 import kotlinx.android.synthetic.main.activity_order_client.*
 
@@ -31,6 +30,9 @@ class OrderClientActivity : AppCompatActivity() {
         initRecyclerView()
 
         btn_confirmar_pedido.text = getString(R.string.haz_tu_pedido_por_x, order.price.toString())
+        btn_confirmar_pedido.setOnClickListener({
+
+        })
 
         if (!order.orderedDishes.isNullOrEmpty()) {
             adapter.submitList(order.orderedDishes)
@@ -44,7 +46,7 @@ class OrderClientActivity : AppCompatActivity() {
     fun initRecyclerView() {
 
         // Set Layout Manager
-        recycler_view_editar_menu.layoutManager = LinearLayoutManager(applicationContext)
+        recycler_vw_comanda.layoutManager = LinearLayoutManager(applicationContext)
 
         adapter = OrderClientAdapter()
         // Set Adapter

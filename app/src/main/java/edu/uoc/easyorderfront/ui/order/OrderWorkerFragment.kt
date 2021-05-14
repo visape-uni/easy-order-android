@@ -194,8 +194,12 @@ class OrderWorkerFragment : Fragment() {
 
         val bitmap = qrgEncoder.encodeAsBitmap()
 
-        val getQrCodeActivity = GetQrCodeActivity(bitmap)
-        getQrCodeActivity.show(fragmentManager!!, "TAG")
+        if (bitmap != null) {
+            val getQrCodeActivity = GetQrCodeActivity(bitmap)
+            getQrCodeActivity.show(fragmentManager!!, "TAG")
+        } else {
+            Toast.makeText(context, "Error generando código QR", Toast.LENGTH_LONG).show()
+        }
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.domain.model
 
 import edu.uoc.easyorderfront.data.order.OrderDTO
+import java.io.Serializable
 
 
 class Order(
@@ -9,7 +10,7 @@ class Order(
         var state: String? = null,
         val startedTime: Long? = null,
         val orderedDishes: MutableList<OrderedDish>? = ArrayList()
-) {
+) : Serializable {
     fun converToDTO() : OrderDTO {
         val orderedDishesDTOList = orderedDishes?.map{orderedDish -> orderedDish.converToDTO() }?.toMutableList()
 
