@@ -16,4 +16,11 @@ class OrderRepositoryImpl(
         return orderDTO?.convertToModel()
     }
 
+    override suspend fun saveOrder(tableId: String, order: Order): Order? {
+        val orderDTO = orderBackEndDataSource.saveOrder(tableId, order.converToDTO())
+
+        Log.d(TAG, "Save order respone $orderDTO")
+
+        return orderDTO?.convertToModel()
+    }
 }

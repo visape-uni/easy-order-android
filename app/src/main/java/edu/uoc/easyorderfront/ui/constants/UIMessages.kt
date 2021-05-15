@@ -10,6 +10,7 @@ object UIMessages {
     const val ERROR_USUARIO_INEXISTENTE = "No existe ningun usuario con este email"
 
 
+    const val ERROR_HACIENDO_PEDIDO = "Error haciendo pedido"
     const val ERROR_CREANDO_CATEGORIA = "Error creando categoria"
     const val ERROR_OBTENIENDO_MESA = "Error obteniendo mesa"
     const val ERROR_OCUPANDO_MESA = "Error ocupando mesa"

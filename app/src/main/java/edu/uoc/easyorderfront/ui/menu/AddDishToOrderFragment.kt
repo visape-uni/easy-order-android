@@ -12,9 +12,11 @@ import edu.uoc.easyorderfront.domain.model.OrderedDish
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.android.synthetic.main.bottom_fragment_add_dish_to_order.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class AddDishToOrderFragment(
         private val order: Order,
+        private val categoryId: String,
         private val dish: Dish,
         private val restaurantViewModel: MenuRestaurantViewModel
 ) : BottomSheetDialogFragment() {
@@ -55,7 +57,13 @@ class AddDishToOrderFragment(
 
         view.btn_añadir.setOnClickListener({
             val totalPrice = dish.price * viewModel.quantity.value!!
-            val orderedDish = OrderedDish(null, viewModel.quantity.value, totalPrice, dish)
+            val orderedDish = OrderedDish(
+                Calendar.getInstance().timeInMillis.toString(),
+                viewModel.quantity.value,
+                totalPrice,
+                categoryId,
+                dish
+            )
 
             order.price = order.price?.plus(totalPrice)
             order.orderedDishes?.add(orderedDish)

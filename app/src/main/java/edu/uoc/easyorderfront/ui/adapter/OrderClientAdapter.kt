@@ -25,7 +25,9 @@ class OrderClientAdapter(): ListAdapter<OrderedDish, OrderClientAdapter.OrderedD
         fun bindTo(orderedDish: OrderedDish) {
             itemView.txt_titulo_plato.text = orderedDish.dish?.name
             itemView.txt_cantidad.text = orderedDish.quantity.toString()
-            itemView.txt_precio.text = orderedDish.totalPrice.toString()
+
+            val price = String.format("%.2f", orderedDish.totalPrice)
+            itemView.txt_precio.text = price + "€"
 
         }
     }

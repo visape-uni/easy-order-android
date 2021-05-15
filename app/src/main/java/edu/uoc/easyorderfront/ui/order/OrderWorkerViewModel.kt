@@ -20,6 +20,8 @@ class OrderWorkerViewModel(
     val table = MutableLiveData<DataWrapper<Table>>()
     val lastOrder = MutableLiveData<DataWrapper<Order>>()
 
+    var tableRef: String? = null
+
     private val TAG = "OrderWorkerViewModel"
 
     fun getLastOrderFromTable(tableId: String) {
@@ -62,5 +64,4 @@ class OrderWorkerViewModel(
             }
         }
     }
-
 }

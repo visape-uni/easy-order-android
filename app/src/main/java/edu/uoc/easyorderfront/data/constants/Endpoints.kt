@@ -21,6 +21,7 @@ object Endpoints {
 
     private const val orderApi = "$authenticationApi/order"
     const val getLastOrderUrl = "$orderApi/getLast/"
+    const val saveOrderUrl = "$orderApi/saveOrder/"
 
     private const val menuApi = "$authenticationApi/menu"
     const val getMenuUrl = "$menuApi/getFromRestaurant/"

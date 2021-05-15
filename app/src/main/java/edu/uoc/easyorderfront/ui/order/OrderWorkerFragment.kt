@@ -105,7 +105,6 @@ class OrderWorkerFragment : Fragment() {
                     Toast.makeText(context, dataWrapper.message, Toast.LENGTH_SHORT).show()
                 }
             }
-
         })
 
         viewModel.table.observe(this, { dataWrapper ->
@@ -133,7 +132,7 @@ class OrderWorkerFragment : Fragment() {
                             txt_total.visibility = View.GONE
                         } else {
                             txt_estado.text = getString(R.string.la_mesa_esta_ocupada)
-                            viewModel.getLastOrderFromTable(table.tableRef!!)
+                            viewModel.getLastOrderFromTable(viewModel.tableRef!!)
                         }
                     }
                 }
@@ -144,29 +143,45 @@ class OrderWorkerFragment : Fragment() {
                 }
             }
         })
-        val table = arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
-        viewModel.table.postValue(DataWrapper.success(table))
 
+        val table = arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
+        viewModel.tableRef = table.tableRef
+        viewModel.table.postValue(DataWrapper.success(table))
     }
 
     fun changeState() {
-        val dialog = AlertDialog.Builder(context)
+        if (!viewModel.table.value?.data?.state.equals(EasyOrderConstants.EMPTY_STATE)) {
+            val dialog = AlertDialog.Builder(context)
                 .setTitle("Cambiar estado de la mesa")
-                .setMessage("Estas seguro que quieres cambiar de estado la mesa? Si la mesa tiene un pedido abierto se cancelará")
+                .setMessage(
+                    "Estas seguro que quieres vaciar la mesa? " +
+                            "Si la mesa tiene un pedido abierto se cancelará"
+                )
                 .setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
                 .setPositiveButton("Si") { dialog, _ ->
-                    val tableId = viewModel.table.value?.data?.tableRef
+                    val tableId = viewModel.tableRef
                     if (tableId != null) {
                         viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
                     } else {
-                        Toast.makeText(context, "La referencia de la mesa es incorrecta", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "La referencia de la mesa es incorrecta",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                     dialog.dismiss()
                 }
 
-        dialog.show()
+            dialog.show()
+        } else {
+            Toast.makeText(
+                context,
+                "La mesa ya esta vacia",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     fun generateQR() {
@@ -189,7 +204,7 @@ class OrderWorkerFragment : Fragment() {
         }
         dimen = dimen * 3 / 4
 
-        val tableID = viewModel.table.value?.data?.tableRef
+        val tableID = viewModel.tableRef
         val qrgEncoder = QRGEncoder(tableID, null, QRGContents.Type.TEXT, dimen)
 
         val bitmap = qrgEncoder.encodeAsBitmap()

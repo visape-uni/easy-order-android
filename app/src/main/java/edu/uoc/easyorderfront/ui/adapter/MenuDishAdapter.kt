@@ -27,17 +27,17 @@ class MenuDishAdapter(
     }
 
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
-        holder.bindTo(getItem(position), viewModel, itemCount == (position + 1))
+        holder.bindTo(getItem(position), viewModel, categoryId, itemCount == (position + 1))
     }
 
 
     class DishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindTo(dish: Dish, viewModel: MenuRestaurantViewModel, lastItem: Boolean) {
+        fun bindTo(dish: Dish, viewModel: MenuRestaurantViewModel, categoryId: String, lastItem: Boolean) {
             itemView.lbl_dish.text = dish.name
             itemView.lbl_dish_price.text = dish.price.toString() + "€"
 
             itemView.dish_layout.setOnClickListener({
-                val addDishActivity = AddDishToOrderFragment(viewModel.order.value?.data!!, dish, viewModel)
+                val addDishActivity = AddDishToOrderFragment(viewModel.order.value?.data!!, categoryId, dish, viewModel)
                 addDishActivity.show((itemView.context as FragmentActivity).supportFragmentManager, "TAG")
             })
 

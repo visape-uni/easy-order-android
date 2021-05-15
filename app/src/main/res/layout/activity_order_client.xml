@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -10,14 +9,12 @@
         android:background="?attr/colorPrimary"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_vw_comanda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_above="@id/btn_confirmar_pedido"/>
-
     <Button
         android:id="@+id/btn_confirmar_pedido"
         android:layout_width="match_parent"
@@ -25,5 +22,10 @@
         android:layout_alignParentBottom="true"
         android:layout_height="60dp"
         android:text="Confirmar pedido X€"/>
-
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

@@ -15,9 +15,20 @@ class OrderBackendDataSource(private val httpClient: HttpClient) {
             return httpClient
                     .get<OrderDTO>(Endpoints.getLastOrderUrl + tableId)
         } catch (t: Throwable) {
-            Log.w(TAG, "Error obteniendo última mesa", t)
+            Log.w(TAG, "Error obteniendo último pedido", t)
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }
 
+    suspend fun saveOrder(tableId: String, order: OrderDTO): OrderDTO? {
+        try {
+            return httpClient
+                    .post<OrderDTO>(Endpoints.saveOrderUrl + tableId) {
+                        body = order
+                    }
+        } catch (t: Throwable) {
+            Log.w(TAG, "Error guardando pedido", t)
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
+    }
 }

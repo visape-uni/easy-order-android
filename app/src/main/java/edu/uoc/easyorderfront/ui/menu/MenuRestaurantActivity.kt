@@ -13,6 +13,7 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.ui.adapter.MenuRestaurantAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.TABLE_ID_KEY
 import edu.uoc.easyorderfront.ui.order.OrderClientActivity
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_editar_menu.error_message
@@ -64,7 +65,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
             }
             .setPositiveButton("Si") { dialog, _ ->
 
-                val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
+                val tableId = intent.getStringExtra(TABLE_ID_KEY)
                 val order = viewModel.order.value?.data
 
                 if (order != null && order.orderedDishes != null && order.orderedDishes.isNotEmpty()) {
@@ -163,12 +164,14 @@ class MenuRestaurantActivity : AppCompatActivity() {
             }
         })
 
-        val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
+        val tableId = intent.getStringExtra(TABLE_ID_KEY)
         viewModel.getLastOrderFromTable(tableId)
 
         btn_pedido.setOnClickListener({
+            val tableId = intent.getStringExtra(TABLE_ID_KEY)
             val intent = Intent(this, OrderClientActivity::class.java)
             intent.putExtra(ORDER_KEY, viewModel.order.value?.data)
+            intent.putExtra(TABLE_ID_KEY, tableId)
             startActivity(intent)
         })
 

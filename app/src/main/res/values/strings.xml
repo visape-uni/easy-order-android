@@ -93,4 +93,5 @@
     <string name="a_adir">Añadir</string>
     <string name="a_adir_nuevo_plato">Añadir nuevo plato</string>
     <string name="mesa">Mesa:</string>
+    <string name="preparando_perdido">Preparando perdido</string>
 </resources>
