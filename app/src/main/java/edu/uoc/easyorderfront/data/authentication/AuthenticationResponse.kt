@@ -1,7 +1,6 @@
 package edu.uoc.easyorderfront.data.authentication
 
 import edu.uoc.easyorderfront.data.restaurant.RestaurantDTO
-import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
 import kotlinx.serialization.SerialName
@@ -16,13 +15,13 @@ data class UserDTO(
         @SerialName("password") val password:String? = null,
         @SerialName("isClient") val isClient:Boolean? = null,
         @SerialName("isOwner") val isOwner:Boolean? = null,
+        @SerialName("tableId") val tableId:String? = null,
         @SerialName("restaurant") val restaurant:RestaurantDTO? = null
-
 ) {
     fun convertToModel(): User {
         val user: User
         if (isClient != null && isClient) {
-            user = User(uid, username, email, password, isClient)
+            user = User(uid, username, email, password, isClient, tableId)
         } else {
             user = Worker(uid, username, email, password, isOwner, restaurant?.convertToModel())
         }

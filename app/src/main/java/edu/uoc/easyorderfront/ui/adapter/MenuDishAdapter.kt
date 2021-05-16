@@ -41,9 +41,9 @@ class MenuDishAdapter(
                 addDishActivity.show((itemView.context as FragmentActivity).supportFragmentManager, "TAG")
             })
 
-            if (lastItem) {
+            /*if (lastItem) {
                 itemView.dish_separator.visibility = View.GONE
-            }
+            }*/
         }
     }
 

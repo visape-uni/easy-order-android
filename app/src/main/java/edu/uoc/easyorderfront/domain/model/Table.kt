@@ -7,9 +7,10 @@ class Table(
     val uid: String?,
     val capacity: Int? = 0,
     val state: String? = null,
+    val userId: String? = null,
     var tableRef: String? = null
 ) : Serializable {
     fun convertToDTO(): TableDTO {
-        return TableDTO(uid, capacity, state)
+        return TableDTO(uid, capacity, state, userId)
     }
 }

@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 data class TableDTO(
     val uid: String?,
     val capacity: Int? = 0,
-    val state: String? = null
+    val state: String? = null,
+    val userId: String? = null
 ) {
     fun convertToModel(): Table {
-        return Table(uid, capacity, state)
+        return Table(uid, capacity, state, userId)
     }
 }

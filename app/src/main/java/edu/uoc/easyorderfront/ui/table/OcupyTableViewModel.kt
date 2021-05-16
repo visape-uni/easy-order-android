@@ -20,12 +20,12 @@ class OcupyTableViewModel(
 
     private val TAG = "OcupyTableViewModel"
 
-    fun changeTableState(tableId: String, newState: String) {
+    fun changeTableState(tableId: String, newUserId:String, newState: String) {
         viewModelScope.launch {
             try {
                 tableStateChanged.postValue(DataWrapper.loading(null))
 
-                repository.changeTableState(tableId, newState).let {tableResponse ->
+                repository.changeTableState(tableId, newUserId, newState).let {tableResponse ->
                     Log.d(TAG, "ChangeTableState: $tableResponse")
                     tableStateChanged.postValue(DataWrapper.success(tableResponse))
                 }

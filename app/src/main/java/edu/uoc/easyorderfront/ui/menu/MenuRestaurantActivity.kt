@@ -44,7 +44,6 @@ class MenuRestaurantActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         dialogDesocuparMesa()
-        super.onBackPressed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,7 +70,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
                 if (order != null && order.orderedDishes != null && order.orderedDishes.isNotEmpty()) {
                     Toast.makeText(applicationContext, "No puedes dejar la mesa sin pagar si ya has hecho un pedido", Toast.LENGTH_LONG).show()
                 } else {
-                    viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
+                    viewModel.changeTableState(tableId, "", EasyOrderConstants.EMPTY_STATE)
                 }
 
                 dialog.dismiss()

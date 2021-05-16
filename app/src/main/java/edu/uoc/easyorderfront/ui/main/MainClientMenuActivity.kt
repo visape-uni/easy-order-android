@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,16 +14,22 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
 import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
+import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
-import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
+import kotlinx.android.synthetic.main.activity_ocupar_mesa.txt_codigo_mesa
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var currentFragment: String? = null
-    val MENU_RESTAURANT_FRAGMENT_NAME = "edu.uoc.easyorderfront.ui.menu.MenuRestaurantFragment"
+    private val viewModel: MainClientMenuViewModel by viewModel()
+    private var currentFragment: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,8 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         navigation_view.setNavigationItemSelectedListener(this)
 
         showFragment()
+
+        prepareUI()
     }
 
     override fun onBackPressed() {
@@ -94,6 +103,49 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
                 val fragment  = ClientProfileFragment.newInstance()
                 replaceFragment(fragment, fragmentTag)
             }
+        }
+    }
+
+    private fun prepareUI() {
+        viewModel.clientProfile.observe(this, {dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+
+                    val user = dataWrapper.data
+                    if (user != null) {
+                        SessionManager(applicationContext).saveUser(user)
+                        if (user.tableId != null && user.tableId.isNotBlank()) {
+
+                            val splitTableId = user.tableId.split("/")
+
+                            val restaurantId = splitTableId.get(0)
+                            val tableId = user.tableId
+
+                            val intent = Intent(applicationContext, MenuRestaurantActivity::class.java)
+                            intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
+                            intent.putExtra(EasyOrderConstants.TABLE_ID_KEY, tableId)
+                            startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, getString(R.string.error_usuario_incorrect), Toast.LENGTH_LONG).show()
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Toast.makeText(applicationContext, UIMessages.ERROR_CARGANDO_PERFIL, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        val user = SessionManager(applicationContext).getUser()
+        if (user != null && user.uid != null) {
+            viewModel.getClientProfile(user.uid!!)
+        } else {
+            Toast.makeText(applicationContext, getString(R.string.error_usuario_incorrect), Toast.LENGTH_LONG).show()
         }
     }
 

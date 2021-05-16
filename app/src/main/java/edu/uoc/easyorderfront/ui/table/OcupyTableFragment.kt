@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.zxing.integration.android.IntentIntegrator
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
@@ -103,7 +104,13 @@ class OcupyTableFragment : Fragment() {
                         val codigoMesaSplit = codigoMesa.split("/")
 
                         restaurantId = codigoMesaSplit.get(0)
-                        viewModel.changeTableState(codigoMesa, EasyOrderConstants.OCCUPIED_STATE)
+
+                        val user = context?.let { SessionManager(it).getUser() }
+                        if (user != null && user.uid != null) {
+                            viewModel.changeTableState(codigoMesa, user.uid!!, EasyOrderConstants.OCCUPIED_STATE)
+                        } else {
+                            Toast.makeText(context, "El usuario es incorrecto", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
                 Status.ERROR -> {

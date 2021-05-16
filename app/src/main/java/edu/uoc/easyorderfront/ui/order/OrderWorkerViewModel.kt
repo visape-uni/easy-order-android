@@ -45,12 +45,12 @@ class OrderWorkerViewModel(
         }
     }
 
-    fun changeTableState(tableId: String, newState: String) {
+    fun changeTableState(tableId: String, newUserId: String, newState: String) {
         viewModelScope.launch {
             try {
                 table.postValue(DataWrapper.loading(null))
 
-                tableRepository.changeTableState(tableId, newState).let {tableResponse ->
+                tableRepository.changeTableState(tableId, newUserId, newState).let {tableResponse ->
                     Log.d(TAG, "ChangeTableState: $tableResponse")
                     table.postValue(DataWrapper.success(tableResponse))
                 }

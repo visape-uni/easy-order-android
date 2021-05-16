@@ -162,7 +162,7 @@ class TabRegisterWorkerFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.contrase_na_almenos_8_caracteres), Toast.LENGTH_LONG).show()
             } else {
                 // No errores, hacer register
-                viewModel.register(User(null, username, email, clave, false))
+                viewModel.register(User(null, username, email, clave, false, ""))
             }
         })
     }

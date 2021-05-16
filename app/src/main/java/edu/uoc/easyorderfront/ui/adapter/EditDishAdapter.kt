@@ -10,7 +10,6 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Dish
 import edu.uoc.easyorderfront.ui.menu.EditarMenuViewModel
 import kotlinx.android.synthetic.main.item_dish.view.*
-import kotlinx.android.synthetic.main.item_menu.view.*
 
 class EditDishAdapter(
         private val categoryId: String,
@@ -38,9 +37,9 @@ class EditDishAdapter(
                 viewModel.deleteDish(viewModel.restaurantProfile.value?.data?.id, categoryId, dish.uid)
                 true
             }
-            if (lastItem) {
+            /*if (lastItem) {
                 itemView.dish_separator.visibility = View.GONE
-            }
+            }*/
         }
     }
 

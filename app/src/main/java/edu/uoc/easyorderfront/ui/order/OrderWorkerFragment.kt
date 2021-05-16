@@ -163,7 +163,7 @@ class OrderWorkerFragment : Fragment() {
                 .setPositiveButton("Si") { dialog, _ ->
                     val tableId = viewModel.tableRef
                     if (tableId != null) {
-                        viewModel.changeTableState(tableId, EasyOrderConstants.EMPTY_STATE)
+                        viewModel.changeTableState(tableId, "", EasyOrderConstants.EMPTY_STATE)
                     } else {
                         Toast.makeText(
                             context,

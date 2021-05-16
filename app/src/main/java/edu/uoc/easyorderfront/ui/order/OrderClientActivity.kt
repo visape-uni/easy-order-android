@@ -58,7 +58,8 @@ class OrderClientActivity : AppCompatActivity() {
         val price = String.format("%.2f", order.price)
         btn_confirmar_pedido.text = getString(R.string.haz_tu_pedido_por_x, price)
         btn_confirmar_pedido.setOnClickListener({
-            order.price = price.toDouble()
+            val priceDouble = price.replace(',','.').trim()
+            order.price = priceDouble.toDouble()
             val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
             viewModel.saveOrder(tableId, order)
         })

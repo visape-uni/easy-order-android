@@ -25,8 +25,8 @@ class TableRepositoryImpl(
         return tablesList
     }
 
-    override suspend fun changeTableState(tableId: String, newState: String): Table? {
-        val tableDTO = tableBackendDataSource.changeTableState(tableId, TableDTO(tableId, 0, newState))
+    override suspend fun changeTableState(tableId: String, newUserId: String, newState: String): Table? {
+        val tableDTO = tableBackendDataSource.changeTableState(tableId, TableDTO(tableId, 0, newState, newUserId))
 
         Log.d(TAG, "Change table response $tableDTO")
 

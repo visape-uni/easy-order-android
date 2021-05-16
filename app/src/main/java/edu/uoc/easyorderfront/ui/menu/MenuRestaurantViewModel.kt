@@ -31,12 +31,12 @@ class MenuRestaurantViewModel(
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()
     val tableStateChanged = MutableLiveData<DataWrapper<Table>>()
 
-    fun changeTableState(tableId: String, newState: String) {
+    fun changeTableState(tableId: String, newUserId: String, newState: String) {
         viewModelScope.launch {
             try {
                 tableStateChanged.postValue(DataWrapper.loading(null))
 
-                tableRepository.changeTableState(tableId, newState).let {tableResponse ->
+                tableRepository.changeTableState(tableId, newUserId, newState).let {tableResponse ->
                     Log.d(TAG, "ChangeTableState: $tableResponse")
                     tableStateChanged.postValue(DataWrapper.success(tableResponse))
                 }

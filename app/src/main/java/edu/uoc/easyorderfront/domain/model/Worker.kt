@@ -11,6 +11,6 @@ class Worker(
         val isOwner:Boolean?,
         val restaurant: Restaurant?): User(uid, username, email, password, false) {
     override fun convertToDTO(): UserDTO {
-        return UserDTO(uid, username, email, password, isClient, isOwner, restaurant?.convertToDTO())
+        return UserDTO(uid, username, email, password, isClient, isOwner,null, restaurant?.convertToDTO())
     }
 }
