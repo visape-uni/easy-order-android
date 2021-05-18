@@ -16,6 +16,7 @@ import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.TABLE_ID_KEY
+import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.order.OrderClientActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -43,6 +44,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = UIMessages.TITLE_MENU_RESTAURANT
 
         prepareUI()
     }

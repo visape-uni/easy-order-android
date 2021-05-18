@@ -14,12 +14,17 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.menu.EditarMenuFragment
+import edu.uoc.easyorderfront.ui.order.OrderWorkerFragment
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileFragment
+import edu.uoc.easyorderfront.ui.restaurant.CreateRestaurantFragment
 import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileFragment
 import edu.uoc.easyorderfront.ui.table.TableListFragment
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import kotlinx.android.synthetic.main.activity_main_worker_menu.*
 
-class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainWorkerMenuActivity : AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        OnTitleChangedListener {
 
     var currentFragment: String? = null
 
@@ -92,7 +97,7 @@ class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         return true
     }
 
-    public fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment){
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.content_frame, fragment)
         fragmentTransaction.addToBackStack(null)
@@ -118,12 +123,28 @@ class MainWorkerMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         }
     }
 
-    private fun setCurrentFragmentTitle() {
-        //TODO: SET TITLE
-    }
-
-    public fun setItemMenu(item: Int) {
+    fun setItemMenu(item: Int) {
         val menuItem = navigation_view.menu.getItem(item)
         menuItem.setChecked(true)
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        if (fragment is EditarMenuFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is OrderWorkerFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is WorkerProfileFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is CreateRestaurantFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is RestaurantProfileFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is TableListFragment) {
+            fragment.setOnTitleChangedListener(this)
+        }
+    }
+
+    override fun onTitleChanged(title: String) {
+        supportActionBar?.title = title
     }
 }

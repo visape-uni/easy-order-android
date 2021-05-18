@@ -6,7 +6,9 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -16,8 +18,8 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
-import edu.uoc.easyorderfront.ui.table.CreateTableDialogFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,6 +30,12 @@ class WorkerProfileFragment : Fragment() {
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -37,6 +45,7 @@ class WorkerProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_WORKER_PROFILE)
         (activity as MainWorkerMenuActivity).setItemMenu(0)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_perfil_worker, container, false)
@@ -50,39 +59,7 @@ class WorkerProfileFragment : Fragment() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu?.clear()
-        if (viewModel.ownerMenu.value != null
-            && viewModel.ownerMenu.value!!) {
-            inflater.inflate(R.menu.menu_worker_profile, menu)
-        }
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.btn_add_table -> {
-                val restaurant= (SessionManager(context!!).getUser() as Worker).restaurant
-                if (restaurant != null) {
-                    val createTableBottomActivity = CreateTableDialogFragment(restaurant)
-                    createTableBottomActivity.show(fragmentManager!!, "TAG")
-                } else {
-                    Toast.makeText(context!!, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     fun prepareUI() {
-
-        viewModel.ownerMenu.observe(this, { isOwner ->
-            Log.d(TAG, "OwnerMenu $isOwner")
-            // Si es el dueño, volver a cargar el menu
-            if (isOwner != null && isOwner) {
-                activity?.invalidateOptionsMenu()
-            }
-        })
 
         viewModel.workerProfile.observe(this, {dataWrapperUser ->
             when(dataWrapperUser.status) {
@@ -128,7 +105,6 @@ class WorkerProfileFragment : Fragment() {
         val profile = SessionManager(context!!).getUser()
         if (profile != null && profile.uid != null) {
             viewModel.workerProfile.postValue(DataWrapper.success(profile as Worker))
-            viewModel.ownerMenu.postValue(profile.isOwner)
         } else {
             // Si falla obteniendo perfil de SessionManager
             val uid = SessionManager(context!!).getUserId()

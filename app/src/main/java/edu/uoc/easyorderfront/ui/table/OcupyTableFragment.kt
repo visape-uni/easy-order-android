@@ -14,6 +14,7 @@ import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
 import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -25,6 +26,12 @@ class OcupyTableFragment : Fragment() {
     lateinit var restaurantId: String
     lateinit var tableId: String
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -34,6 +41,7 @@ class OcupyTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_OCUPAR_MESA)
         (activity as MainClientMenuActivity).setItemMenu(1)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_ocupar_mesa, container, false)

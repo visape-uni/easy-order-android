@@ -20,16 +20,18 @@ import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
 import edu.uoc.easyorderfront.ui.profile.ClientProfileFragment
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_main_client_menu.*
 import kotlinx.android.synthetic.main.activity_ocupar_mesa.txt_codigo_mesa
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainClientMenuActivity : AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        OnTitleChangedListener {
 
     private val viewModel: MainClientMenuViewModel by viewModel()
     private var currentFragment: String? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,13 +151,9 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         }
     }
 
-    public fun setItemMenu(item: Int) {
+    fun setItemMenu(item: Int) {
         val menuItem = navigation_view.menu.getItem(item)
         menuItem.setChecked(true)
-    }
-
-    private fun setCurrentFragmentTitle() {
-        //TODO: SET TITLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -170,5 +168,17 @@ class MainClientMenuActivity : AppCompatActivity(), NavigationView.OnNavigationI
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        if (fragment is ClientProfileFragment) {
+            fragment.setOnTitleChangedListener(this)
+        } else if (fragment is OcupyTableFragment) {
+            fragment.setOnTitleChangedListener(this)
+        }
+    }
+
+    override fun onTitleChanged(title: String) {
+        supportActionBar?.title = title
     }
 }

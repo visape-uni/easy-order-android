@@ -11,7 +11,9 @@ import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.adapter.EditMenuAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_editar_menu.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -24,6 +26,11 @@ class EditarMenuFragment : Fragment() {
 
     private val viewModel: EditarMenuViewModel by viewModel()
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,7 @@ class EditarMenuFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        callback.onTitleChanged(UIMessages.TITLE_EDIT_MENU)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_editar_menu, container, false)
     }

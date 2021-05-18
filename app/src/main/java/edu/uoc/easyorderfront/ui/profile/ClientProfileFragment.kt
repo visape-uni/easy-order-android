@@ -11,6 +11,7 @@ import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainClientMenuActivity
 import edu.uoc.easyorderfront.ui.table.OcupyTableFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_client.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -19,6 +20,12 @@ class ClientProfileFragment : Fragment() {
 
     private val viewModel: ClientProfileViewModel by viewModel()
     private val TAG = "WorkerProfileActivity"
+
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +37,7 @@ class ClientProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_CLIENT_PROFILE)
         (activity as MainClientMenuActivity).setItemMenu(0)
         return inflater.inflate(R.layout.activity_perfil_client, container, false)
     }

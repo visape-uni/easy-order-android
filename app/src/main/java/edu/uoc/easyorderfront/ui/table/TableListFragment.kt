@@ -12,8 +12,10 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.adapter.TablesAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
+import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_table_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,6 +32,11 @@ class TableListFragment : Fragment() {
 
     private val viewModel: TableListViewModel by viewModel()
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,7 @@ class TableListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_TABLE_LIST)
         (activity as MainWorkerMenuActivity).setItemMenu(2)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_table_list, container, false)

@@ -12,6 +12,8 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.User
+import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import kotlinx.android.synthetic.main.activity_create_restaurant.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -19,6 +21,12 @@ class CreateRestaurantFragment : Fragment() {
     private val viewModel: CreateRestaurantViewModel by viewModel()
     private val TAG = "CreateRestaurantActivity"
     private val REQUEST_CODE_PICK_IMAGE = 1
+
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +36,7 @@ class CreateRestaurantFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_CREATE_RESTAURANT)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_create_restaurant, container, false)
     }

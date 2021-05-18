@@ -16,7 +16,9 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
+import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_order_worker.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -29,6 +31,12 @@ class OrderWorkerFragment : Fragment() {
 
     private val TAG = "OrderWorkerActivity"
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -38,6 +46,7 @@ class OrderWorkerFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        callback.onTitleChanged(UIMessages.TITLE_ORDER_WORKER)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_order_worker, container, false)
     }

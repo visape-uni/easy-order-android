@@ -12,6 +12,7 @@ import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
+import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_HACIENDO_PEDIDO
 import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -32,6 +33,7 @@ class OrderClientActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = UIMessages.TITLE_ORDER_CLIENT
 
         prepareUI()
     }

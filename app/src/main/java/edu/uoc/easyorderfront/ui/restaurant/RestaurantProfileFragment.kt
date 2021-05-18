@@ -16,6 +16,7 @@ import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.table.TableListFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_perfil_restaurante.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -26,6 +27,12 @@ class RestaurantProfileFragment : Fragment() {
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
+    internal lateinit var callback: OnTitleChangedListener
+
+    fun setOnTitleChangedListener(callback: OnTitleChangedListener) {
+        this.callback = callback
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -35,7 +42,7 @@ class RestaurantProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        callback.onTitleChanged(UIMessages.TITLE_RESTAURANT_PROFILE)
         (activity as MainWorkerMenuActivity).setItemMenu(1)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_perfil_restaurante, container, false)

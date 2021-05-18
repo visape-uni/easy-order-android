@@ -22,7 +22,6 @@ class CreateTableDialogFragment(
     private val TAG = "CreateTableActivity"
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

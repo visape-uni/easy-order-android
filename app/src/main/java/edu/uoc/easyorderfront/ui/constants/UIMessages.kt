@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.ui.constants
 
 object UIMessages {
 
+
     //ERRORES
     const val ERROR_ID_RESTAURANT_NUL = "Error: el ID del restaurante es nulo"
 
@@ -23,4 +24,17 @@ object UIMessages {
     const val ERROR_USUARIO_EXISTENTE = "Error: Ya existe un usuario con este email"
     const val ERROR_BACKEND_TIMEOUT = "Error: El servidor está tardando en contestar"
     const val ERROR_GENERICO = "Error inesperado, vuelva a intentar"
+
+
+    // Titles
+    const val TITLE_EDIT_MENU = "Editar Menú"
+    const val TITLE_ORDER_WORKER = "Detalle de la mesa"
+    const val TITLE_CLIENT_PROFILE = "Perfil de usuario"
+    const val TITLE_WORKER_PROFILE = "Perfil de usuario"
+    const val TITLE_CREATE_RESTAURANT = "Create restaurant"
+    const val TITLE_RESTAURANT_PROFILE = "Restaurante"
+    const val TITLE_OCUPAR_MESA = "Ocupar mesa"
+    const val TITLE_TABLE_LIST = "Listado de mesas"
+    const val TITLE_MENU_RESTAURANT = "Menú del restaurante"
+    const val TITLE_ORDER_CLIENT = "Confirmar pedido"
 }

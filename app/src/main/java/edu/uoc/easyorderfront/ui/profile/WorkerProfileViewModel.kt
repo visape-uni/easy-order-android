@@ -4,19 +4,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
-import edu.uoc.easyorderfront.data.restaurant.RestaurantRepository
 import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class WorkerProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     val workerProfile = MutableLiveData<DataWrapper<Worker?>>()
-    val ownerMenu = MutableLiveData<Boolean?>()
     private val TAG = "WorkerProfileViewModel"
 
     fun getWorkerProfile(id: String) {
@@ -27,7 +23,6 @@ class WorkerProfileViewModel(private val profileRepository: ProfileRepository): 
                     Log.d(TAG, "GetWorkerProfile: $userResponse")
 
                     workerProfile.postValue(DataWrapper.success(userResponse as Worker))
-                    ownerMenu.postValue(userResponse.isOwner)
                     Log.d(TAG, "ownerResponse ${userResponse.isOwner}")
                 }
             } catch (easyOrderException: EasyOrderException) {
