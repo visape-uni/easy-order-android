@@ -3,14 +3,19 @@ package edu.uoc.easyorderfront.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.OrderedDish
 import kotlinx.android.synthetic.main.item_ordered_dish.view.*
 
-class OrderClientAdapter(): ListAdapter<OrderedDish, OrderClientAdapter.OrderedDishViewHolder>(orderedDishDiffCallback) {
+class OrderClientAdapter(
+        val orderLive: MutableLiveData<Order>?
+): ListAdapter<OrderedDish, OrderClientAdapter.OrderedDishViewHolder>(orderedDishDiffCallback) {
+    lateinit var list: MutableList<OrderedDish>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderedDishViewHolder {
         return OrderedDishViewHolder(LayoutInflater.from(parent.context)
@@ -18,7 +23,24 @@ class OrderClientAdapter(): ListAdapter<OrderedDish, OrderClientAdapter.OrderedD
     }
 
     override fun onBindViewHolder(holder: OrderedDishViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        val item = list.get(position)
+        holder.bindTo(item)
+
+        if (item.newOrder!!) {
+            holder.itemView.contraintLayout.setOnLongClickListener({
+                val item = list.get(position)
+                list.removeAt(position)
+                notifyDataSetChanged()
+                orderLive?.value?.price = orderLive?.value?.price?.minus(item.totalPrice!!)
+                orderLive?.postValue(orderLive.value)
+                true
+            })
+        }
+    }
+
+    override fun submitList(list: MutableList<OrderedDish>?) {
+        this.list = list!!
+        super.submitList(list)
     }
 
     class OrderedDishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,6 +51,9 @@ class OrderClientAdapter(): ListAdapter<OrderedDish, OrderClientAdapter.OrderedD
             val price = String.format("%.2f", orderedDish.totalPrice)
             itemView.txt_precio.text = price + "€"
 
+            if (orderedDish.newOrder!!) {
+                itemView.txt_cantidad.setBackgroundResource(R.color.green3)
+            }
         }
     }
 

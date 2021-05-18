@@ -15,6 +15,7 @@ class OrderClientViewModel(
         private val repository: OrderRepository
 ) : ViewModel() {
     val orderSaved = MutableLiveData<DataWrapper<Order>>()
+    val order = MutableLiveData<Order>()
 
     private val TAG = "OrderClientViewModel"
 

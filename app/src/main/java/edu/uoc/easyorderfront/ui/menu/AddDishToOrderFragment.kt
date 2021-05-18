@@ -56,13 +56,15 @@ class AddDishToOrderFragment(
         })
 
         view.btn_añadir.setOnClickListener({
-            val totalPrice = dish.price * viewModel.quantity.value!!
+            val totalPrice = dish.price.times(viewModel.quantity.value!!)
+
             val orderedDish = OrderedDish(
                 Calendar.getInstance().timeInMillis.toString(),
                 viewModel.quantity.value,
                 totalPrice,
                 categoryId,
-                dish
+                dish,
+                true
             )
 
             order.price = order.price?.plus(totalPrice)

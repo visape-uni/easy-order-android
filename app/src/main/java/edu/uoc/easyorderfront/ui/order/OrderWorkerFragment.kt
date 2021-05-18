@@ -11,8 +11,10 @@ import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Table
+import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -23,6 +25,7 @@ import java.util.concurrent.TimeUnit
 
 class OrderWorkerFragment : Fragment() {
     private val viewModel: OrderWorkerViewModel by viewModel()
+    private lateinit var adapter : OrderClientAdapter
 
     private val TAG = "OrderWorkerActivity"
 
@@ -65,6 +68,8 @@ class OrderWorkerFragment : Fragment() {
     }
 
     fun prepareUI() {
+        initRecyclerView()
+
         viewModel.lastOrder.observe(this, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
@@ -87,11 +92,13 @@ class OrderWorkerFragment : Fragment() {
                             timeDif = "Desconocido"
                         }
 
-                        if (order.orderedDishes != null && !order.orderedDishes.isEmpty()) {
-                            txt_pedido.visibility = View.GONE
-                            //TODO: LISTA CON LOS PLATOS
+                        if (!order.orderedDishes.isNullOrEmpty()) {
+                            txt_pedido.visibility = View.INVISIBLE
+                            adapter.submitList(order.orderedDishes)
                         } else {
-                            txt_pedido.visibility = View.VISIBLE
+                            if (adapter.currentList.isEmpty()) {
+                                txt_pedido.visibility = View.VISIBLE
+                            }
                         }
 
                         txt_tiempo.text = timeDif
@@ -217,6 +224,25 @@ class OrderWorkerFragment : Fragment() {
         }
     }
 
+    fun initRecyclerView() {
+
+        // Set Layout Manager
+        recycler_view_pedido.layoutManager = LinearLayoutManager(context)
+
+        adapter = OrderClientAdapter(null)
+        // Set Adapter
+        recycler_view_pedido.adapter = adapter
+    }
+
+    private fun getHours(millis: Long): String {
+        return String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis))
+    }
+
+    private fun getMinutes(millis: Long): String {
+        return String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(table: Table) =
@@ -225,15 +251,5 @@ class OrderWorkerFragment : Fragment() {
                         putSerializable(EasyOrderConstants.TABLE_ID_KEY, table)
                     }
                 }
-
-
-        private fun getHours(millis: Long): String {
-            return String.format("%02d", TimeUnit.MILLISECONDS.toHours(millis))
-        }
-
-        private fun getMinutes(millis: Long): String {
-            return String.format("%02d", TimeUnit.MILLISECONDS.toMinutes(millis) -
-                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))
-        }
     }
 }

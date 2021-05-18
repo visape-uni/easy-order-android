@@ -12,6 +12,8 @@ import edu.uoc.easyorderfront.domain.model.Dish
 import edu.uoc.easyorderfront.ui.menu.AddDishToOrderFragment
 import edu.uoc.easyorderfront.ui.menu.MenuRestaurantViewModel
 import kotlinx.android.synthetic.main.item_dish.view.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class MenuDishAdapter(
         private val categoryId: String,
@@ -34,16 +36,18 @@ class MenuDishAdapter(
     class DishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindTo(dish: Dish, viewModel: MenuRestaurantViewModel, categoryId: String, lastItem: Boolean) {
             itemView.lbl_dish.text = dish.name
-            itemView.lbl_dish_price.text = dish.price.toString() + "€"
+
+            val df = DecimalFormat()
+            df.maximumFractionDigits = 2
+            df.minimumFractionDigits = 2
+            df.roundingMode = RoundingMode.CEILING
+            val price = df.format(dish.price)
+            itemView.lbl_dish_price.text = price + "€"
 
             itemView.dish_layout.setOnClickListener({
                 val addDishActivity = AddDishToOrderFragment(viewModel.order.value?.data!!, categoryId, dish, viewModel)
                 addDishActivity.show((itemView.context as FragmentActivity).supportFragmentManager, "TAG")
             })
-
-            /*if (lastItem) {
-                itemView.dish_separator.visibility = View.GONE
-            }*/
         }
     }
 

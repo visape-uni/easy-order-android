@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OrderDTO(
         val uid: String? = null,
-        val price: Double? = 0.0,
+        val price: Float? = 0F,
         val state: String? = null,
         val startedTime: Long? = null,
         val orderedDishes: MutableList<OrderedDishDTO>? = ArrayList()
@@ -24,7 +24,7 @@ data class OrderDTO(
 data class OrderedDishDTO(
         val uid: String? = null,
         val quantity: Int? = 0,
-        val totalPrice: Double? = 0.0,
+        val totalPrice: Float? = 0F,
         val categoryId: String? = null,
         val dish: DishDTO? = null
 ) {

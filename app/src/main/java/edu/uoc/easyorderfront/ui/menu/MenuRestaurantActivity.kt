@@ -10,17 +10,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.MenuRestaurantAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.RESTAURANT_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.TABLE_ID_KEY
 import edu.uoc.easyorderfront.ui.order.OrderClientActivity
+import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_editar_menu.error_message
 import kotlinx.android.synthetic.main.activity_editar_menu.progress_bar
 import kotlinx.android.synthetic.main.activity_editar_menu.recycler_view_editar_menu
 import kotlinx.android.synthetic.main.activity_menu_restaurante.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class MenuRestaurantActivity : AppCompatActivity() {
 
@@ -67,7 +72,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
                 val tableId = intent.getStringExtra(TABLE_ID_KEY)
                 val order = viewModel.order.value?.data
 
-                if (order != null && order.orderedDishes != null && order.orderedDishes.isNotEmpty()) {
+                if (order != null && order.orderedDishes != null && order.orderedDishes!!.isNotEmpty()) {
                     Toast.makeText(applicationContext, "No puedes dejar la mesa sin pagar si ya has hecho un pedido", Toast.LENGTH_LONG).show()
                 } else {
                     viewModel.changeTableState(tableId, "", EasyOrderConstants.EMPTY_STATE)
@@ -141,8 +146,14 @@ class MenuRestaurantActivity : AppCompatActivity() {
         })
 
         viewModel.orderPrice.observe(this, { orderPrice ->
-            val price = String.format("%.2f", orderPrice)
-            btn_pedido.text = getString(R.string.haz_tu_pedido_por_x, price)
+
+            val df = DecimalFormat()
+            df.maximumFractionDigits = 2
+            df.minimumFractionDigits = 2
+            df.roundingMode = RoundingMode.CEILING
+            val price = df.format(orderPrice)
+
+            btn_pedido.text = getString(R.string.haz_tu_pedido_por_x,  price)
             viewModel.order.value?.data?.price = orderPrice
         })
 
@@ -164,14 +175,24 @@ class MenuRestaurantActivity : AppCompatActivity() {
         })
 
         val tableId = intent.getStringExtra(TABLE_ID_KEY)
-        viewModel.getLastOrderFromTable(tableId)
+
+        val order = intent.getSerializableExtra(ORDER_KEY) as Order?
+        if (order != null) {
+            // Si se viene de la pantalla de confirmacion del pedido
+            order.orderedDishes = order.orderedDishes?.toMutableList()
+            viewModel.order.postValue(DataWrapper.success(order))
+        } else {
+            viewModel.getLastOrderFromTable(tableId)
+        }
 
         btn_pedido.setOnClickListener({
             val tableId = intent.getStringExtra(TABLE_ID_KEY)
             val intent = Intent(this, OrderClientActivity::class.java)
             intent.putExtra(ORDER_KEY, viewModel.order.value?.data)
             intent.putExtra(TABLE_ID_KEY, tableId)
+            intent.putExtra(RESTAURANT_ID_KEY, viewModel.restaurantProfile.value?.data?.id)
             startActivity(intent)
+            finish()
         })
 
         getMenu()
@@ -188,8 +209,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
     }
 
     fun getMenu() {
-        val restrurantId = intent.getStringExtra(EasyOrderConstants.RESTAURANT_ID_KEY)
+        val restrurantId = intent.getStringExtra(RESTAURANT_ID_KEY)
         viewModel.getRestaurant(restrurantId!!)
     }
-
 }

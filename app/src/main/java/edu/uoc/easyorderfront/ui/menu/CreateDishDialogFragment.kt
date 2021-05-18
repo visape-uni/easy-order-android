@@ -70,7 +70,7 @@ class CreateDishDialogFragment(
             val description = txt_descripcion.text.toString()
             val price = txt_precio.text.toString()
             if (nombre.isNotBlank() && description.isNotBlank() && price.isNotBlank()) {
-                createDish(nombre, description, price.toDouble())
+                createDish(nombre, description, price.toFloat())
             } else {
                 Toast.makeText(context, "Debes rellenar el nombre, la descripción y el precio", Toast.LENGTH_LONG).show()
             }
@@ -81,7 +81,7 @@ class CreateDishDialogFragment(
         })
     }
 
-    fun createDish(name: String, description: String, price: Double) {
+    fun createDish(name: String, description: String, price: Float) {
         val categoryId = category.uid!!
         val dishId = menuLive.value?.data?.categories?.get(categoryId.toInt() - 1)?.dishes?.size?.plus(1).toString()
         val dish = Dish(dishId, name, description, price)

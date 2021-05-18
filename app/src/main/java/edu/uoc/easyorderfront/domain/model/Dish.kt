@@ -7,7 +7,7 @@ data class Dish(
     val uid: String?,
     val name: String? = null,
     val description: String? = null,
-    val price: Double = 0.0,
+    val price: Float = 0F,
     val aliments: MutableList<String>? = ArrayList(),
     val calories: Int? = 0
 ) : Serializable {

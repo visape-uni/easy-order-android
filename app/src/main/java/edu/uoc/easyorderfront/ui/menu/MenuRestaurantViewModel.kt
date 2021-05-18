@@ -26,7 +26,7 @@ class MenuRestaurantViewModel(
     private val TAG = "MenuRestaurantViewModel"
 
     val order = MutableLiveData<DataWrapper<Order>>()
-    val orderPrice = MutableLiveData<Double>()
+    val orderPrice = MutableLiveData<Float>()
     val menu = MutableLiveData<DataWrapper<Menu>>()
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()
     val tableStateChanged = MutableLiveData<DataWrapper<Table>>()
