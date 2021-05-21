@@ -1,6 +1,8 @@
 package edu.uoc.easyorderfront.ui.constants
 
 object EasyOrderConstants {
+    const val STRIPE_KEY = "pk_test_51ItFJUK1ZW7F7TQdmRGbkiNByi3joV3ixPaHHMQkSnvtlQM5xmr2uW6YKbFFcDkKroOe0y7B0DwCjCbcMNBuae6G00nM9GFAxm"
+
     const val WORKER_ID_LABEL = "WorkingID"
     const val RESTAURANT_ID_KEY = "restaurantID"
     const val TABLE_ID_KEY = "tableID"

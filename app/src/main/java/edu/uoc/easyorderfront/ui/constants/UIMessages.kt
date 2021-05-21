@@ -37,4 +37,5 @@ object UIMessages {
     const val TITLE_TABLE_LIST = "Listado de mesas"
     const val TITLE_MENU_RESTAURANT = "Menú del restaurante"
     const val TITLE_ORDER_CLIENT = "Confirmar pedido"
+    const val TITLE_WAITING_SCREEN = "Preparando pedido"
 }

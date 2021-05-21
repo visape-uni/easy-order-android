@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
+import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
@@ -60,7 +61,10 @@ class OrderClientActivity : AppCompatActivity() {
                         orderedDish.newOrder = false
                     }
 
-                    startActivity(Intent(this, WaitScreenActivity::class.java))
+                    if (order != null) {
+                        SessionManager(applicationContext).saveOrder(order)
+                        startActivity(Intent(this, WaitScreenActivity::class.java))
+                    }
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE

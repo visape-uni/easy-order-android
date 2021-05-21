@@ -66,9 +66,12 @@ dependencies {
     // Firebase auth
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    // QR Code (ZXing)
+    // QR Code (ZXing & QR Generator)
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+
+    // PAYMENT
+    implementation 'com.stripe:stripe-android:16.8.0'
 
 
     // Testing

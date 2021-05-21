@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.data
 
 import android.content.Context
 import com.google.gson.Gson
+import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
@@ -15,6 +16,7 @@ class SessionManager(context: Context) {
     private val userIdKey = "userIdKey"
     private val userKey = "userKey"
     private val userType = "userType"
+    private val orderKey = "orderKey"
 
     fun getAccessToken(): String? {
         return sharedPreferences.getString(accessTokenKey, null)
@@ -77,6 +79,24 @@ class SessionManager(context: Context) {
         val editor = sharedPreferences.edit()
         editor.remove(userKey)
         editor.remove(userType)
+        editor.apply()
+    }
+
+    fun saveOrder(order: Order) {
+        val editor = sharedPreferences.edit()
+        val orderJson = Gson().toJson(order)
+        editor.putString(orderKey, orderJson)
+        editor.apply()
+    }
+
+    fun getOrder(): Order {
+        val orderJson = sharedPreferences.getString(orderKey, null)
+        return Gson().fromJson(orderJson, Order::class.java)
+    }
+
+    fun clearOrder() {
+        val editor = sharedPreferences.edit()
+        editor.remove(orderKey)
         editor.apply()
     }
 

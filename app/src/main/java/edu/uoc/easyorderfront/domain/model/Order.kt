@@ -9,7 +9,8 @@ class Order(
         var price: Float? = 0F,
         var state: String? = null,
         val startedTime: Long? = null,
-        var orderedDishes: MutableList<OrderedDish>? = ArrayList()
+        var orderedDishes: MutableList<OrderedDish>? = ArrayList(),
+        val userId: String? = null
 ) : Serializable {
     fun converToDTO() : OrderDTO {
         val orderedDishesDTOList = orderedDishes?.map{orderedDish -> orderedDish.converToDTO() }?.toMutableList()

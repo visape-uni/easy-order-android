@@ -12,10 +12,15 @@ class MyApplication : Application() {
 
         //Start Koin
         startKoin {
-            printLogger()
+            //printLogger()
             modules(dataModule)
             modules(uiModule)
             androidContext(this@MyApplication)
         }
+
+        /*PaymentConfiguration.init(
+            applicationContext,
+            EasyOrderConstants.STRIPE_KEY
+        )*/
     }
 }

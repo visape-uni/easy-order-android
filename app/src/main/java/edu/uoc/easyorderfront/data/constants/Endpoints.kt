@@ -29,4 +29,7 @@ object Endpoints {
     const val createDishUrl = "$menuApi/createDish/"
     const val deleteDishUrl = "$menuApi/deleteDish/"
 
+    private const val paymentApi = "$authenticationApi/payment"
+    const val checkoutPaymentUrl = "$paymentApi/checkout"
+
 }
