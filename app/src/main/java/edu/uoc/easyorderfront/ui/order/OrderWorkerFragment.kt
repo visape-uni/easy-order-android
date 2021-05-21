@@ -79,7 +79,7 @@ class OrderWorkerFragment : Fragment() {
     fun prepareUI() {
         initRecyclerView()
 
-        viewModel.lastOrder.observe(this, { dataWrapper ->
+        viewModel.lastOrder.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -123,7 +123,7 @@ class OrderWorkerFragment : Fragment() {
             }
         })
 
-        viewModel.table.observe(this, { dataWrapper ->
+        viewModel.table.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE

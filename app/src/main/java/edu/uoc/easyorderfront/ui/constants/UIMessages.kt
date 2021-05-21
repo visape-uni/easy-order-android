@@ -17,6 +17,8 @@ object UIMessages {
     const val ERROR_OCUPANDO_MESA = "Error ocupando mesa"
     const val ERROR_CREANDO_TABLE = "Error creando mesa"
     const val ERROR_CARGANDO_RESTAURANTE = "Error cargando restaurante"
+    const val ERROR_CREANDO_RESTAURANTE = "Error creando restaurante"
+    const val ERROR_USUARIO_SIN_RESTAURANTE = "Error el usuario no tiene restaurante"
     const val ERROR_CARGANDO_PERFIL = "Error cargando perfil"
     const val ERROR_SESSION_EXPIRADA = "Error sessión expirada"
     const val ERROR_LOGUEANDO = "Error iniciando sessión, vuelva a intentar"

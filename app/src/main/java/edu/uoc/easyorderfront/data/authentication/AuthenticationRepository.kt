@@ -14,4 +14,5 @@ interface AuthenticationRepository {
     // Devuelve el token del usuario actual
     suspend fun getIdToken(): String?
 
+    suspend fun signOut()
 }

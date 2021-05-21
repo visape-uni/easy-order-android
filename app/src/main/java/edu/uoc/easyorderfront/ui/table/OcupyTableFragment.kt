@@ -70,7 +70,7 @@ class OcupyTableFragment : Fragment() {
     }
 
     fun prepareUI() {
-        viewModel.tableStateChanged.observe(this, { dataWrapper ->
+        viewModel.tableStateChanged.observe(viewLifecycleOwner, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -96,7 +96,7 @@ class OcupyTableFragment : Fragment() {
             }
         })
 
-        viewModel.table.observe(this, { dataWrapper ->
+        viewModel.table.observe(viewLifecycleOwner, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE

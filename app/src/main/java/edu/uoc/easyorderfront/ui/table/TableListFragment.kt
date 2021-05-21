@@ -92,7 +92,7 @@ class TableListFragment : Fragment() {
 
     fun prepareUI() {
 
-        viewModel.tables.observe(this, { dataWrapper ->
+        viewModel.tables.observe(viewLifecycleOwner, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -119,7 +119,7 @@ class TableListFragment : Fragment() {
             }
         })
 
-        viewModel.restaurantProfile.observe(this, { dataWrapper->
+        viewModel.restaurantProfile.observe(viewLifecycleOwner, { dataWrapper->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -144,7 +144,7 @@ class TableListFragment : Fragment() {
 
     fun getRestaurantTables() {
 
-        val restaurant = (SessionManager(context!!).getUser() as Worker).restaurant
+        val restaurant = (SessionManager(requireContext()).getUser() as Worker).restaurant
         if (restaurant != null) {
             viewModel.restaurantProfile.postValue(DataWrapper.success(restaurant))
         } else {

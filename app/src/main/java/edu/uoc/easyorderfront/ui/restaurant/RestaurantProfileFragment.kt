@@ -58,7 +58,7 @@ class RestaurantProfileFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO: SOLO MOSTRAR MENU SI ES EL DUEÑO
-        inflater.inflate(R.menu.menu_worker_profile, menu)
+        inflater.inflate(R.menu.menu_restaurant_profile, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -77,7 +77,7 @@ class RestaurantProfileFragment : Fragment() {
     }
 
     fun prepareUI() {
-        viewModel.restaurantProfile.observe(this, { dataWrapper ->
+        viewModel.restaurantProfile.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -125,7 +125,7 @@ class RestaurantProfileFragment : Fragment() {
 
     fun getRestaurant() {
 
-        val restaurant = (SessionManager(context!!).getUser() as Worker).restaurant
+        val restaurant = (SessionManager(requireContext()).getUser() as Worker).restaurant
         if (restaurant != null) {
             viewModel.restaurantProfile.postValue(DataWrapper.success(restaurant))
         } else {

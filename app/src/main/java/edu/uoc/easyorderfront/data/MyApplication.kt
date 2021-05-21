@@ -12,7 +12,6 @@ class MyApplication : Application() {
 
         //Start Koin
         startKoin {
-            printLogger()
             modules(dataModule)
             modules(uiModule)
             androidContext(this@MyApplication)

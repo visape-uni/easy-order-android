@@ -58,7 +58,6 @@ class ClientProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_table -> {
-
                 val fragmentTag = OcupyTableFragment::class.qualifiedName.toString()
                 val fragment = OcupyTableFragment.newInstance()
                 (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)
@@ -68,7 +67,7 @@ class ClientProfileFragment : Fragment() {
     }
 
     fun prepareUI() {
-        viewModel.clientProfile.observe(this, {dataWrapperUser ->
+        viewModel.clientProfile.observe(viewLifecycleOwner, {dataWrapperUser ->
             when (dataWrapperUser.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -96,12 +95,12 @@ class ClientProfileFragment : Fragment() {
             }
         })
 
-        val profile = SessionManager(context!!).getUser()
+        val profile = SessionManager(requireContext()).getUser()
         if (profile != null && profile.uid != null) {
             viewModel.clientProfile.postValue(DataWrapper.success(profile))
         } else {
             // Si falla obteniendo perfil de SessionManager
-            val uid = SessionManager(context!!).getUserId()
+            val uid = SessionManager(requireContext()).getUserId()
             if (uid != null) {
                 viewModel.getClientProfile(uid)
             } else {

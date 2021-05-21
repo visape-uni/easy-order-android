@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.uoc.easyorderfront.data.authentication.AuthenticationRepository
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.profile.ProfileRepository
 import edu.uoc.easyorderfront.domain.model.User
@@ -12,7 +13,8 @@ import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
 
 class MainClientMenuViewModel(
-        private val profileRepository: ProfileRepository
+        private val profileRepository: ProfileRepository,
+        private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
     val clientProfile = MutableLiveData<DataWrapper<User?>>()
@@ -35,6 +37,12 @@ class MainClientMenuViewModel(
                 Log.e(TAG, e.toString())
                 clientProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
             }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            authenticationRepository.signOut()
         }
     }
 }

@@ -88,7 +88,7 @@ class EditarMenuFragment : Fragment() {
 
     fun prepareUI() {
 
-        viewModel.menuDeleted.observe(this, { dataWrapper ->
+        viewModel.menuDeleted.observe(viewLifecycleOwner, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -105,7 +105,7 @@ class EditarMenuFragment : Fragment() {
             }
         })
 
-        viewModel.menu.observe(this, { dataWrapper ->
+        viewModel.menu.observe(viewLifecycleOwner, { dataWrapper ->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -121,7 +121,7 @@ class EditarMenuFragment : Fragment() {
             }
         })
 
-        viewModel.restaurantProfile.observe(this, { dataWrapper->
+        viewModel.restaurantProfile.observe(viewLifecycleOwner, { dataWrapper->
             when(dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -142,7 +142,7 @@ class EditarMenuFragment : Fragment() {
     }
 
     fun getMenu() {
-        val restaurant = (SessionManager(context!!).getUser() as Worker).restaurant
+        val restaurant = (SessionManager(requireContext()).getUser() as Worker).restaurant
         if (restaurant != null) {
             viewModel.restaurantProfile.postValue(DataWrapper.success(restaurant))
         } else {

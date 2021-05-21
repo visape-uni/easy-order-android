@@ -13,7 +13,9 @@ import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.ui.constants.UIMessages
+import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
+import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_create_restaurant.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -53,6 +55,24 @@ class CreateRestaurantFragment : Fragment() {
     fun prepareUI() {
 
         //TODO: Observe createRestaurantState from viewModel
+        viewModel.created.observe(viewLifecycleOwner, {dataWrapper ->
+            when (dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    Toast.makeText(context, getString(R.string.restaurante_creado_correctamente), Toast.LENGTH_LONG).show()
+                    dataWrapper.data?.let {
+                        SessionManager(requireContext()).addRestaurant(it)
+                        (activity as MainWorkerMenuActivity).onBackPressed()
+                    }
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Toast.makeText(context, UIMessages.ERROR_CREANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
 
         //TODO: OnClickListener image restaurant
         btn_add_image.setOnClickListener({
@@ -81,15 +101,13 @@ class CreateRestaurantFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
                 // Guardar al usuario como dueño
-                val owner = User(SessionManager(context!!).getUserId())
+                val owner = User(SessionManager(requireContext()).getUserId())
                 viewModel.createRestaurant(Restaurant(null, restaurantName, restaurantStreet, restaurantCity, restaurantZipCode, restaurantCountry, owner = owner))
             }
         })
 
         btn_cancelar.setOnClickListener({
-            /*startActivity(Intent(this, CreateRestaurantFragment::class.java))
-            finish()*/
-
+            (activity as MainWorkerMenuActivity).onBackPressed()
         })
     }
 

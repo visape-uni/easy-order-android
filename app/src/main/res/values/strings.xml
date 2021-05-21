@@ -95,4 +95,5 @@
     <string name="mesa">Mesa:</string>
     <string name="preparando_perdido">Preparando perdido</string>
     <string name="error_usuario_incorrect">Usuario incorrecto</string>
+    <string name="restaurante_creado_correctamente">Restaurante creado correctamente</string>
 </resources>

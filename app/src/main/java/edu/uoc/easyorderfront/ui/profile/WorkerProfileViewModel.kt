@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class WorkerProfileViewModel(private val profileRepository: ProfileRepository): ViewModel() {
     val workerProfile = MutableLiveData<DataWrapper<Worker?>>()
+    val restaurantMenu = MutableLiveData<Boolean?>()
     private val TAG = "WorkerProfileViewModel"
 
     fun getWorkerProfile(id: String) {
@@ -21,8 +22,9 @@ class WorkerProfileViewModel(private val profileRepository: ProfileRepository): 
                 workerProfile.postValue(DataWrapper.loading(null))
                 profileRepository.getProfile(id).let { userResponse ->
                     Log.d(TAG, "GetWorkerProfile: $userResponse")
+                    val worker = userResponse as Worker
 
-                    workerProfile.postValue(DataWrapper.success(userResponse as Worker))
+                    workerProfile.postValue(DataWrapper.success(worker))
                     Log.d(TAG, "ownerResponse ${userResponse.isOwner}")
                 }
             } catch (easyOrderException: EasyOrderException) {

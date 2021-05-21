@@ -32,7 +32,10 @@ class OAuthFeature(
             scope.requestPipeline.intercept(HttpRequestPipeline.State) {
                 context.headers[RefreshKey] = context.headers.contains("Authorization").toString()
 
-                context.headers["Authorization"] = "Bearer ${feature.getToken()}"
+                val token = feature.getToken()
+                if (token.isNotBlank()) {
+                    context.headers["Authorization"] = "Bearer ${token}"
+                }
 
                 proceed()
             }
@@ -57,6 +60,16 @@ class OAuthFeature(
                     } catch (exception: Exception) {
                         // If refresh fails, proceed as 401
                     }
+                } else if (subject.status == HttpStatusCode.RequestTimeout) {
+                    // Retry request
+                    val call = scope.requestPipeline.execute(
+                            HttpRequestBuilder().takeFrom(context.request),
+                            context.request.content
+                    ) as HttpClientCall
+
+                    proceedWith(call.response)
+
+                    return@intercept
                 }
                 // Proceed as normal request
                 proceedWith(subject)

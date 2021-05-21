@@ -1,18 +1,20 @@
 package edu.uoc.easyorderfront.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import edu.uoc.easyorderfront.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_worker_register.*
 
 class MainWorkerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_worker_register)
         configurarTabs()
+
+        setSupportActionBar(toolbar)
         supportActionBar?.title = "Area de trabajadores"
     }
 

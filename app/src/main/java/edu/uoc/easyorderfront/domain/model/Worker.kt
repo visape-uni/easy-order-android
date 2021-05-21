@@ -8,8 +8,8 @@ class Worker(
         username:String?,
         email:String?,
         password:String? = null,
-        val isOwner:Boolean?,
-        val restaurant: Restaurant?): User(uid, username, email, password, false) {
+        var isOwner:Boolean?,
+        var restaurant: Restaurant?): User(uid, username, email, password, false) {
     override fun convertToDTO(): UserDTO {
         return UserDTO(uid, username, email, password, isClient, isOwner,null, restaurant?.convertToDTO())
     }

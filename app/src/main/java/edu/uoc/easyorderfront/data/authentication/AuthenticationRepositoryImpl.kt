@@ -18,8 +18,6 @@ class AuthenticationRepositoryImpl(
         return firebaseUserResponse
     }
 
-
-
     override suspend fun register(user: User): User? {
         val registerDTO = authenticationBackendDataSource.register(user.convertToDTO())
 
@@ -32,5 +30,9 @@ class AuthenticationRepositoryImpl(
         Log.d(TAG, "getIdToken response $token")
 
         return token
+    }
+
+    override suspend fun signOut() {
+        firebaseDataSource.signOut()
     }
 }

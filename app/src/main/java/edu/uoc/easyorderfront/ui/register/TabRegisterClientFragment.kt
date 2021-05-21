@@ -41,7 +41,7 @@ class TabRegisterClientFragment : Fragment() {
     }
 
     fun prepareUI() {
-        viewModel.getTokenResult.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -63,7 +63,7 @@ class TabRegisterClientFragment : Fragment() {
                             if (user != null) {
                                 val intent = Intent(context, MainClientMenuActivity::class.java)
                                 intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.CLIENT_PROFILE_FRAGMENT)
-                                startActivity(Intent(context, MainClientMenuActivity::class.java))
+                                startActivity(intent)
                                 //startActivity(Intent(context, ClientProfileFragment::class.java))
 
                             } else {
@@ -81,7 +81,7 @@ class TabRegisterClientFragment : Fragment() {
             }
         })
 
-        viewModel.login.observe(this, { dataWrapper ->
+        viewModel.login.observe(viewLifecycleOwner, { dataWrapper ->
 
             when(dataWrapper.status) {
                 Status.LOADING -> {
@@ -106,7 +106,7 @@ class TabRegisterClientFragment : Fragment() {
             }
         })
 
-        viewModel.registered.observe(this, { dataWrapper ->
+        viewModel.registered.observe(viewLifecycleOwner, { dataWrapper ->
 
             when(dataWrapper.status) {
                 Status.LOADING -> {

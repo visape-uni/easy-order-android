@@ -45,15 +45,9 @@ object Network {
                 }
                 accept(ContentType.Application.Json)
                 header("Connection", "close")
-
-                // TODO: PONER TOKEN
-                /* (checkUrlToken(this.url.encodedPath)) {
-                    header("Authorization", "Bearer " + SessionManager(context).getAccessToken())
-                }*/
-
             }
 
-            HttpResponseValidator {
+            /*HttpResponseValidator {
                 validateResponse { response ->
                     val statusCode = response.status.value
                     when (statusCode) {
@@ -62,7 +56,7 @@ object Network {
                         in 500..599 -> throw ServerResponseException(response)
                     }
                 }
-            }
+            }*/
 
             install(OAuthFeature) {
                 getToken = {
@@ -76,23 +70,6 @@ object Network {
                     launchTokenRefresh(context)
                 }
             }
-
-
-            // Add OAuth Feature
-            /*install(OAuthFeature) {
-                getToken = {
-                    val accessToken = SessionManager(context).getAccessToken() ?: ""
-
-                    Log.d(TAG, "Adding Bearer header with token $accessToken")
-                    accessToken
-                }
-                refreshToken = {
-                    // Remove expired access token
-                    SessionManager(context).clearAccessToken()
-                    // Launch token refresh request
-                    launchTokenRefresh(context)
-                }
-            }*/
         }
     }
 

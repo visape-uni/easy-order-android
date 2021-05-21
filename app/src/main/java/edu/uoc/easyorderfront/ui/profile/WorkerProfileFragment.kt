@@ -6,9 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -18,6 +16,7 @@ import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
+import edu.uoc.easyorderfront.ui.restaurant.CreateRestaurantFragment
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import edu.uoc.easyorderfront.ui.utils.Status
@@ -59,9 +58,34 @@ class WorkerProfileFragment : Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu?.clear()
+        if (viewModel.restaurantMenu.value != null
+                && viewModel.restaurantMenu.value!!) {
+            inflater.inflate(R.menu.menu_worker_profile, menu)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_create_restaurant -> {
+                val fragment = CreateRestaurantFragment.newInstance()
+                (activity as MainWorkerMenuActivity).replaceFragment(fragment)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
     fun prepareUI() {
 
-        viewModel.workerProfile.observe(this, {dataWrapperUser ->
+        viewModel.restaurantMenu.observe(viewLifecycleOwner, { showMenu ->
+            Log.d(TAG, "restaurantMenu $showMenu")
+            activity?.invalidateOptionsMenu()
+        })
+
+        viewModel.workerProfile.observe(viewLifecycleOwner, {dataWrapperUser ->
             when(dataWrapperUser.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -74,7 +98,7 @@ class WorkerProfileFragment : Fragment() {
                         txt_id.text = worker.uid
                         txt_nombre.text = worker.username
                         txt_email.text = worker.email
-                        if (worker.isOwner != null && worker.isOwner) {
+                        if (worker.isOwner != null && worker.isOwner!!) {
                             txt_tipo.text = getString(R.string.due_o)
 
                         } else {
@@ -90,6 +114,14 @@ class WorkerProfileFragment : Fragment() {
                             clipboardManager.setPrimaryClip(clip)
                             Toast.makeText(context, "ID del trabajador copiado correctamente", Toast.LENGTH_LONG).show()
                         })
+
+                        if ((worker.isOwner == null || !worker.isOwner!!)
+                                && (worker.restaurant == null)) {
+                            viewModel.restaurantMenu.postValue(true)
+                        } else {
+                            viewModel.restaurantMenu.postValue(false)
+                        }
+
                         progress_bar.visibility = View.GONE
                     }
 
@@ -102,12 +134,12 @@ class WorkerProfileFragment : Fragment() {
         })
 
 
-        val profile = SessionManager(context!!).getUser()
+        val profile = SessionManager(requireContext()).getUser()
         if (profile != null && profile.uid != null) {
             viewModel.workerProfile.postValue(DataWrapper.success(profile as Worker))
         } else {
             // Si falla obteniendo perfil de SessionManager
-            val uid = SessionManager(context!!).getUserId()
+            val uid = SessionManager(requireContext()).getUserId()
             if (uid != null) {
                 viewModel.getWorkerProfile(uid)
             } else {

@@ -62,7 +62,7 @@ class TabLoginFragment : Fragment() {
             }
         })
 
-        viewModel.getTokenResult.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -94,7 +94,7 @@ class TabLoginFragment : Fragment() {
             }
         })
 
-        viewModel.isLogged.observe(this, { dataWrapper ->
+        viewModel.isLogged.observe(viewLifecycleOwner, { dataWrapper ->
 
             when (dataWrapper.status) {
                 Status.LOADING -> {
@@ -117,7 +117,7 @@ class TabLoginFragment : Fragment() {
             }
         })
 
-        viewModel.userProfile.observe(this, { dataWrapper ->
+        viewModel.userProfile.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -142,35 +142,20 @@ class TabLoginFragment : Fragment() {
                     } else {
                         Log.i(TAG, "Is Worker")
                         val workerProfile = dataWrapper.data as Worker
-                        if (workerProfile.restaurant != null && workerProfile.restaurant.id != null) {
+                        if (workerProfile.restaurant != null && workerProfile.restaurant!!.id != null) {
                             if (workerProfile.isOwner != null) {
                                 // TODO: ShowRestaurantScreen
-                                /*val restaurantIntent =
-                                    Intent(context, RestaurantProfileFragment::class.java)
-                                restaurantIntent.putExtra(
-                                    EasyOrderConstants.RESTAURANT_ID_KEY,
-                                    workerProfile.restaurant.id
-                                )
-                                startActivity(restaurantIntent)*/
                                 val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                 intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
-                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant.id)
+                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant!!.id)
                                 startActivity(intent)
                             } else {
-                                /*val tableListIntent =
-                                    Intent(context, TableListFragment::class.java)
-                                tableListIntent.putExtra(
-                                    EasyOrderConstants.RESTAURANT_ID_KEY,
-                                    workerProfile.restaurant.id
-                                )
-                                startActivity(tableListIntent)*/
                                 val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                 intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.TABLE_LIST_FRAGMENT)
-                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant.id)
+                                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant!!.id)
                                 startActivity(intent)
                             }
                         } else {
-                            //startActivity(Intent(context, WorkerProfileFragment::class.java))
                             val intent = Intent(context, MainWorkerMenuActivity::class.java)
                             intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.WORKER_PROFILE_FRAGMENT)
                             startActivity(intent)

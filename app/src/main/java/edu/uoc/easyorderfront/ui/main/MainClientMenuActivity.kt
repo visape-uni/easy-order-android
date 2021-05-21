@@ -60,7 +60,11 @@ class MainClientMenuActivity : AppCompatActivity(),
             if (supportFragmentManager.backStackEntryCount > 1) {
                 super.onBackPressed()
             } else {
-                //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
+                viewModel.signOut()
+                SessionManager(applicationContext).clearAccessToken()
+                SessionManager(applicationContext).clearUser()
+                SessionManager(applicationContext).clearUserId()
+                finish()
             }
         }
     }
@@ -83,18 +87,14 @@ class MainClientMenuActivity : AppCompatActivity(),
     }
 
 
-    public fun replaceFragment(fragment: Fragment, fragmentTag: String){
+    fun replaceFragment(fragment: Fragment, fragmentTag: String){
 
         supportFragmentManager.popBackStack(fragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.content_frame, fragment, fragmentTag).addToBackStack(fragmentTag).commit()
+        transaction.replace(R.id.content_frame, fragment, fragmentTag)
+                .addToBackStack(fragmentTag).commit()
 
-    }
-
-    public fun removeFragment(fragment: Fragment) {
-            supportFragmentManager.popBackStack(fragment.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
     }
 
     private fun showFragment() {

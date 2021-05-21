@@ -2,6 +2,7 @@ package edu.uoc.easyorderfront.data
 
 import android.content.Context
 import com.google.gson.Gson
+import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.domain.model.User
 import edu.uoc.easyorderfront.domain.model.Worker
@@ -86,6 +87,17 @@ class SessionManager(context: Context) {
         if (!userType) {
             val worker = Gson().fromJson(userJson, Worker::class.java)
             worker.restaurant?.tables?.add(table)
+            saveUser(worker)
+        }
+    }
+
+    fun addRestaurant(restaurant: Restaurant) {
+        val userJson = sharedPreferences.getString(userKey, null)
+        val userType = sharedPreferences.getBoolean(userType, true)
+        if (!userType) {
+            val worker = Gson().fromJson(userJson, Worker::class.java)
+            worker.isOwner = true
+            worker.restaurant = restaurant
             saveUser(worker)
         }
     }

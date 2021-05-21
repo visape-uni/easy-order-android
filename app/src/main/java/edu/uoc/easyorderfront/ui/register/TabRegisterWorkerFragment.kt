@@ -41,7 +41,7 @@ class TabRegisterWorkerFragment : Fragment() {
 
     fun prepareUI() {
 
-        viewModel.getTokenResult.observe(this, { dataWrapper ->
+        viewModel.getTokenResult.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
                     progress_bar.visibility = View.VISIBLE
@@ -61,16 +61,12 @@ class TabRegisterWorkerFragment : Fragment() {
                             // Open worker screen
                             val worker = SessionManager(context).getUser() as Worker
                             if (worker != null) {
-                                if (worker.restaurant != null && worker.restaurant.id != null) {
+                                if (worker.restaurant != null && worker.restaurant!!.id != null) {
                                     // TODO: ShowRestaurantScreen
-                                    /*val restaurantIntent = Intent(context, RestaurantProfileFragment::class.java)
-                                    restaurantIntent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, worker.restaurant.id)
-                                    startActivity(restaurantIntent)*/
                                     val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                     intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
                                     startActivity(intent)
                                 } else {
-                                    //startActivity(Intent(context, WorkerProfileFragment::class.java))
                                     val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                     intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.WORKER_PROFILE_FRAGMENT)
                                     startActivity(intent)
@@ -90,7 +86,7 @@ class TabRegisterWorkerFragment : Fragment() {
             }
         })
 
-        viewModel.login.observe(this, { dataWrapper ->
+        viewModel.login.observe(viewLifecycleOwner, { dataWrapper ->
 
             when(dataWrapper.status) {
                 Status.LOADING -> {
@@ -114,7 +110,7 @@ class TabRegisterWorkerFragment : Fragment() {
             }
         })
 
-        viewModel.registered.observe(this, { dataWrapper ->
+        viewModel.registered.observe(viewLifecycleOwner, { dataWrapper ->
 
             when(dataWrapper.status) {
                 Status.LOADING -> {

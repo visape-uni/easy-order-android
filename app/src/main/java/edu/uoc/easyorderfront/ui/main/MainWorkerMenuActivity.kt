@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
@@ -21,12 +22,14 @@ import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileFragment
 import edu.uoc.easyorderfront.ui.table.TableListFragment
 import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
 import kotlinx.android.synthetic.main.activity_main_worker_menu.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainWorkerMenuActivity : AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         OnTitleChangedListener {
 
-    var currentFragment: String? = null
+    private val viewModel: MainWorkerMenuViewModel by viewModel()
+    private var currentFragment: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +57,11 @@ class MainWorkerMenuActivity : AppCompatActivity(),
             if (supportFragmentManager.backStackEntryCount > 1) {
                 super.onBackPressed()
             } else {
-                //TODO: CERRAR SESION (LIMPIAR SESSION MANAGER)
+                viewModel.signOut()
+                SessionManager(applicationContext).clearAccessToken()
+                SessionManager(applicationContext).clearUser()
+                SessionManager(applicationContext).clearUserId()
+                finish()
             }
         }
     }
@@ -68,16 +75,16 @@ class MainWorkerMenuActivity : AppCompatActivity(),
             R.id.nav_restaurant -> {
                 val worker = SessionManager(applicationContext).getUser() as Worker
                 if (worker.restaurant?.id != null) {
-                    val fragment = RestaurantProfileFragment.newInstance(worker.restaurant?.id)
+                    val fragment = RestaurantProfileFragment.newInstance(worker.restaurant?.id!!)
                     replaceFragment(fragment)
                 } else {
-                    Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, UIMessages.ERROR_USUARIO_SIN_RESTAURANTE, Toast.LENGTH_LONG).show()
                 }
             }
             R.id.nav_mesas -> {
                 val worker = SessionManager(applicationContext).getUser() as Worker
                 if (worker.restaurant?.id != null) {
-                    val fragment = TableListFragment.newInstance(worker.restaurant?.id)
+                    val fragment = TableListFragment.newInstance(worker.restaurant?.id!!)
                     replaceFragment(fragment)
                 } else {
                     Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
@@ -86,7 +93,7 @@ class MainWorkerMenuActivity : AppCompatActivity(),
             R.id.nav_menu -> {
                 val worker = SessionManager(applicationContext).getUser() as Worker
                 if (worker.restaurant?.id != null) {
-                    val fragment = EditarMenuFragment.newInstance(worker.restaurant?.id)
+                    val fragment = EditarMenuFragment.newInstance(worker.restaurant?.id!!)
                     replaceFragment(fragment)
                 } else {
                     Toast.makeText(this, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
@@ -102,6 +109,11 @@ class MainWorkerMenuActivity : AppCompatActivity(),
         fragmentTransaction.replace(R.id.content_frame, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+
+    public fun removeFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack(fragment.getTag(), FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.beginTransaction().remove(fragment).commit()
     }
 
     private fun showFragment() {

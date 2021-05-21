@@ -55,4 +55,9 @@ class FirebaseDataSource(
         Log.d(TAG, "RefreshToken END")
         return token
     }
+
+    suspend fun signOut() {
+        Log.d(TAG, "SignOut")
+        auth.signOut()
+    }
 }
