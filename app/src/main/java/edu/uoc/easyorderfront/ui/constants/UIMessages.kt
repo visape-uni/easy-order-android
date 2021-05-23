@@ -11,6 +11,8 @@ object UIMessages {
     const val ERROR_USUARIO_INEXISTENTE = "No existe ningun usuario con este email"
 
 
+    const val ERROR_TRABAJADOR_NO_EXISTE = "El trabajador no existe"
+    const val ERROR_AÑADIENDO_TRABAJADOR = "Error añadiendo trabajador"
     const val ERROR_HACIENDO_PEDIDO = "Error haciendo pedido"
     const val ERROR_CREANDO_CATEGORIA = "Error creando categoria"
     const val ERROR_OBTENIENDO_MESA = "Error obteniendo mesa"
@@ -39,4 +41,5 @@ object UIMessages {
     const val TITLE_TABLE_LIST = "Listado de mesas"
     const val TITLE_MENU_RESTAURANT = "Menú del restaurante"
     const val TITLE_ORDER_CLIENT = "Confirmar pedido"
+    const val TITLE_WORKERS_LIST = "Listado de trabajadores"
 }

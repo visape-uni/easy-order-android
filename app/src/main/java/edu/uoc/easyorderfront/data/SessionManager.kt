@@ -58,7 +58,6 @@ class SessionManager(context: Context) {
             val worker = Gson().fromJson(userJson, Worker::class.java)
             return worker;
         }
-
     }
 
     fun saveUser(user: User) {
@@ -98,6 +97,26 @@ class SessionManager(context: Context) {
             val worker = Gson().fromJson(userJson, Worker::class.java)
             worker.isOwner = true
             worker.restaurant = restaurant
+            saveUser(worker)
+        }
+    }
+
+    fun addWorker(newWorker: Worker) {
+        val userJson = sharedPreferences.getString(userKey, null)
+        val userType = sharedPreferences.getBoolean(userType, true)
+        if (!userType) {
+            val worker = Gson().fromJson(userJson, Worker::class.java)
+            worker.restaurant?.workers?.add(newWorker)
+            saveUser(worker)
+        }
+    }
+
+    fun removeWorker(newWorker: Worker) {
+        val userJson = sharedPreferences.getString(userKey, null)
+        val userType = sharedPreferences.getBoolean(userType, true)
+        if (!userType) {
+            val worker = Gson().fromJson(userJson, Worker::class.java)
+            worker.restaurant?.workers?.remove(newWorker)
             saveUser(worker)
         }
     }

@@ -43,8 +43,6 @@ class OrderClientActivity : AppCompatActivity() {
         super.onResume()
     }
 
-
-
     fun prepareUI() {
         initRecyclerView()
 

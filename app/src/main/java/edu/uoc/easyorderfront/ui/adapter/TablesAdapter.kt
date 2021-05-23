@@ -14,7 +14,8 @@ import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.order.OrderWorkerFragment
 import kotlinx.android.synthetic.main.item_estat_taules.view.*
 
-class TablesAdapter() : ListAdapter<Table, TablesAdapter.TableViewHolder>(streamsDiffCallback) {
+class TablesAdapter(
+) : ListAdapter<Table, TablesAdapter.TableViewHolder>(tableDiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -44,17 +45,19 @@ class TablesAdapter() : ListAdapter<Table, TablesAdapter.TableViewHolder>(stream
             }
 
             itemView.table_constraint_layout.setOnClickListener({
-                /*val intent = Intent(context, OrderWorkerFragment::class.java)
-                intent.putExtra(EasyOrderConstants.TABLE_ID_KEY, table)
-                context.startActivity(intent)*/
                 val fragment = OrderWorkerFragment.newInstance(table)
                 (itemView.context as MainWorkerMenuActivity).replaceFragment(fragment)
+            })
+
+            itemView.table_constraint_layout.setOnLongClickListener({
+                //TODO: BORRAR MESA
+                true
             })
         }
     }
 
     companion object {
-        private val streamsDiffCallback = object : DiffUtil.ItemCallback<Table>() {
+        private val tableDiffCallback = object : DiffUtil.ItemCallback<Table>() {
 
             override fun areItemsTheSame(oldItem: Table, newItem: Table): Boolean {
                 return oldItem.uid == newItem.uid

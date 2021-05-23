@@ -3,6 +3,7 @@ package edu.uoc.easyorderfront.ui.restaurant
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -56,6 +57,11 @@ class RestaurantProfileFragment : Fragment() {
         prepareUI()
     }
 
+    override fun onResume() {
+        getRestaurant()
+        super.onResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO: SOLO MOSTRAR MENU SI ES EL DUEÑO
         inflater.inflate(R.menu.menu_restaurant_profile, menu)
@@ -71,6 +77,11 @@ class RestaurantProfileFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "Error: El perfil del restaurante no se ha encontrado", Toast.LENGTH_LONG).show()
                 }
+            }
+            R.id.btn_add_worker -> {
+                val intent = Intent(context, WorkersListActivity::class.java)
+                intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, viewModel.restaurantProfile.value?.data)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -119,8 +130,6 @@ class RestaurantProfileFragment : Fragment() {
                 txt_pais.text = restaurant.country
             }
         })
-
-        getRestaurant()
     }
 
     fun getRestaurant() {

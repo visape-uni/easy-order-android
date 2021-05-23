@@ -10,8 +10,10 @@ import edu.uoc.easyorderfront.ui.order.OrderWorkerViewModel
 import edu.uoc.easyorderfront.ui.profile.ClientProfileViewModel
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileViewModel
 import edu.uoc.easyorderfront.ui.register.TabRegisterViewModel
+import edu.uoc.easyorderfront.ui.restaurant.AddWorkerDialogViewModel
 import edu.uoc.easyorderfront.ui.restaurant.CreateRestaurantViewModel
 import edu.uoc.easyorderfront.ui.restaurant.RestaurantProfileViewModel
+import edu.uoc.easyorderfront.ui.restaurant.WorkerListViewModel
 import edu.uoc.easyorderfront.ui.table.CreateTableViewModel
 import edu.uoc.easyorderfront.ui.table.OcupyTableViewModel
 import edu.uoc.easyorderfront.ui.table.TableListViewModel
@@ -38,4 +40,6 @@ val uiModule = module {
     viewModel { MainClientMenuViewModel(get(), get()) }
     viewModel { MainWorkerMenuViewModel(get()) }
     viewModel { MainClientViewModel(get()) }
+    viewModel { WorkerListViewModel(get()) }
+    viewModel { AddWorkerDialogViewModel(get()) }
 }

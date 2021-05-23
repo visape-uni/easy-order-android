@@ -1,6 +1,7 @@
 package edu.uoc.easyorderfront.domain.model
 
 import edu.uoc.easyorderfront.data.restaurant.RestaurantDTO
+import java.io.Serializable
 
 data class Restaurant(
         val id: String?,
@@ -10,10 +11,10 @@ data class Restaurant(
         val zipCode: String? = null,
         val country: String? = null,
         val imageUrl: String? = null,
-        val workers: MutableList<User>? = ArrayList(),
+        val workers: MutableList<Worker>? = ArrayList(),
         val tables: MutableList<Table>? = ArrayList(),
-        val owner: User? = null
-) {
+        val owner: Worker? = null
+) : Serializable {
     fun convertToDTO(): RestaurantDTO {
         val workersList = workers?.map { user -> user.convertToDTO() }?.toMutableList()
         val tablesList = tables?.map { table-> table.convertToDTO() }?.toMutableList()

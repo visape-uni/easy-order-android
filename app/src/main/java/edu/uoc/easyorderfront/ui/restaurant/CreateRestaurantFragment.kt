@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.data.SessionManager
 import edu.uoc.easyorderfront.domain.model.Restaurant
-import edu.uoc.easyorderfront.domain.model.User
+import edu.uoc.easyorderfront.domain.model.Worker
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.utils.OnTitleChangedListener
@@ -101,7 +101,7 @@ class CreateRestaurantFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.rellenar_todos_los_campos), Toast.LENGTH_LONG).show()
             } else {
                 // Guardar al usuario como dueño
-                val owner = User(SessionManager(requireContext()).getUserId())
+                val owner = Worker(SessionManager(requireContext()).getUserId())
                 viewModel.createRestaurant(Restaurant(null, restaurantName, restaurantStreet, restaurantCity, restaurantZipCode, restaurantCountry, owner = owner))
             }
         })

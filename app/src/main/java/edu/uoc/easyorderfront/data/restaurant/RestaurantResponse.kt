@@ -3,6 +3,7 @@ package edu.uoc.easyorderfront.data.restaurant
 import edu.uoc.easyorderfront.data.authentication.UserDTO
 import edu.uoc.easyorderfront.data.table.TableDTO
 import edu.uoc.easyorderfront.domain.model.Restaurant
+import edu.uoc.easyorderfront.domain.model.Worker
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -19,8 +20,8 @@ data class RestaurantDTO(
         val owner: UserDTO? = null
 ) {
     fun convertToModel(): Restaurant {
-        val workersList = workers?.map { userDTO -> userDTO.convertToModel() }?.toMutableList()
+        val workersList = workers?.map { userDTO -> userDTO.convertToModel() as Worker }?.toMutableList()
         val tablesList = tables?.map { tableDTO -> tableDTO.convertToModel() }?.toMutableList()
-        return Restaurant(uid, name, street, city, zipCode, country, imageUrl, workersList, tablesList, owner?.convertToModel())
+        return Restaurant(uid, name, street, city, zipCode, country, imageUrl, workersList, tablesList, owner?.convertToModel() as Worker)
     }
 }
