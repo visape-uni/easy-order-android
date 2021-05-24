@@ -6,10 +6,6 @@ object EasyOrderConstants {
     const val TABLE_ID_KEY = "tableID"
     const val ORDER_KEY = "orderID"
 
-    const val EMPTY_STATE = "EMPTY"
-    const val ORDERING_STATE = "ORDERING"
-
-
     const val FRAGMENT_KEY = "fragment"
 
     const val RESTAURANT_FRAGMENT = "restaurant"
@@ -17,6 +13,8 @@ object EasyOrderConstants {
     const val WORKER_PROFILE_FRAGMENT = "workerProfile"
     const val CLIENT_PROFILE_FRAGMENT = "clientProfile"
 
-    const val OCCUPIED_STATE = "OCCUPIED"
-    const val TABLE_STATE = "EMPTY"
+    const val OCCUPIED_TABLE_STATE = "OCCUPIED"
+    const val EMPTY_TABLE_STATE = "EMPTY"
+    const val WAITING_BILL_TABLE_STATE = "WAITING_BILL"
+    const val PAID_TABLE_STATE = "PAID"
 }

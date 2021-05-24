@@ -31,7 +31,8 @@ class MenuRestaurantAdapter(
     class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindTo(category: Category, viewModel: MenuRestaurantViewModel) {
 
-            itemView.btn_edit.visibility = View.GONE
+            itemView.btn_edit.isEnabled = false
+            itemView.btn_edit.visibility = View.INVISIBLE
 
             itemView.categoria.text = category.name
 

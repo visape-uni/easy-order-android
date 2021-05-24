@@ -103,7 +103,7 @@ class OcupyTableFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
-                    if (dataWrapper.data?.state != EasyOrderConstants.EMPTY_STATE) {
+                    if (dataWrapper.data?.state != EasyOrderConstants.EMPTY_TABLE_STATE) {
                         Toast.makeText(context, "Esta mesa ya esta ocupada", Toast.LENGTH_LONG).show()
                     } else {
                         val codigoMesa = txt_codigo_mesa.text.toString()
@@ -115,7 +115,7 @@ class OcupyTableFragment : Fragment() {
 
                         val user = context?.let { SessionManager(it).getUser() }
                         if (user != null && user.uid != null) {
-                            viewModel.changeTableState(codigoMesa, user.uid!!, EasyOrderConstants.OCCUPIED_STATE)
+                            viewModel.changeTableState(codigoMesa, user.uid!!, EasyOrderConstants.OCCUPIED_TABLE_STATE)
                         } else {
                             Toast.makeText(context, "El usuario es incorrecto", Toast.LENGTH_LONG).show()
                         }

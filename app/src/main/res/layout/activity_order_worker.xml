@@ -30,7 +30,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:layout_below="@id/lbl_id"/>
+            android:layout_below="@id/txt_id"/>
         <TextView
             android:id="@+id/txt_estado"
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:layout_below="@id/lbl_estado"/>
+            android:layout_below="@id/txt_estado"/>
         <TextView
             android:id="@+id/txt_capacidad"
             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:layout_below="@id/lbl_capacidad"/>
+            android:layout_below="@id/txt_capacidad"/>
         <TextView
             android:id="@+id/txt_tiempo"
             android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_margin="10dp"
-            android:layout_below="@id/lbl_tiempo"/>
+            android:layout_below="@id/txt_tiempo"/>
         <TextView
             android:id="@+id/txt_pedido"
             android:layout_width="wrap_content"
@@ -102,6 +102,15 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"/>
 
+        <Button
+            android:id="@+id/btn_marcar_pagado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pagado"
+            android:layout_below="@id/recycler_view_pedido"
+            android:layout_margin="10dp"
+            android:layout_alignParentStart="true" />
+
         <TextView
             android:id="@+id/lbl_total"
             android:layout_width="wrap_content"
@@ -111,7 +120,8 @@
             android:textStyle="bold"
             android:layout_margin="10dp"
             android:layout_toStartOf="@+id/txt_total"
-            android:layout_below="@id/recycler_view_pedido"/>
+            android:layout_alignBottom="@id/btn_marcar_pagado"/>
+
         <TextView
             android:id="@+id/txt_total"
             android:layout_width="wrap_content"

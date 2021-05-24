@@ -136,7 +136,7 @@ class OrderWorkerFragment : Fragment() {
                         txt_capacidad.text =
                                 getString(R.string.num_personas, table.capacity.toString())
 
-                        if (table.state.equals(EasyOrderConstants.EMPTY_STATE)) {
+                        if (table.state.equals(EasyOrderConstants.EMPTY_TABLE_STATE)) {
                             txt_estado.text = getString(R.string.la_mesa_esta_libre)
 
                             lbl_tiempo.visibility = View.GONE
@@ -146,9 +146,18 @@ class OrderWorkerFragment : Fragment() {
                             recycler_view_pedido.visibility = View.GONE
                             lbl_total.visibility = View.GONE
                             txt_total.visibility = View.GONE
-                        } else {
+                        } else if (table.state.equals(EasyOrderConstants.OCCUPIED_TABLE_STATE)) {
                             txt_estado.text = getString(R.string.la_mesa_esta_ocupada)
                             viewModel.getLastOrderFromTable(viewModel.tableRef!!)
+                            btn_marcar_pagado.visibility = View.VISIBLE
+                        } else if(table.state.equals(EasyOrderConstants.WAITING_BILL_TABLE_STATE)) {
+                            txt_estado.text = getString(R.string.la_mesa_esta_esperando_la_cuenta)
+                            viewModel.getLastOrderFromTable(viewModel.tableRef!!)
+                            btn_marcar_pagado.visibility = View.VISIBLE
+                        } else if(table.state.equals(EasyOrderConstants.PAID_TABLE_STATE)) {
+                            txt_estado.text = getString(R.string.la_mesa_aun_esta_ocupada)
+                            viewModel.getLastOrderFromTable(viewModel.tableRef!!)
+                            btn_marcar_pagado.visibility = View.INVISIBLE
                         }
                     }
                 }
@@ -160,13 +169,27 @@ class OrderWorkerFragment : Fragment() {
             }
         })
 
+        btn_marcar_pagado.visibility = View.INVISIBLE
+        btn_marcar_pagado.setOnClickListener({
+            val tableId = viewModel.tableRef
+            if (tableId != null) {
+                viewModel.changeTableState(tableId, viewModel.table.value?.data?.userId!!, EasyOrderConstants.PAID_TABLE_STATE)
+            } else {
+                Toast.makeText(
+                    context,
+                    "La referencia de la mesa es incorrecta",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+
         val table = arguments?.getSerializable(EasyOrderConstants.TABLE_ID_KEY) as Table
         viewModel.tableRef = table.tableRef
         viewModel.table.postValue(DataWrapper.success(table))
     }
 
     fun changeState() {
-        if (!viewModel.table.value?.data?.state.equals(EasyOrderConstants.EMPTY_STATE)) {
+        if (!viewModel.table.value?.data?.state.equals(EasyOrderConstants.EMPTY_TABLE_STATE)) {
             val dialog = AlertDialog.Builder(context)
                 .setTitle("Cambiar estado de la mesa")
                 .setMessage(
@@ -179,7 +202,7 @@ class OrderWorkerFragment : Fragment() {
                 .setPositiveButton("Si") { dialog, _ ->
                     val tableId = viewModel.tableRef
                     if (tableId != null) {
-                        viewModel.changeTableState(tableId, "", EasyOrderConstants.EMPTY_STATE)
+                        viewModel.changeTableState(tableId, "", EasyOrderConstants.EMPTY_TABLE_STATE)
                     } else {
                         Toast.makeText(
                             context,

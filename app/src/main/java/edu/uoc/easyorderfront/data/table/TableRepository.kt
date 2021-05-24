@@ -7,4 +7,5 @@ interface TableRepository {
     suspend fun getTables(restaurantId: String): List<Table>
     suspend fun changeTableState(tableId: String, newUserId: String, newState: String): Table?
     suspend fun getTable(restaurantId: String, tableId: String): Table?
+    suspend fun askForTheBill(tableId: String): Boolean
 }

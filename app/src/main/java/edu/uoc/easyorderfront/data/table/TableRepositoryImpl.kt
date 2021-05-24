@@ -40,4 +40,8 @@ class TableRepositoryImpl(
 
         return tableDTO?.convertToModel()
     }
+
+    override suspend fun askForTheBill(tableId: String): Boolean {
+        return tableBackendDataSource.askForTheBill(tableId)
+    }
 }

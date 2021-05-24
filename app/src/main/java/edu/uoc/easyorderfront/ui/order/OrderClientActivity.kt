@@ -12,6 +12,7 @@ import edu.uoc.easyorderfront.domain.model.Order
 import edu.uoc.easyorderfront.ui.adapter.OrderClientAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.ORDER_KEY
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants.TABLE_ID_KEY
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.constants.UIMessages.ERROR_HACIENDO_PEDIDO
 import edu.uoc.easyorderfront.ui.menu.MenuRestaurantActivity
@@ -58,7 +59,12 @@ class OrderClientActivity : AppCompatActivity() {
                         orderedDish.newOrder = false
                     }
 
-                    startActivity(Intent(this, WaitScreenActivity::class.java))
+                    val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
+
+                    val int = Intent(this, WaitScreenActivity::class.java)
+                    int.putExtra(ORDER_KEY, order)
+                    int.putExtra(TABLE_ID_KEY, tableId)
+                    startActivity(int)
                 }
                 Status.ERROR -> {
                     progress_bar.visibility = View.GONE

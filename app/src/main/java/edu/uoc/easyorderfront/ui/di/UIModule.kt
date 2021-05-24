@@ -7,6 +7,8 @@ import edu.uoc.easyorderfront.ui.main.MainWorkerMenuViewModel
 import edu.uoc.easyorderfront.ui.menu.*
 import edu.uoc.easyorderfront.ui.order.OrderClientViewModel
 import edu.uoc.easyorderfront.ui.order.OrderWorkerViewModel
+import edu.uoc.easyorderfront.ui.payment.PaymentMethodViewModel
+import edu.uoc.easyorderfront.ui.payment.WaitingBillViewModel
 import edu.uoc.easyorderfront.ui.profile.ClientProfileViewModel
 import edu.uoc.easyorderfront.ui.profile.WorkerProfileViewModel
 import edu.uoc.easyorderfront.ui.register.TabRegisterViewModel
@@ -42,4 +44,6 @@ val uiModule = module {
     viewModel { MainClientViewModel(get()) }
     viewModel { WorkerListViewModel(get()) }
     viewModel { AddWorkerDialogViewModel(get()) }
+    viewModel { PaymentMethodViewModel(get()) }
+    viewModel { WaitingBillViewModel(get()) }
 }

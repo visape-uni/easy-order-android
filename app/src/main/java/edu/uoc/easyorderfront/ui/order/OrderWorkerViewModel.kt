@@ -36,7 +36,7 @@ class OrderWorkerViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                lastOrder.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                lastOrder.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -56,7 +56,7 @@ class OrderWorkerViewModel(
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                table.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                table.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

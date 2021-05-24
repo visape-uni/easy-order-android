@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Table
+import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.main.MainWorkerMenuActivity
 import edu.uoc.easyorderfront.ui.order.OrderWorkerFragment
 import kotlinx.android.synthetic.main.item_estat_taules.view.*
@@ -36,12 +37,16 @@ class TablesAdapter(
             itemView.txt_codigo_mesa.text = context.getString(R.string.mesa_num, table.uid)
             val estado = table.state
 
-            if (estado.equals("EMPTY")) {
+            if (estado.equals(EasyOrderConstants.EMPTY_TABLE_STATE)) {
                 // Set Color green
                 itemView.table_constraint_layout.setBackgroundColor(ContextCompat.getColor(context, R.color.green3))
-            } else {
+            } else if(estado.equals(EasyOrderConstants.OCCUPIED_TABLE_STATE)) {
                 // Set Color red
                 itemView.table_constraint_layout.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+            } else if(estado.equals(EasyOrderConstants.WAITING_BILL_TABLE_STATE)
+                    || estado.equals(EasyOrderConstants.PAID_TABLE_STATE)) {
+                // Set Color yellow
+                itemView.table_constraint_layout.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
             }
 
             itemView.table_constraint_layout.setOnClickListener({

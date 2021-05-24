@@ -54,4 +54,14 @@ class TableBackendDataSource (private val httpClient: HttpClient) {
             throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
         }
     }
+
+    suspend fun askForTheBill(tableId: String): Boolean {
+        try {
+            return httpClient
+                .put<Boolean>(Endpoints.askForBillUrl + tableId)
+        } catch (t: Throwable) {
+            Log.w(TAG, "Error obteniendo bill", t)
+            throw EasyOrderException(InternalErrorMessages.ERROR_UNKNOWN_EXCEPTION)
+        }
+    }
 }
