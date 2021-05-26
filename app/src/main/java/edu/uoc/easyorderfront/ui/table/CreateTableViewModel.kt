@@ -6,12 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.uoc.easyorderfront.data.error.EasyOrderException
 import edu.uoc.easyorderfront.data.table.TableRepository
-import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class CreateTableViewModel (
     private val repository: TableRepository
@@ -32,7 +30,7 @@ class CreateTableViewModel (
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                created.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                created.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

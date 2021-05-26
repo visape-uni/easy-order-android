@@ -54,7 +54,6 @@ class CreateRestaurantFragment : Fragment() {
 
     fun prepareUI() {
 
-        //TODO: Observe createRestaurantState from viewModel
         viewModel.created.observe(viewLifecycleOwner, {dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
@@ -74,7 +73,6 @@ class CreateRestaurantFragment : Fragment() {
             }
         })
 
-        //TODO: OnClickListener image restaurant
         btn_add_image.setOnClickListener({
             val photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.setType("image/*")

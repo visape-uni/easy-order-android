@@ -10,12 +10,12 @@ import edu.uoc.easyorderfront.domain.model.Restaurant
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class RestaurantProfileViewModel (
     private val repository: RestaurantRepository
 ) : ViewModel() {
     val restaurantProfile = MutableLiveData<DataWrapper<Restaurant>>()
+    val ownerMenu = MutableLiveData<Boolean?>()
     private val TAG = "RestaurantProfileViewModel"
 
     fun getRestaurant(restaurantId: String) {
@@ -30,7 +30,7 @@ class RestaurantProfileViewModel (
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                restaurantProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

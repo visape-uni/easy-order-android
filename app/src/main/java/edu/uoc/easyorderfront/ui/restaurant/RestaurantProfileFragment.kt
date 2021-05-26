@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -63,8 +64,13 @@ class RestaurantProfileFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        // TODO: SOLO MOSTRAR MENU SI ES EL DUEÑO
-        inflater.inflate(R.menu.menu_restaurant_profile, menu)
+        menu.clear()
+        if (viewModel.ownerMenu.value != null
+                && viewModel.ownerMenu.value!!) {
+            inflater.inflate(R.menu.menu_restaurant_profile_owner, menu)
+        } else {
+            inflater.inflate(R.menu.menu_restaurant_profile, menu)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -88,6 +94,11 @@ class RestaurantProfileFragment : Fragment() {
     }
 
     fun prepareUI() {
+        viewModel.ownerMenu.observe(viewLifecycleOwner, { showMenu ->
+            Log.d(TAG, "restaurantMenu $showMenu")
+            activity?.invalidateOptionsMenu()
+        })
+
         viewModel.restaurantProfile.observe(viewLifecycleOwner, { dataWrapper ->
             when (dataWrapper.status) {
                 Status.LOADING -> {
@@ -110,6 +121,14 @@ class RestaurantProfileFragment : Fragment() {
                             Toast.makeText(context, "ID del restaurante copiado correctamente", Toast.LENGTH_LONG).show()
                         })
 
+                        val user = SessionManager(requireContext()).getUser() as Worker
+                        if ((user.isOwner != null && !user.isOwner!!)
+                                && (user.restaurant != null)) {
+                            viewModel.ownerMenu.postValue(true)
+                        } else {
+                            viewModel.ownerMenu.postValue(false)
+                        }
+
                     } else {
                         Toast.makeText(context, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
                     }
@@ -119,15 +138,6 @@ class RestaurantProfileFragment : Fragment() {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(context, UIMessages.ERROR_CARGANDO_RESTAURANTE, Toast.LENGTH_LONG).show()
                 }
-            }
-            val restaurant = dataWrapper.data
-            if (restaurant != null) {
-                txt_id.text = restaurant.id
-                txt_nombre.text = restaurant.name
-                txt_calle.text = restaurant.street
-                txt_ciudad.text = restaurant.city
-                txt_codigo_postal.text = restaurant.zipCode
-                txt_pais.text = restaurant.country
             }
         })
     }

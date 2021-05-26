@@ -28,7 +28,6 @@ class OrderClientAdapter(
 
         if (item.newOrder!!) {
             holder.itemView.contraintLayout.setOnLongClickListener({
-                val item = list.get(position)
                 list.removeAt(position)
                 notifyDataSetChanged()
                 orderLive?.value?.price = orderLive?.value?.price?.minus(item.totalPrice!!)

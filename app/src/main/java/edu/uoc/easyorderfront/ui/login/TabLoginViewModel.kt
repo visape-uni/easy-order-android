@@ -69,7 +69,7 @@ class TabLoginViewModel (private val repository: AuthenticationRepository,
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                userProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                userProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

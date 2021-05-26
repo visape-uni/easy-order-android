@@ -59,7 +59,7 @@ class WorkerProfileFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu?.clear()
+        menu.clear()
         if (viewModel.restaurantMenu.value != null
                 && viewModel.restaurantMenu.value!!) {
             inflater.inflate(R.menu.menu_worker_profile, menu)

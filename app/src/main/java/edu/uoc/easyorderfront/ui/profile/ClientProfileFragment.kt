@@ -82,8 +82,6 @@ class ClientProfileFragment : Fragment() {
                         txt_email.text = client.email
                         txt_tipo.text = getString(R.string.client)
 
-                        //TODO: Mirar si el usuario tiene alergias, si no tiene mostrar texto de no alergias
-                        //TODO: Si tiene, mostrar el listado en el recycled view
                         txt_alergia.visibility = View.VISIBLE
                         txt_alergia.text = getString(R.string.no_has_a_adido_ninguna_alergia)
                     }

@@ -28,7 +28,7 @@ class CreateDishViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                createdDish.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                createdDish.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

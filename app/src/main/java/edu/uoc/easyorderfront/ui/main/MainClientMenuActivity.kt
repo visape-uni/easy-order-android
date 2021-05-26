@@ -1,5 +1,6 @@
 package edu.uoc.easyorderfront.ui.main
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -60,11 +61,7 @@ class MainClientMenuActivity : AppCompatActivity(),
             if (supportFragmentManager.backStackEntryCount > 1) {
                 super.onBackPressed()
             } else {
-                viewModel.signOut()
-                SessionManager(applicationContext).clearAccessToken()
-                SessionManager(applicationContext).clearUser()
-                SessionManager(applicationContext).clearUserId()
-                finish()
+                logout()
             }
         }
     }
@@ -81,9 +78,31 @@ class MainClientMenuActivity : AppCompatActivity(),
                 val fragment  = OcupyTableFragment.newInstance()
                 replaceFragment(fragment, fragmentTag)
             }
+            R.id.nav_cerrar_sesion -> {
+                logout()
+            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun logout() {
+        val dialog = AlertDialog.Builder(this)
+                .setTitle("Cerrar sesión")
+                .setMessage("Estas seguro que quieres cerrar sesión?")
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Si") { dialog, _ ->
+                    viewModel.signOut()
+                    SessionManager(applicationContext).clearAccessToken()
+                    SessionManager(applicationContext).clearUser()
+                    SessionManager(applicationContext).clearUserId()
+
+                    dialog.dismiss()
+                    finish()
+                }
+        dialog.show()
     }
 
 

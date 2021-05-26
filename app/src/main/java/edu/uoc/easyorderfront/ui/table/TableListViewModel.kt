@@ -12,7 +12,6 @@ import edu.uoc.easyorderfront.domain.model.Table
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class TableListViewModel (
     private val repository: TableRepository,
@@ -38,7 +37,7 @@ class TableListViewModel (
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                tables.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                tables.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -63,7 +62,7 @@ class TableListViewModel (
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                restaurantProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

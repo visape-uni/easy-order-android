@@ -79,10 +79,6 @@ class OcupyTableFragment : Fragment() {
                     progress_bar.visibility = View.GONE
                     Toast.makeText(context, "Mesa ${dataWrapper.data?.uid} ocupada correctamente", Toast.LENGTH_LONG).show()
 
-                    /*val fragmentTag = MenuRestaurantFragment::class.qualifiedName.toString()
-                    val fragment = MenuRestaurantFragment.newInstance(restaurantId)
-                    (activity as MainClientMenuActivity).replaceFragment(fragment, fragmentTag)*/
-
                     val intent = Intent(context, MenuRestaurantActivity::class.java)
                     intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, restaurantId)
                     intent.putExtra(EasyOrderConstants.TABLE_ID_KEY, tableId)

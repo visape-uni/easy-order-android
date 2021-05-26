@@ -59,7 +59,7 @@ class WorkersListActivity : AppCompatActivity() {
 
     fun prepareUI() {
 
-        viewModel.restaurantLiveData.observe(this, { rest ->
+        viewModel.restaurantLiveData.observe(this, { _ ->
             updateWorkersList()
         })
 

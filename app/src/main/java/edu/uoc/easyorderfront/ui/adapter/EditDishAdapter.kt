@@ -25,21 +25,18 @@ class EditDishAdapter(
     }
 
     override fun onBindViewHolder(holder: DishViewHolder, position: Int) {
-        holder.bindTo(getItem(position), viewModel, categoryId, itemCount == (position + 1))
+        holder.bindTo(getItem(position), viewModel, categoryId)
     }
 
 
     class DishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindTo(dish: Dish, viewModel: EditarMenuViewModel, categoryId: String, lastItem: Boolean) {
+        fun bindTo(dish: Dish, viewModel: EditarMenuViewModel, categoryId: String) {
             itemView.lbl_dish.text = dish.name
             itemView.lbl_dish_price.text = dish.price.toString() + "€"
             itemView.dish_layout.setOnLongClickListener {
                 viewModel.deleteDish(viewModel.restaurantProfile.value?.data?.id, categoryId, dish.uid)
                 true
             }
-            /*if (lastItem) {
-                itemView.dish_separator.visibility = View.GONE
-            }*/
         }
     }
 

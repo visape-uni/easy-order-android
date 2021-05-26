@@ -8,7 +8,7 @@
     <string name="nombre_completo">Nombre Completo</string>
     <string name="repite_la_contrase_a">Repite la contraseña</string>
     <string name="registrar">Registrar</string>
-    <string name="introduce_tu_email_para_enviar_el_email_de_recuperaci_n">Introduce tu email para enviar el email de recuperación:</string>
+    <string name="introduce_tu_email_para_enviar_el_email_de_recuperaci_n">Introduce tu dirección de correo para enviar el email de recuperación:</string>
     <string name="enviar_email_de_recuperaci_n">Enviar email de recuperación</string>
     <string name="introduce_el_c_digo_de_la_mesa">Introduce el código de la mesa</string>
     <string name="c_digo_de_la_mesa">Código de la mesa</string>
@@ -25,9 +25,9 @@
     <string name="total">Total:</string>
     <string name="cancelar">Cancelar</string>
     <string name="guardar">Guardar</string>
-    <string name="categoria">Categoria:</string>
+    <string name="categoria">Categoría:</string>
     <string name="precio">Precio</string>
-    <string name="calorias">Calorias</string>
+    <string name="calorias">Calorías</string>
     <string name="imagen">Imagen:</string>
     <string name="descripci_n">Descripción</string>
     <string name="nombre_del_plato">Nombre del plato</string>
@@ -39,17 +39,15 @@
     <string name="login">Login</string>
     <string name="registrarse">Registrarse</string>
     <string name="title_activity_recovery">RecoveryActivity</string>
-
     <string name="rellenar_todos_los_campos">Debes rellenar todos los campos</string>
     <string name="contrase_as_deben_coincidir">Las contraseñas deben coincidir</string>
-    <string name="contrase_na_almenos_8_caracteres">La contraseña debe tener almenos 8 caracteres</string>
+    <string name="contrase_na_almenos_8_caracteres">La contraseña debe tener al menos 8 caracteres</string>
     <string name="introducir_email">Debes introducir tu email</string>
     <string name="introducir_contrase_a">Debes introducir tu contraseña</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="te_estas_registrando_como_trabajador">Te estas registrando como trabajador</string>
+    <string name="te_estas_registrando_como_trabajador">Te estas registrando como empleado</string>
     <string name="session_iniciada_correctamente">Sessión iniciada correctamente</string>
-    <string name="registrarse_trabajador">Registrarse como trabajador</string>
+    <string name="registrarse_trabajador">Registrarse como empleado</string>
     <string name="nombre_del_restaurante">Nombre del restaurante</string>
     <string name="calle">Calle</string>
     <string name="ciudad">Ciudad</string>
@@ -59,10 +57,10 @@
     <string name="resturante_">Restaurante:</string>
     <string name="no_trabaja_en_restaurante_actualmente">Por ahora no estas registrado en ningún restaurante.</string>
     <string name="copiar_id">Copiar ID</string>
-    <string name="trabajador">Trabajador</string>
+    <string name="trabajador">Empleado</string>
     <string name="client">Cliente</string>
     <string name="no_has_a_adido_ninguna_alergia">No has añadido ninguna alergia a tu lista</string>
-    <string name="due_o">Dueño</string>
+    <string name="due_o">Propietario</string>
     <string name="calle_">Calle:</string>
     <string name="ciudad_">Ciudad:</string>
     <string name="codigo_postal_">Codigo postal:</string>
@@ -73,18 +71,18 @@
     <string name="la_mesa_esta_libre">La mesa esta libre</string>
     <string name="la_mesa_esta_ocupada">La mesa esta ocupada</string>
     <string name="la_mesa_esta_esperando_la_cuenta">La mesa esta esperando la cuenta</string>
-    <string name="la_mesa_aun_esta_ocupada">La cuenta esta pagada, pero la mesa aun esta ocupada</string>
+    <string name="la_mesa_aun_esta_ocupada">La cuenta esta pagada, pero la mesa aún esta ocupada</string>
     <string name="capacidad_">Capacidad:</string>
     <string name="num_personas"> %1$s Personas</string>
-    <string name="guardar_codigo">Guardar codigo</string>
+    <string name="guardar_codigo">Guardar código</string>
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Closed</string>
-    <string name="restaurant_profile">Restaurant profile</string>
-    <string name="user_profile">User profile</string>
+    <string name="restaurant_profile">Perfil del restaurante</string>
+    <string name="user_profile">Perfil de usuario</string>
     <string name="listado_de_mesas">Listado de mesas</string>
     <string name="men_del_restaurante">Menú del restaurante</string>
-    <string name="no_hay_ninguna_categoria_creada">No hay ninguna categoria creada</string>
-    <string name="nombre_de_la_categoria">Nombre de la categoria</string>
+    <string name="no_hay_ninguna_categoria_creada">No hay ninguna categoría creada</string>
+    <string name="nombre_de_la_categoria">Nombre de la categoría</string>
     <string name="descripcion_">Descripción:</string>
     <string name="nuevo_plato_para_la_categoria">NUEVO PLATO PARA LA CATEGORIA %1$s</string>
     <string name="precio_">Precio:</string>
@@ -98,8 +96,9 @@
     <string name="preparando_perdido">Preparando perdido</string>
     <string name="error_usuario_incorrect">Usuario incorrecto</string>
     <string name="restaurante_creado_correctamente">Restaurante creado correctamente</string>
-    <string name="el_restaurante_no_tiene_trabajadores">El restaurante no tiene trabajadores</string>
-    <string name="nuevo_trabajador">Nuevo trabajador</string>
-    <string name="id_del_trabajador">Id del trabajador</string>
-    <string name="introducir_id_trabajador">Debes introducir el id del trabajador</string>
+    <string name="el_restaurante_no_tiene_trabajadores">El restaurante no tiene empleados</string>
+    <string name="nuevo_trabajador">Nuevo empleado</string>
+    <string name="id_del_trabajador">Id del empleado</string>
+    <string name="introducir_id_trabajador">Debes introducir el id del empleado</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
 </resources>

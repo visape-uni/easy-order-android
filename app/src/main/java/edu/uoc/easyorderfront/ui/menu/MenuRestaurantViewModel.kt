@@ -43,7 +43,7 @@ class MenuRestaurantViewModel(
 
             }  catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                tableStateChanged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                tableStateChanged.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -66,7 +66,7 @@ class MenuRestaurantViewModel(
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                menu.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                menu.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -91,7 +91,7 @@ class MenuRestaurantViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                restaurantProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                restaurantProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -112,7 +112,7 @@ class MenuRestaurantViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                order.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                order.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

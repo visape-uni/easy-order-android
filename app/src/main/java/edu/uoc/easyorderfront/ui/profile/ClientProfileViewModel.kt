@@ -26,7 +26,7 @@ class ClientProfileViewModel(private val profileRepository: ProfileRepository): 
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                clientProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                clientProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

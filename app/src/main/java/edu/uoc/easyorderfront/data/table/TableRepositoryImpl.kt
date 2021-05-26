@@ -30,7 +30,7 @@ class TableRepositoryImpl(
 
         Log.d(TAG, "Change table response $tableDTO")
 
-        return tableDTO?.convertToModel()
+        return tableDTO.convertToModel()
     }
 
     override suspend fun getTable(restaurantId: String, tableId: String): Table? {
@@ -38,7 +38,7 @@ class TableRepositoryImpl(
 
         Log.d(TAG, "Get table response $tableDTO")
 
-        return tableDTO?.convertToModel()
+        return tableDTO.convertToModel()
     }
 
     override suspend fun askForTheBill(tableId: String): Boolean {

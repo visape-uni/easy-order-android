@@ -62,7 +62,6 @@ class TabRegisterWorkerFragment : Fragment() {
                             val worker = SessionManager(context).getUser() as Worker
                             if (worker != null) {
                                 if (worker.restaurant != null && worker.restaurant!!.id != null) {
-                                    // TODO: ShowRestaurantScreen
                                     val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                     intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
                                     startActivity(intent)

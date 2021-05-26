@@ -24,7 +24,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * Pass RestaurantID in intent
  */
 
-class TableListFragment : Fragment() {
+class TableListFragment : Fragment(), GetTablesCallback {
 
     private val TAG = "TableListActivity"
 
@@ -71,6 +71,7 @@ class TableListFragment : Fragment() {
             R.id.btn_add_table -> {
                 if (viewModel.restaurantProfile.value?.data != null) {
                     val createTableBottomActivity = CreateTableDialogFragment(viewModel.restaurantProfile.value?.data!!)
+                    createTableBottomActivity.setGetTablesListener(this)
                     createTableBottomActivity.show(fragmentManager!!, "TAG")
 
                 } else {
@@ -162,4 +163,12 @@ class TableListFragment : Fragment() {
                 }
             }
     }
+
+    override fun getTables() {
+        getRestaurantTables()
+    }
+}
+
+interface GetTablesCallback {
+    fun getTables()
 }

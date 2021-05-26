@@ -21,6 +21,11 @@ class CreateTableDialogFragment(
     private val viewModel: CreateTableViewModel by viewModel()
     private val TAG = "CreateTableActivity"
 
+    internal lateinit var getTablesCallback: GetTablesCallback
+
+    fun setGetTablesListener(callback: GetTablesCallback) {
+        this.getTablesCallback = callback
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,6 +98,6 @@ class CreateTableDialogFragment(
     fun addTableToRestaurant(table: Table) {
         restaurant.tables?.add(table)
         SessionManager(requireContext()).addTable(table)
-        (activity as TableListFragment).getRestaurantTables()
+        getTablesCallback.getTables()
     }
 }

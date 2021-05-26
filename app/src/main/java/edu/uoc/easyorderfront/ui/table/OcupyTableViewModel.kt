@@ -32,7 +32,7 @@ class OcupyTableViewModel(
 
             }  catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                tableStateChanged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                tableStateChanged.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
@@ -52,7 +52,7 @@ class OcupyTableViewModel(
 
             }  catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                tableStateChanged.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                tableStateChanged.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

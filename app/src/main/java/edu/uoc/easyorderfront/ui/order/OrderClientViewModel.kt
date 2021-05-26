@@ -31,7 +31,7 @@ class OrderClientViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                orderSaved.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                orderSaved.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTION CUANDO LA MESA YA ESTA OCUPADA
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

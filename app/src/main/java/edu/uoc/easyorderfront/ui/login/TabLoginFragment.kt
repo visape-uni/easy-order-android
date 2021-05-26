@@ -135,7 +135,6 @@ class TabLoginFragment : Fragment() {
 
                     if (dataWrapper.data?.isClient ?: true) {
                         Log.i(TAG, "Is Client")
-                        //startActivity(Intent(context, ClientProfileFragment::class.java))
                         val intent = Intent(context, MainClientMenuActivity::class.java)
                         intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.CLIENT_PROFILE_FRAGMENT)
                         startActivity(intent)
@@ -144,7 +143,6 @@ class TabLoginFragment : Fragment() {
                         val workerProfile = dataWrapper.data as Worker
                         if (workerProfile.restaurant != null && workerProfile.restaurant!!.id != null) {
                             if (workerProfile.isOwner != null) {
-                                // TODO: ShowRestaurantScreen
                                 val intent = Intent(context, MainWorkerMenuActivity::class.java)
                                 intent.putExtra(EasyOrderConstants.FRAGMENT_KEY, EasyOrderConstants.RESTAURANT_FRAGMENT)
                                 intent.putExtra(EasyOrderConstants.RESTAURANT_ID_KEY, workerProfile.restaurant!!.id)

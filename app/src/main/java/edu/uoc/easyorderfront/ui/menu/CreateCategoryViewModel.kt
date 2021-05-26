@@ -28,7 +28,7 @@ class CreateCategoryViewModel(
 
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                createdCategory.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                createdCategory.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())

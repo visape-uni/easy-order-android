@@ -29,7 +29,7 @@ class WorkerProfileViewModel(private val profileRepository: ProfileRepository): 
                 }
             } catch (easyOrderException: EasyOrderException) {
                 Log.e(TAG, easyOrderException.toString())
-                workerProfile.postValue(DataWrapper.error(UIMessages.ERROR_GENERICO))
+                workerProfile.postValue(DataWrapper.error(easyOrderException.message.toString()))
                 //TODO: TRATAR EXCEPTIONES ESPECIALES (SI HAY)
             } catch (e : Exception) {
                 Log.e(TAG, e.toString())
