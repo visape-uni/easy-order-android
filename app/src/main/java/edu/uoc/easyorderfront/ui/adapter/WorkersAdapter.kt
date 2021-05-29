@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -33,12 +34,13 @@ class WorkersAdapter(
             itemView.lbl_worker_uid.text = worker.uid
 
             itemView.workers_constraint_layout.setOnLongClickListener({
-                //TODO: BORRAR WORKER
+
                 val workers = viewModel.restaurantLiveData.value?.data?.workers!!
                 if (workers.contains(worker)) {
                     workers.remove(worker)
                     SessionManager(context).removeWorker(worker)
                     viewModel.removeWorkerRestaurant(viewModel.restaurantLiveData.value!!.data?.id!!, worker.uid!!)
+                    Toast.makeText(context, context.getString(R.string.empleado_eliminado_correctamente), Toast.LENGTH_LONG).show()
                 }
                 true
             })

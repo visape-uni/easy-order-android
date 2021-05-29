@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.uoc.easyorderfront.R
@@ -13,6 +14,7 @@ import edu.uoc.easyorderfront.ui.adapter.WorkersAdapter
 import edu.uoc.easyorderfront.ui.constants.EasyOrderConstants
 import edu.uoc.easyorderfront.ui.constants.UIMessages
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
+import edu.uoc.easyorderfront.ui.utils.Status
 import kotlinx.android.synthetic.main.activity_workers_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -32,11 +34,6 @@ class WorkersListActivity : AppCompatActivity() {
         supportActionBar?.title = UIMessages.TITLE_WORKERS_LIST
 
         prepareUI()
-    }
-
-    override fun onResume() {
-        updateWorkersList()
-        super.onResume()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,15 +56,26 @@ class WorkersListActivity : AppCompatActivity() {
 
     fun prepareUI() {
 
-        viewModel.restaurantLiveData.observe(this, { _ ->
-            updateWorkersList()
+        viewModel.restaurantLiveData.observe(this, { dataWrapper ->
+            when(dataWrapper.status) {
+                Status.LOADING -> {
+                    progress_bar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    progress_bar.visibility = View.GONE
+                    updateWorkersList()
+                }
+                Status.ERROR -> {
+                    progress_bar.visibility = View.GONE
+                    Toast.makeText(applicationContext, dataWrapper.message, Toast.LENGTH_LONG).show()
+                }
+            }
         })
 
         val restaurant = intent.getSerializableExtra(EasyOrderConstants.RESTAURANT_ID_KEY) as Restaurant
 
         viewModel.restaurantLiveData.value = DataWrapper.success(restaurant)
         initRecyclerView()
-
 
     }
 

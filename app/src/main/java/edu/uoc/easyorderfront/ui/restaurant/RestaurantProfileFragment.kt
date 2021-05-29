@@ -122,7 +122,7 @@ class RestaurantProfileFragment : Fragment() {
                         })
 
                         val user = SessionManager(requireContext()).getUser() as Worker
-                        if ((user.isOwner != null && !user.isOwner!!)
+                        if ((user.isOwner != null && user.isOwner!!)
                                 && (user.restaurant != null)) {
                             viewModel.ownerMenu.postValue(true)
                         } else {

@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDTO(
         @SerialName("uid") val uid:String?,
-        @SerialName("username") val username:String?,
-        @SerialName("email") val email:String?,
+        @SerialName("username") val username:String? = null,
+        @SerialName("email") val email:String? = null,
         @SerialName("password") val password:String? = null,
         @SerialName("isClient") val isClient:Boolean? = null,
         @SerialName("isOwner") val isOwner:Boolean? = null,

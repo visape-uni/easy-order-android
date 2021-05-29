@@ -21,10 +21,10 @@ class WorkerListViewModel(
     fun removeWorkerRestaurant(restaurantId: String, workerId: String) {
         viewModelScope.launch {
             try {
-                restaurantLiveData.postValue(DataWrapper.loading(null))
+                restaurantLiveData.postValue(DataWrapper.loading(restaurantLiveData.value?.data))
 
                 repository.removeWorker(restaurantId, workerId).let { removeResponse ->
-                    Log.d(TAG, "AddWorker: $removeResponse")
+                    Log.d(TAG, "RemoveWorker: $removeResponse")
                     restaurantLiveData.postValue(DataWrapper.success(restaurantLiveData.value?.data))
                 }
             } catch (easyOrderException: EasyOrderException) {

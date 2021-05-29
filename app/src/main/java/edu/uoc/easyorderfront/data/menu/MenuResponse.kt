@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MenuDTO(
-    val uid: String?,
+    val uid: String? = null,
     val categories: MutableList<CategoryDTO>? = ArrayList()
 ) {
     fun convertToModel(): Menu {

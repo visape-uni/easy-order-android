@@ -101,4 +101,5 @@
     <string name="id_del_trabajador">Id del empleado</string>
     <string name="introducir_id_trabajador">Debes introducir el id del empleado</string>
     <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="empleado_eliminado_correctamente">Empleado eliminado correctamente</string>
 </resources>
