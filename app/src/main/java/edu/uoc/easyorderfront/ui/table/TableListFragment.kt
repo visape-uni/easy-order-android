@@ -100,6 +100,7 @@ class TableListFragment : Fragment(), GetTablesCallback {
                 }
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
+                    error_message.visibility = View.GONE
                     val tableList = dataWrapper.data
                     tableList?.forEach { table ->
                         table.tableRef = viewModel.restaurantProfile.value?.data?.id + '/' + table.uid

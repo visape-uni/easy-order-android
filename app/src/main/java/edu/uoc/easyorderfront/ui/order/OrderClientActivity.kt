@@ -3,6 +3,7 @@ package edu.uoc.easyorderfront.ui.order
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,15 @@ class OrderClientActivity : AppCompatActivity() {
         supportActionBar?.title = UIMessages.TITLE_ORDER_CLIENT
 
         prepareUI()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -109,6 +119,10 @@ class OrderClientActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 .setPositiveButton("Si") { dialog, _ ->
+                    viewModel.order.value?.orderedDishes?.forEach { orderedDish ->
+                        orderedDish.newOrder = false
+                    }
+
                     val price = String.format("%.2f", viewModel.order.value?.price)
                     val priceLong = price.replace(',','.').trim()
                     viewModel.order.value?.price = priceLong.toFloat()
