@@ -40,7 +40,7 @@ class MenuDishAdapter(
             val df = DecimalFormat()
             df.maximumFractionDigits = 2
             df.minimumFractionDigits = 2
-            df.roundingMode = RoundingMode.CEILING
+            df.roundingMode = RoundingMode.DOWN
             val price = df.format(dish.price)
             itemView.lbl_dish_price.text = price + "€"
 

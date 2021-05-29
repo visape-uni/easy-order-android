@@ -10,6 +10,8 @@ import edu.uoc.easyorderfront.R
 import edu.uoc.easyorderfront.domain.model.Dish
 import edu.uoc.easyorderfront.ui.menu.EditarMenuViewModel
 import kotlinx.android.synthetic.main.item_dish.view.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class EditDishAdapter(
         private val categoryId: String,
@@ -32,7 +34,13 @@ class EditDishAdapter(
     class DishViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindTo(dish: Dish, viewModel: EditarMenuViewModel, categoryId: String) {
             itemView.lbl_dish.text = dish.name
-            itemView.lbl_dish_price.text = dish.price.toString() + "€"
+
+            val df = DecimalFormat()
+            df.maximumFractionDigits = 2
+            df.minimumFractionDigits = 2
+            df.roundingMode = RoundingMode.DOWN
+            val priceText = df.format(dish.price)
+            itemView.lbl_dish_price.text = priceText + "€"
             itemView.dish_layout.setOnLongClickListener {
                 viewModel.deleteDish(viewModel.restaurantProfile.value?.data?.id, categoryId, dish.uid)
                 true
