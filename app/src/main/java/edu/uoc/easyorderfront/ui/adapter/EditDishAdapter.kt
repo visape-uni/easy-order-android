@@ -38,7 +38,7 @@ class EditDishAdapter(
             val df = DecimalFormat()
             df.maximumFractionDigits = 2
             df.minimumFractionDigits = 2
-            df.roundingMode = RoundingMode.DOWN
+            df.roundingMode = RoundingMode.HALF_UP
             val priceText = df.format(dish.price)
             itemView.lbl_dish_price.text = priceText + "€"
             itemView.dish_layout.setOnLongClickListener {

@@ -47,7 +47,7 @@ class CreateDishDialogFragment(
 
                     view.progress_bar.visibility = View.GONE
                     if (dataWrapper.data != null) {
-                        Toast.makeText(context, "Plato creada correctamente", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "Plato creado correctamente", Toast.LENGTH_LONG)
                                 .show()
 
                         addDishToCategory(dataWrapper.data)

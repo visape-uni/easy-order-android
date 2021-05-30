@@ -52,6 +52,8 @@ class OrderClientAdapter(
 
             if (orderedDish.newOrder!!) {
                 itemView.txt_cantidad.setBackgroundResource(R.color.green3)
+            } else {
+                itemView.txt_cantidad.setBackgroundResource(0)
             }
         }
     }

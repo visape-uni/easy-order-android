@@ -152,7 +152,7 @@ class MenuRestaurantActivity : AppCompatActivity() {
             val df = DecimalFormat()
             df.maximumFractionDigits = 2
             df.minimumFractionDigits = 2
-            df.roundingMode = RoundingMode.CEILING
+            df.roundingMode = RoundingMode.HALF_UP
             val price = df.format(orderPrice)
 
             btn_pedido.text = getString(R.string.haz_tu_pedido_por_x,  price)

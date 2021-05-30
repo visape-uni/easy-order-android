@@ -12,6 +12,8 @@ import edu.uoc.easyorderfront.domain.model.OrderedDish
 import edu.uoc.easyorderfront.ui.utils.DataWrapper
 import kotlinx.android.synthetic.main.bottom_fragment_add_dish_to_order.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 
 class AddDishToOrderFragment(
@@ -35,7 +37,13 @@ class AddDishToOrderFragment(
     fun prepareUI(view: View) {
 
         view.lbl_nombre.text = dish.name
-        view.lbl_price.text = dish.price.toString()
+
+        val df = DecimalFormat()
+        df.maximumFractionDigits = 2
+        df.minimumFractionDigits = 2
+        df.roundingMode = RoundingMode.HALF_UP
+        val priceText = df.format(dish.price)
+        view.lbl_price.text = priceText + "€"
 
         viewModel.quantity.observe(this, {value ->
             view.lbl_cantidad.text = value.toString()

@@ -65,9 +65,7 @@ class OrderClientActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     progress_bar.visibility = View.GONE
                     val order = viewModel.order.value
-                    order?.orderedDishes?.filter { orderedDish -> orderedDish.newOrder!! }?.forEach { orderedDish ->
-                        orderedDish.newOrder = false
-                    }
+                    adapter.notifyDataSetChanged()
 
                     val tableId = intent.getStringExtra(EasyOrderConstants.TABLE_ID_KEY)
 
